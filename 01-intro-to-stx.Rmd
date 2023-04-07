@@ -6,7 +6,7 @@ In this practical session you will familiarise yourself with the data and their 
 ## Import 10X Visium data
 In this tutorial we will be using some already prepared data from the [STexampleData](https://bioconductor.org/packages/STexampleData) package. These data are stored in the `SpatialExperiment` format (the format is described below).
 
-The dataset a single sample from the dorsolateral prefrontal cortex (DLPFC) 10x Genomics Visium dataset, that was published by @Maynard2021-pq.
+The dataset a single sample from the dorsolateral prefrontal cortex (DLPFC) 10x Genomics Visium dataset, that was published by @Maynard2021Mar.
 
 Here, we show how to load the data from the `STexampleData` package.
 
@@ -25,7 +25,7 @@ The below discussion will help you familiarise with the different data types tha
 
 For the first part of this tutorial (practical sessions 1 and 2), we will be using the  [SpatialExperiment](https://bioconductor.org/packages/SpatialExperiment) S4 class from Bioconductor as the main data structure for storing and manipulating datasets.
 
-`SpatialExperiment` is a specialized object class that supports the storing of spatially-resolved transcriptomics datasets within the Bioconductor framework. It builds on the [SingleCellExperiment](https://bioconductor.org/packages/SingleCellExperiment) class [@Amezquita2020-qu] for single-cell RNA sequencing data. More specifically, has extra customisations to store spatial information (i.e., spatial coordinates and images).
+`SpatialExperiment` is a specialized object class that supports the storing of spatially-resolved transcriptomics datasets within the Bioconductor framework. It builds on the [SingleCellExperiment](https://bioconductor.org/packages/SingleCellExperiment) class [@Amezquita2020Feb] for single-cell RNA sequencing data. More specifically, has extra customisations to store spatial information (i.e., spatial coordinates and images).
 
 An overview of the `SpatialExperiment` object structure is is presented in Figure 2.1. In brief, the `SpatialExperiment` object consists of the below five parts:  
 
@@ -41,13 +41,54 @@ An overview of the `SpatialExperiment` object structure is is presented in Figur
 knitr::include_graphics("images/SpatialExperiment.png")
 ```
 
-For more details, see the related publication from Righelli et al., 2021 describing the `SpatialExperiment` [@Righelli2022-lm].
+For more details, see the related publication from Righelli et al., 2021 describing the `SpatialExperiment` [@Righelli2022Jun].
 
-### Counts table
+### Inspect the object
+```{r, message=FALSE}
+## Check the object's structure
+spe
 
-### Coordinates table
+## Check number of features/genes (rows) and spots (columns)
+dim(spe)
 
-### Image data
+## Check names of 'assay' tables
+assayNames(spe)
+```
 
+### Counts table and gene metadata
+```{r, message=FALSE}
+## Have a look at the counts table
+head(assay(spe))
+```
+
+As you can see here the counts table is of class `dgTMatrix` which is a sparse matrix. This is because much like scRNA-seq data, STx data are sparse and include many zeros. As a result, to make the counts table as light as possible we resort to using sparse matrices. The next code chunk will demonstrate a part of the matrix that includes genes with some level of expression.
+
+```{r, message=FALSE}
+assay(spe)[20:40, 2000:2010]
+
+assay(spe)[33488:33508, 2000:2010]
+```
+
+```{r, message=FALSE}
+## Have a look at the genes metadata
+head(rowData(spe))
+
+```
+
+### Coordinates table and spot metadata
+```{r, message=FALSE}
+## Check the spatial coordinates
+head(spatialCoords(spe))
+
+## spot-level metadata
+head(colData(spe))
+
+```
+
+### Image metadata
+```{r, message=FALSE}
+## Have a look at the image metadata
+imgData(spe)
+```
 
 

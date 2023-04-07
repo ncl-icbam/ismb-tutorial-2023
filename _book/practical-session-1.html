@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Practical session 1 | Spatial transcriptomics data analysis: theory and practice</title>
+  <meta name="description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Practical session 1 | Spatial transcriptomics data analysis: theory and practice" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
+  <meta name="github-repo" content="https://github.com/ncl-icbam/ismb-tutorial-2023.git" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Practical session 1 | Spatial transcriptomics data analysis: theory and practice" />
+  
+  <meta name="twitter:description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
+  
+
+<meta name="author" content="Eleftherios Zormpas, Dr Simon J. Cockell" />
+
+
+<meta name="date" content="2023-04-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="practical-session-2.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> url: your book url like https://bookdown.org/yihui/bookdown</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#abstract"><i class="fa fa-check"></i>Abstract</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-objectives"><i class="fa fa-check"></i>Learning objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="practical-session-1.html"><a href="practical-session-1.html"><i class="fa fa-check"></i><b>2</b> Practical session 1</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="practical-session-1.html"><a href="practical-session-1.html#log-into-the-posit-cloud-server"><i class="fa fa-check"></i><b>2.1</b> Log into the Posit Cloud server</a></li>
+<li class="chapter" data-level="2.2" data-path="practical-session-1.html"><a href="practical-session-1.html#import-10x-visium-data"><i class="fa fa-check"></i><b>2.2</b> Import 10X Visium data</a></li>
+<li class="chapter" data-level="2.3" data-path="practical-session-1.html"><a href="practical-session-1.html#explore-data-types"><i class="fa fa-check"></i><b>2.3</b> Explore data types</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="practical-session-1.html"><a href="practical-session-1.html#spatialexperiment-class"><i class="fa fa-check"></i><b>2.3.1</b> SpatialExperiment class</a></li>
+<li class="chapter" data-level="2.3.2" data-path="practical-session-1.html"><a href="practical-session-1.html#inspect-the-object"><i class="fa fa-check"></i><b>2.3.2</b> Inspect the object</a></li>
+<li class="chapter" data-level="2.3.3" data-path="practical-session-1.html"><a href="practical-session-1.html#counts-table-and-gene-metadata"><i class="fa fa-check"></i><b>2.3.3</b> Counts table and gene metadata</a></li>
+<li class="chapter" data-level="2.3.4" data-path="practical-session-1.html"><a href="practical-session-1.html#coordinates-table-and-spot-metadata"><i class="fa fa-check"></i><b>2.3.4</b> Coordinates table and spot metadata</a></li>
+<li class="chapter" data-level="2.3.5" data-path="practical-session-1.html"><a href="practical-session-1.html#image-metadata"><i class="fa fa-check"></i><b>2.3.5</b> Image metadata</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="practical-session-2.html"><a href="practical-session-2.html"><i class="fa fa-check"></i><b>3</b> Practical session 2</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="practical-session-2.html"><a href="practical-session-2.html#section"><i class="fa fa-check"></i><b>3.1</b> </a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html"><i class="fa fa-check"></i><b>4</b> Practical session 2</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html#section-1"><i class="fa fa-check"></i><b>4.1</b> </a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="practical-session-2-2.html"><a href="practical-session-2-2.html"><i class="fa fa-check"></i><b>5</b> Practical session 2</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="practical-session-2-2.html"><a href="practical-session-2-2.html#section-2"><i class="fa fa-check"></i><b>5.1</b> </a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>6</b> Blocks</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="blocks.html"><a href="blocks.html#equations"><i class="fa fa-check"></i><b>6.1</b> Equations</a></li>
+<li class="chapter" data-level="6.2" data-path="blocks.html"><a href="blocks.html#theorems-and-proofs"><i class="fa fa-check"></i><b>6.2</b> Theorems and proofs</a></li>
+<li class="chapter" data-level="6.3" data-path="blocks.html"><a href="blocks.html#callout-blocks"><i class="fa fa-check"></i><b>6.3</b> Callout blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>7</b> Sharing your book</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing"><i class="fa fa-check"></i><b>7.1</b> Publishing</a></li>
+<li class="chapter" data-level="7.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages"><i class="fa fa-check"></i><b>7.2</b> 404 pages</a></li>
+<li class="chapter" data-level="7.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing"><i class="fa fa-check"></i><b>7.3</b> Metadata for sharing</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Spatial transcriptomics data analysis: theory and practice</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="practical-session-1" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Practical session 1<a href="practical-session-1.html#practical-session-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this practical session you will familiarise yourself with the data and their different aspects.</p>
+<div id="log-into-the-posit-cloud-server" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Log into the Posit Cloud server<a href="practical-session-1.html#log-into-the-posit-cloud-server" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="import-10x-visium-data" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Import 10X Visium data<a href="practical-session-1.html#import-10x-visium-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this tutorial we will be using some already prepared data from the <a href="https://bioconductor.org/packages/STexampleData">STexampleData</a> package. These data are stored in the <code>SpatialExperiment</code> format (the format is described below).</p>
+<p>The dataset a single sample from the dorsolateral prefrontal cortex (DLPFC) 10x Genomics Visium dataset, that was published by <span class="citation">Maynard et al. (<a href="#ref-Maynard2021Mar">2021</a>)</span>.</p>
+<p>Here, we show how to load the data from the <code>STexampleData</code> package.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="practical-session-1.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(SpatialExperiment)</span>
+<span id="cb1-2"><a href="practical-session-1.html#cb1-2" tabindex="-1"></a><span class="fu">library</span>(STexampleData)</span>
+<span id="cb1-3"><a href="practical-session-1.html#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="practical-session-1.html#cb1-4" tabindex="-1"></a><span class="co"># Load the object</span></span>
+<span id="cb1-5"><a href="practical-session-1.html#cb1-5" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">Visium_humanDLPFC</span>()</span></code></pre></div>
+</div>
+<div id="explore-data-types" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> Explore data types<a href="practical-session-1.html#explore-data-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The below discussion will help you familiarise with the different data types that we will be using.</p>
+<div id="spatialexperiment-class" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> SpatialExperiment class<a href="practical-session-1.html#spatialexperiment-class" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>For the first part of this tutorial (practical sessions 1 and 2), we will be using the <a href="https://bioconductor.org/packages/SpatialExperiment">SpatialExperiment</a> S4 class from Bioconductor as the main data structure for storing and manipulating datasets.</p>
+<p><code>SpatialExperiment</code> is a specialized object class that supports the storing of spatially-resolved transcriptomics datasets within the Bioconductor framework. It builds on the <a href="https://bioconductor.org/packages/SingleCellExperiment">SingleCellExperiment</a> class <span class="citation">(<a href="#ref-Amezquita2020Feb">Amezquita et al. 2020</a>)</span> for single-cell RNA sequencing data. More specifically, has extra customisations to store spatial information (i.e., spatial coordinates and images).</p>
+<p>An overview of the <code>SpatialExperiment</code> object structure is is presented in Figure 2.1. In brief, the <code>SpatialExperiment</code> object consists of the below five parts:</p>
+<ol style="list-style-type: decimal">
+<li><code>assays</code>: gene expression counts<br />
+</li>
+<li><code>rowData</code>: information about features, usually genes<br />
+</li>
+<li><code>colData</code>: information on spots (non-spatial and spatial metadata)<br />
+</li>
+<li><code>spatialCoords</code>: spatial coordinates<br />
+</li>
+<li><code>imgData</code>: image data</li>
+</ol>
+<p><strong>NOTE:</strong> For spot-based STx data (i.e., 10x Genomics Visium), a single <code>assay</code> named <code>counts</code> is used.</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:SpExp-overview"></span>
+<img src="images/SpatialExperiment.png" alt="Overview of the `SpatialExperiment` object class structure." width="100%" />
+<p class="caption">
+Figure 2.1: Overview of the <code>SpatialExperiment</code> object class structure.
+</p>
+</div>
+<p>For more details, see the related publication from Righelli et al., 2021 describing the <code>SpatialExperiment</code> <span class="citation">(<a href="#ref-Righelli2022Jun">Righelli et al. 2022</a>)</span>.</p>
+</div>
+<div id="inspect-the-object" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> Inspect the object<a href="practical-session-1.html#inspect-the-object" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="practical-session-1.html#cb2-1" tabindex="-1"></a><span class="do">## Check the object&#39;s structure</span></span>
+<span id="cb2-2"><a href="practical-session-1.html#cb2-2" tabindex="-1"></a>spe</span></code></pre></div>
+<pre><code>## class: SpatialExperiment 
+## dim: 33538 4992 
+## metadata(0):
+## assays(1): counts
+## rownames(33538): ENSG00000243485 ENSG00000237613 ... ENSG00000277475 ENSG00000268674
+## rowData names(3): gene_id gene_name feature_type
+## colnames(4992): AAACAACGAATAGTTC-1 AAACAAGTATCTCCCA-1 ... TTGTTTGTATTACACG-1 TTGTTTGTGTAAATTC-1
+## colData names(7): barcode_id sample_id ... ground_truth cell_count
+## reducedDimNames(0):
+## mainExpName: NULL
+## altExpNames(0):
+## spatialCoords names(2) : pxl_col_in_fullres pxl_row_in_fullres
+## imgData names(4): sample_id image_id data scaleFactor</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="practical-session-1.html#cb4-1" tabindex="-1"></a><span class="do">## Check number of features/genes (rows) and spots (columns)</span></span>
+<span id="cb4-2"><a href="practical-session-1.html#cb4-2" tabindex="-1"></a><span class="fu">dim</span>(spe)</span></code></pre></div>
+<pre><code>## [1] 33538  4992</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="practical-session-1.html#cb6-1" tabindex="-1"></a><span class="do">## Check names of &#39;assay&#39; tables</span></span>
+<span id="cb6-2"><a href="practical-session-1.html#cb6-2" tabindex="-1"></a><span class="fu">assayNames</span>(spe)</span></code></pre></div>
+<pre><code>## [1] &quot;counts&quot;</code></pre>
+</div>
+<div id="counts-table-and-gene-metadata" class="section level3 hasAnchor" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> Counts table and gene metadata<a href="practical-session-1.html#counts-table-and-gene-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="practical-session-1.html#cb8-1" tabindex="-1"></a><span class="do">## Have a look at the counts table</span></span>
+<span id="cb8-2"><a href="practical-session-1.html#cb8-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">assay</span>(spe))</span></code></pre></div>
+<pre><code>## 6 x 4992 sparse Matrix of class &quot;dgTMatrix&quot;
+##                                                                                                                                                                                        
+## ENSG00000243485 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+## ENSG00000237613 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+## ENSG00000186092 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+## ENSG00000238009 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+## ENSG00000239945 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+## ENSG00000239906 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+##                           
+## ENSG00000243485 . . ......
+## ENSG00000237613 . . ......
+## ENSG00000186092 . . ......
+## ENSG00000238009 . . ......
+## ENSG00000239945 . . ......
+## ENSG00000239906 . . ......
+## 
+##  .....suppressing 4906 columns in show(); maybe adjust &#39;options(max.print= *, width = *)&#39;
+##  ..............................</code></pre>
+<p>As you can see here the counts table is of class <code>dgTMatrix</code> which is a sparse matrix. This is because much like scRNA-seq data, STx data are sparse and include many zeros. As a result, to make the counts table as light as possible we resort to using sparse matrices. The next code chunk will demonstrate a part of the matrix that includes genes with some level of expression.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="practical-session-1.html#cb10-1" tabindex="-1"></a><span class="fu">assay</span>(spe)[<span class="dv">20</span><span class="sc">:</span><span class="dv">40</span>, <span class="dv">2000</span><span class="sc">:</span><span class="dv">2010</span>]</span></code></pre></div>
+<pre><code>## 21 x 11 sparse Matrix of class &quot;dgTMatrix&quot;
+##                                      
+## ENSG00000223764 . . . . . . . . . . .
+## ENSG00000187634 . . . . . . . . . . .
+## ENSG00000188976 . . 2 . . . . . . 1 1
+## ENSG00000187961 . . . . . . . . . . .
+## ENSG00000187583 . . . . . . . . . . .
+## ENSG00000187642 . . . . . . . . . . .
+## ENSG00000272512 . . . . . . . . . . .
+## ENSG00000188290 1 . . . . . . . . 2 .
+## ENSG00000187608 . 1 . . . . 2 . . 1 .
+## ENSG00000224969 . . . . . . . . . . .
+## ENSG00000188157 . 1 . . 2 . . . . 1 .
+## ENSG00000273443 . . . . . . . . . . .
+## ENSG00000237330 . . . . . . . . . . .
+## ENSG00000131591 . . . . . . . . . 1 .
+## ENSG00000223823 . . . . . . . . . . .
+## ENSG00000272141 . . . . . . . . . . .
+## ENSG00000205231 . . . . . . . . . . .
+## ENSG00000162571 . . . . . . . . . . .
+## ENSG00000186891 . . . 1 . . . . . . .
+## ENSG00000186827 . . . . . . . . . . .
+## ENSG00000078808 . 1 2 . 1 . . . . 1 .</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="practical-session-1.html#cb12-1" tabindex="-1"></a><span class="fu">assay</span>(spe)[<span class="dv">33488</span><span class="sc">:</span><span class="dv">33508</span>, <span class="dv">2000</span><span class="sc">:</span><span class="dv">2010</span>]</span></code></pre></div>
+<pre><code>## 21 x 11 sparse Matrix of class &quot;dgTMatrix&quot;
+##                                                     
+## ENSG00000160294  .  .   .  .   .   .  .  .  .   .  .
+## ENSG00000228137  .  .   .  .   .   .  .  .  .   .  .
+## ENSG00000239415  .  .   .  .   .   .  .  .  .   .  .
+## ENSG00000182362  .  .   .  .   .   .  .  .  1   .  .
+## ENSG00000160298  .  .   .  .   .   .  .  .  .   .  .
+## ENSG00000160299  .  .   1  .   1   .  .  .  .   .  .
+## ENSG00000160305  .  .   .  .   .   2  .  .  .   .  .
+## ENSG00000160307  1  3   1  1   4   5  1  1  .   2  1
+## ENSG00000160310  .  .   .  .   1   .  .  .  .   2  .
+## ENSG00000198888 17 44  71 16 154  97 12 14 32 167  6
+## ENSG00000198763 16 59  64 11 116  63 11 12 18 123  6
+## ENSG00000198804 37 85 155 25 252 176 24 27 38 335 12
+## ENSG00000198712 23 79 120 23 214 170 22 25 48 242 10
+## ENSG00000228253  2  .   3  .   1   .  .  1  1   6  .
+## ENSG00000198899 20 39  93  9 136 108 20 18 25 165  7
+## ENSG00000198938 27 59 133 20 216 120 22 26 43 232  9
+## ENSG00000198840  5 27  33  5  71  39  8 11 12  78  .
+## ENSG00000212907  2  .   4  2   7   5  .  1  1   9  .
+## ENSG00000198886 15 65  95  9 183  98 18 19 33 178  7
+## ENSG00000198786  2 10  10  3  20  14  1  2  2  25  4
+## ENSG00000198695  1  1   3  .   2   2  .  .  .   1  .</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="practical-session-1.html#cb14-1" tabindex="-1"></a><span class="do">## Have a look at the genes metadata</span></span>
+<span id="cb14-2"><a href="practical-session-1.html#cb14-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">rowData</span>(spe))</span></code></pre></div>
+<pre><code>## DataFrame with 6 rows and 3 columns
+##                         gene_id   gene_name    feature_type
+##                     &lt;character&gt; &lt;character&gt;     &lt;character&gt;
+## ENSG00000243485 ENSG00000243485 MIR1302-2HG Gene Expression
+## ENSG00000237613 ENSG00000237613     FAM138A Gene Expression
+## ENSG00000186092 ENSG00000186092       OR4F5 Gene Expression
+## ENSG00000238009 ENSG00000238009  AL627309.1 Gene Expression
+## ENSG00000239945 ENSG00000239945  AL627309.3 Gene Expression
+## ENSG00000239906 ENSG00000239906  AL627309.2 Gene Expression</code></pre>
+</div>
+<div id="coordinates-table-and-spot-metadata" class="section level3 hasAnchor" number="2.3.4">
+<h3><span class="header-section-number">2.3.4</span> Coordinates table and spot metadata<a href="practical-session-1.html#coordinates-table-and-spot-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="practical-session-1.html#cb16-1" tabindex="-1"></a><span class="do">## Check the spatial coordinates</span></span>
+<span id="cb16-2"><a href="practical-session-1.html#cb16-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">spatialCoords</span>(spe))</span></code></pre></div>
+<pre><code>##                    pxl_col_in_fullres pxl_row_in_fullres
+## AAACAACGAATAGTTC-1               3913               2435
+## AAACAAGTATCTCCCA-1               9791               8468
+## AAACAATCTACTAGCA-1               5769               2807
+## AAACACCAATAACTGC-1               4068               9505
+## AAACAGAGCGACTCCT-1               9271               4151
+## AAACAGCTTTCAGAAG-1               3393               7583</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="practical-session-1.html#cb18-1" tabindex="-1"></a><span class="do">## spot-level metadata</span></span>
+<span id="cb18-2"><a href="practical-session-1.html#cb18-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">colData</span>(spe))</span></code></pre></div>
+<pre><code>## DataFrame with 6 rows and 7 columns
+##                            barcode_id     sample_id in_tissue array_row array_col ground_truth cell_count
+##                           &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;  &lt;character&gt;  &lt;integer&gt;
+## AAACAACGAATAGTTC-1 AAACAACGAATAGTTC-1 sample_151673         0         0        16           NA         NA
+## AAACAAGTATCTCCCA-1 AAACAAGTATCTCCCA-1 sample_151673         1        50       102       Layer3          6
+## AAACAATCTACTAGCA-1 AAACAATCTACTAGCA-1 sample_151673         1         3        43       Layer1         16
+## AAACACCAATAACTGC-1 AAACACCAATAACTGC-1 sample_151673         1        59        19           WM          5
+## AAACAGAGCGACTCCT-1 AAACAGAGCGACTCCT-1 sample_151673         1        14        94       Layer3          2
+## AAACAGCTTTCAGAAG-1 AAACAGCTTTCAGAAG-1 sample_151673         1        43         9       Layer5          4</code></pre>
+</div>
+<div id="image-metadata" class="section level3 hasAnchor" number="2.3.5">
+<h3><span class="header-section-number">2.3.5</span> Image metadata<a href="practical-session-1.html#image-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="practical-session-1.html#cb20-1" tabindex="-1"></a><span class="do">## Have a look at the image metadata</span></span>
+<span id="cb20-2"><a href="practical-session-1.html#cb20-2" tabindex="-1"></a><span class="fu">imgData</span>(spe)</span></code></pre></div>
+<pre><code>## DataFrame with 2 rows and 4 columns
+##       sample_id    image_id   data scaleFactor
+##     &lt;character&gt; &lt;character&gt; &lt;list&gt;   &lt;numeric&gt;
+## 1 sample_151673      lowres   ####   0.0450045
+## 2 sample_151673       hires   ####   0.1500150</code></pre>
+
+</div>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Amezquita2020Feb" class="csl-entry">
+Amezquita, Robert A., Aaron T. L. Lun, Etienne Becht, Vince J. Carey, Lindsay N. Carpp, Ludwig Geistlinger, Federico Marini, et al. 2020. <span>“<span class="nocase">Orchestrating single-cell analysis with Bioconductor</span>.”</span> <em>Nat Methods</em> 17 (February): 137–45. <a href="https://doi.org/10.1038/s41592-019-0654-x">https://doi.org/10.1038/s41592-019-0654-x</a>.
+</div>
+<div id="ref-Maynard2021Mar" class="csl-entry">
+Maynard, Kristen R., Leonardo Collado-Torres, Lukas M. Weber, Cedric Uytingco, Brianna K. Barry, Stephen R. Williams, Joseph L. Catallini, et al. 2021. <span>“<span class="nocase">Transcriptome-scale spatial gene expression in the human dorsolateral prefrontal cortex</span>.”</span> <em>Nat Neurosci</em> 24 (March): 425–36. <a href="https://doi.org/10.1038/s41593-020-00787-0">https://doi.org/10.1038/s41593-020-00787-0</a>.
+</div>
+<div id="ref-Righelli2022Jun" class="csl-entry">
+Righelli, Dario, Lukas M. Weber, Helena L. Crowell, Brenda Pardo, Leonardo Collado-Torres, Shila Ghazanfar, Aaron T. L. Lun, Stephanie C. Hicks, and Davide Risso. 2022. <span>“<span class="nocase">SpatialExperiment: infrastructure for spatially-resolved transcriptomics data in R using Bioconductor</span>.”</span> <em>Bioinformatics</em> 38 (11): 3128–31. <a href="https://doi.org/10.1093/bioinformatics/btac299">https://doi.org/10.1093/bioinformatics/btac299</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="practical-session-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-intro-to-stx.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

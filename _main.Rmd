@@ -1,3 +1,44 @@
+--- 
+title: "Spatial transcriptomics data analysis: theory and practice"
+author: "Eleftherios Zormpas, Dr Simon J. Cockell"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: "This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice."
+link-citations: yes
+github-repo: https://github.com/ncl-icbam/ismb-tutorial-2023.git
+---
+
+# url: your book url like https://bookdown.org/yihui/bookdown
+
+Placeholder
+
+
+## Abstract {-}
+## Learning objectives {-}
+
+<!--chapter:end:index.Rmd-->
+
+
+# Practical session 1
+
+Placeholder
+
+
+## Log into the Posit Cloud server
+## Import 10X Visium data
+## Explore data types
+### SpatialExperiment class
+### Inspect the object
+### Counts table and gene metadata
+### Coordinates table and spot metadata
+### Image metadata
+
+<!--chapter:end:01-intro-to-stx.Rmd-->
+
 # Practical session 2
 In this session we will demonstrate the implementation of the methods discussed earlier and will particularly focus on the most common analysis routines in STx: QC, data visualisation and clustering analysis always inside the interoperable Bioconductor environment.
 
@@ -72,7 +113,9 @@ head(colData(spe))
 After calculating the necessary metrics, we need to apply some cut-off thresholds for each metric to perform QC over each spot. What is important to remember here is that each dataset might need slightly different cut-off values to be applied. As a result we cannot rely on identifying a value to use every time and we need to rely on plotting these metrics and making a decision on a dataset-by-dataset basis.
 
 ### Library size threshold plot
-We can plot a histogram of the library sizes across spots. The library size is the number of UMI counts in each spot. We can find this information in the `sum` column in the `colData`.
+Library size represents the total sum of UMI counts per spot. This is included in the column labeled `sum` in the `scater` output.
+
+Plot a histogram of the library sizes across spots.
 
 ```{r, fig.height=3.5, warning=FALSE, message=FALSE}
 ## Density and histogram of library sizes
@@ -92,11 +135,9 @@ ggplot(data = as.data.frame(colData(spe)),
   theme_classic()
 ```
 
-As we can see there are no obvious issues with the library sizes. An example of an issue could be a high frequency of small libraries which would indicate poor experimental output. Generally we do not want to keep spots with too small libraries.
+The distribution is relatively smooth, and there are no obvious issue such as a spike at very low library sizes.
 
-If the dataset we are analysing contains the number of cells that are present in each spot (this one does), then it makes sense to also plot the library sizes against the number of cells per spot. In that way we are making sure that we don't remove any spots that have biological meaning. 
-
-The horizontal red line (argument `threshold` in the `plotQC` function) shows a first guess at a possible filtering threshold for library size based on the above histogram.
+We also plot the library sizes against the number of cells per spot (which is available for this dataset). This is to check that we are not inadvertently removing a biologically meaningful group of spots. The horizontal line (argument `threshold`) shows our first guess at a possible filtering threshold for library size based on the histogram.
 
 ```{r, fig.width=7, fig.height=5, warning=FALSE, message=FALSE}
 # plot library size vs. number of cells per spot
@@ -142,4 +183,51 @@ For reference, remember the ground truth layers in this dataset that we [plotted
 
 
 
+
+
+<!--chapter:end:02-stx-analysis.Rmd-->
+
+# Practical session 2
+This practical session will demonstrate the application of the most commonly used spatial analysis tools to STx data, and how we work with coordinate data alongside expression data. 
+
+##
+
+<!--chapter:end:03-intro-geospatial.Rmd-->
+
+# Practical session 2
+In this session we will have a hands-on exploration of GW-PCA and its application to STx data. What can we learn from this novel technique?
+
+##
+
+<!--chapter:end:04-gwpca.Rmd-->
+
+
+# Blocks
+
+Placeholder
+
+
+## Equations
+## Theorems and proofs
+## Callout blocks
+
+<!--chapter:end:05-blocks.Rmd-->
+
+
+# Sharing your book
+
+Placeholder
+
+
+## Publishing
+## 404 pages
+## Metadata for sharing
+
+<!--chapter:end:06-share.Rmd-->
+
+`r if (knitr::is_html_output()) '
+# References {-}
+'`
+
+<!--chapter:end:07-references.Rmd-->
 

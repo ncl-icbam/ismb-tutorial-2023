@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Practical session 2 | Spatial transcriptomics data analysis: theory and practice</title>
+  <meta name="description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Practical session 2 | Spatial transcriptomics data analysis: theory and practice" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
+  <meta name="github-repo" content="https://github.com/ncl-icbam/ismb-tutorial-2023.git" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Practical session 2 | Spatial transcriptomics data analysis: theory and practice" />
+  
+  <meta name="twitter:description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
+  
+
+<meta name="author" content="Eleftherios Zormpas, Dr Simon J. Cockell" />
+
+
+<meta name="date" content="2023-04-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="practical-session-1.html"/>
+<link rel="next" href="practical-session-2-1.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> url: your book url like https://bookdown.org/yihui/bookdown</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#abstract"><i class="fa fa-check"></i>Abstract</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-objectives"><i class="fa fa-check"></i>Learning objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="practical-session-1.html"><a href="practical-session-1.html"><i class="fa fa-check"></i><b>2</b> Practical session 1</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="practical-session-1.html"><a href="practical-session-1.html#log-into-the-posit-cloud-server"><i class="fa fa-check"></i><b>2.1</b> Log into the Posit Cloud server</a></li>
+<li class="chapter" data-level="2.2" data-path="practical-session-1.html"><a href="practical-session-1.html#import-10x-visium-data"><i class="fa fa-check"></i><b>2.2</b> Import 10X Visium data</a></li>
+<li class="chapter" data-level="2.3" data-path="practical-session-1.html"><a href="practical-session-1.html#explore-data-types"><i class="fa fa-check"></i><b>2.3</b> Explore data types</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="practical-session-1.html"><a href="practical-session-1.html#spatialexperiment-class"><i class="fa fa-check"></i><b>2.3.1</b> SpatialExperiment class</a></li>
+<li class="chapter" data-level="2.3.2" data-path="practical-session-1.html"><a href="practical-session-1.html#inspect-the-object"><i class="fa fa-check"></i><b>2.3.2</b> Inspect the object</a></li>
+<li class="chapter" data-level="2.3.3" data-path="practical-session-1.html"><a href="practical-session-1.html#counts-table-and-gene-metadata"><i class="fa fa-check"></i><b>2.3.3</b> Counts table and gene metadata</a></li>
+<li class="chapter" data-level="2.3.4" data-path="practical-session-1.html"><a href="practical-session-1.html#coordinates-table-and-spot-metadata"><i class="fa fa-check"></i><b>2.3.4</b> Coordinates table and spot metadata</a></li>
+<li class="chapter" data-level="2.3.5" data-path="practical-session-1.html"><a href="practical-session-1.html#image-metadata"><i class="fa fa-check"></i><b>2.3.5</b> Image metadata</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="practical-session-2.html"><a href="practical-session-2.html"><i class="fa fa-check"></i><b>3</b> Practical session 2</a>
+<ul>
+<li class="chapter" data-level="" data-path="practical-session-2.html"><a href="practical-session-2.html#load-packages"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="3.1" data-path="practical-session-2.html"><a href="practical-session-2.html#spot-level-quality-control"><i class="fa fa-check"></i><b>3.1</b> Spot-level Quality Control</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="practical-session-2.html"><a href="practical-session-2.html#plot-tissue-map"><i class="fa fa-check"></i><b>3.1.1</b> Plot tissue map</a></li>
+<li class="chapter" data-level="3.1.2" data-path="practical-session-2.html"><a href="practical-session-2.html#calculating-qc-metrics"><i class="fa fa-check"></i><b>3.1.2</b> Calculating QC metrics</a></li>
+<li class="chapter" data-level="3.1.3" data-path="practical-session-2.html"><a href="practical-session-2.html#library-size-threshold-plot"><i class="fa fa-check"></i><b>3.1.3</b> Library size threshold plot</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html"><i class="fa fa-check"></i><b>4</b> Practical session 2</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html#section"><i class="fa fa-check"></i><b>4.1</b> </a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="practical-session-2-2.html"><a href="practical-session-2-2.html"><i class="fa fa-check"></i><b>5</b> Practical session 2</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="practical-session-2-2.html"><a href="practical-session-2-2.html#section-1"><i class="fa fa-check"></i><b>5.1</b> </a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>6</b> Blocks</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="blocks.html"><a href="blocks.html#equations"><i class="fa fa-check"></i><b>6.1</b> Equations</a></li>
+<li class="chapter" data-level="6.2" data-path="blocks.html"><a href="blocks.html#theorems-and-proofs"><i class="fa fa-check"></i><b>6.2</b> Theorems and proofs</a></li>
+<li class="chapter" data-level="6.3" data-path="blocks.html"><a href="blocks.html#callout-blocks"><i class="fa fa-check"></i><b>6.3</b> Callout blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>7</b> Sharing your book</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing"><i class="fa fa-check"></i><b>7.1</b> Publishing</a></li>
+<li class="chapter" data-level="7.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages"><i class="fa fa-check"></i><b>7.2</b> 404 pages</a></li>
+<li class="chapter" data-level="7.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing"><i class="fa fa-check"></i><b>7.3</b> Metadata for sharing</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Spatial transcriptomics data analysis: theory and practice</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="practical-session-2" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Practical session 2<a href="practical-session-2.html#practical-session-2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this session we will demonstrate the implementation of the methods discussed earlier and will particularly focus on the most common analysis routines in STx: QC, data visualisation and clustering analysis always inside the interoperable Bioconductor environment.</p>
+<div id="load-packages" class="section level2 unnumbered hasAnchor">
+<h2>Load packages<a href="practical-session-2.html#load-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="practical-session-2.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ggspavis)</span>
+<span id="cb1-2"><a href="practical-session-2.html#cb1-2" tabindex="-1"></a><span class="fu">library</span>(scater)</span></code></pre></div>
+<ul>
+<li><p><a href="https://bioconductor.org/packages/release/bioc/html/ggspavis.html"><code>ggspavis</code></a> is a Bioconductor package that includes visualization functions for spatially resolved transcriptomics datasets stored in <code>SpatialExperiment</code> format from spot-based (e.g., 10x Genomics Visium) platforms (<span class="citation">Weber and Crowell (<a href="#ref-ggspavis2023Apr">2022</a>)</span>).</p></li>
+<li><p><a href="https://bioconductor.org/packages/release/bioc/html/scater.html"><code>scater</code></a> is also a Bioconductor package that is a selection of tools for doing various analyses of scRNA-seq gene expression data, with a focus on quality control and visualization which has extended applications to STx data too. It is based on the <code>SingleCellExperiment</code> and <code>SpatialExperiment</code> classes and thus is interoperable with many other Bioconductor packages such as <a href="https://bioconductor.org/packages/3.16/scran"><code>scran</code></a>, <a href="https://bioconductor.org/packages/3.16/scuttle"><code>scuttle</code></a> and <a href="https://bioconductor.org/packages/3.16/iSEE"><code>iSEE</code></a>.</p></li>
+</ul>
+</div>
+<div id="spot-level-quality-control" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Spot-level Quality Control<a href="practical-session-2.html#spot-level-quality-control" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Spot-level quality control (sQC) procedures are employed to eliminate low-quality spots before conducting further analyses. Low-quality spots may result from issues during library preparation or other experimental procedures, such as a high percentage of dead cells due to cell damage during library preparation, or low mRNA capture efficiency caused by ineffective reverse transcription or PCR amplification. Keeping these spots usually leads to creating problems during downstream analyses.</p>
+<p>We can identify low-quality spots using several characteristics that are also used in QC for scRNA-sq data, including:</p>
+<ol style="list-style-type: decimal">
+<li><strong>library size</strong> (total of UMI counts per spot is going to be different due to sequencing <em>-like different samples in a bulk RNA-seq-</em> or due to number of cells in the spot)</li>
+<li><strong>number of expressed genes</strong> (i.e. number of genes with non-zero UMI counts per spot)</li>
+<li><strong>proportion of reads mapping to mitochondrial genes</strong> (a high proportion indicates putative cell damage)</li>
+</ol>
+<p>Low library size or low number of expressed features can indicate poor mRNA capture rates, e.g. due to cell damage and missing mRNAs, or low reaction efficiency. A high proportion of mitochondrial reads indicates cell damage, e.g. partial cell lysis leading to leakage and missing cytoplasmic mRNAs, with the resulting reads therefore concentrated on the remaining mitochondrial mRNAs that are relatively protected inside the mitochondrial membrane. Unusually high numbers of cells per spot can indicate problems during cell segmentation.</p>
+<p>The idea of using scRNA-seq QC metrics in STx data comes from the fact that if we remove space and count each spot as a single cell, the two datasets share common features. However, the expected distributions for high-quality spots are different (compared to high-quality cells in scRNA-seq), since spots may contain zero, one, or multiple cells.</p>
+<p>A few publications for further reading that can help you understand the quality controls: <span class="citation">McCarthy et al. (<a href="#ref-McCarthy2017Apr">2017</a>)</span> and <span class="citation">Amezquita et al. (<a href="#ref-Amezquita2020Feb">2020</a>)</span>.</p>
+<div id="plot-tissue-map" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Plot tissue map<a href="practical-session-2.html#plot-tissue-map" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The DLPFC dataset we will be using comes with manual annotations by the authors <span class="citation">Maynard et al. (<a href="#ref-Maynard2021Mar">2021</a>)</span>. We can plot the tissue map with and without the annotations to get a complete view.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="practical-session-2.html#cb2-1" tabindex="-1"></a><span class="do">## Plot spatial coordinates without annotations</span></span>
+<span id="cb2-2"><a href="practical-session-2.html#cb2-2" tabindex="-1"></a><span class="fu">plotSpots</span>(spe)</span>
+<span id="cb2-3"><a href="practical-session-2.html#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="practical-session-2.html#cb2-4" tabindex="-1"></a><span class="do">## Plot spatial coordinates with annotations</span></span>
+<span id="cb2-5"><a href="practical-session-2.html#cb2-5" tabindex="-1"></a><span class="fu">plotSpots</span>(spe,</span>
+<span id="cb2-6"><a href="practical-session-2.html#cb2-6" tabindex="-1"></a>          <span class="at">annotate =</span> <span class="st">&quot;ground_truth&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-3-1.png" width="50%" /><img src="_main_files/figure-html/unnamed-chunk-3-2.png" width="50%" /></p>
+</div>
+<div id="calculating-qc-metrics" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> Calculating QC metrics<a href="practical-session-2.html#calculating-qc-metrics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We will now calculate the three main QC metrics described above using methods from the <code>scater</code> <span class="citation">(<a href="#ref-McCarthy2017Apr">McCarthy et al. 2017</a>)</span> package and our own functions <strong>INSERT LINK OR CITATION HERE</strong>.</p>
+<p>So far, the dataset contains both on- and off-tissue spots. For the analysis though we are only interested in the on-tissue spots. Therefore, before we run any calculations we want to remove the off-tissue spots.</p>
+<p><strong><em>NOTE</em></strong>: the on- or off-tissue information for each spot can be found in the <code>colData</code> of the <code>spe</code> object and in the <code>in_tissue</code> column where <em>0 = off-tissue</em> and <em>1 = on-tissue</em>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="practical-session-2.html#cb3-1" tabindex="-1"></a><span class="do">## Dataset dimensions before the filtering</span></span>
+<span id="cb3-2"><a href="practical-session-2.html#cb3-2" tabindex="-1"></a><span class="fu">dim</span>(spe)</span></code></pre></div>
+<pre><code>## [1] 33538  4992</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="practical-session-2.html#cb5-1" tabindex="-1"></a><span class="do">## Subset to keep only on-tissue spots</span></span>
+<span id="cb5-2"><a href="practical-session-2.html#cb5-2" tabindex="-1"></a>spe <span class="ot">&lt;-</span> spe[, <span class="fu">colData</span>(spe)<span class="sc">$</span>in_tissue <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb5-3"><a href="practical-session-2.html#cb5-3" tabindex="-1"></a><span class="fu">dim</span>(spe)</span></code></pre></div>
+<pre><code>## [1] 33538  3639</code></pre>
+<p>The next thing we need to do before we make decisions on how to quality <em>“trim”</em> the dataset is to calculate the percentage per spot of mitochodrial gene expression and store this information inside the <code>colData</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="practical-session-2.html#cb7-1" tabindex="-1"></a><span class="do">## Fetch mitochondrial gene names</span></span>
+<span id="cb7-2"><a href="practical-session-2.html#cb7-2" tabindex="-1"></a>is_mito <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">&quot;(^MT-)|(^mt-)&quot;</span>, <span class="fu">rowData</span>(spe)<span class="sc">$</span>gene_name)</span>
+<span id="cb7-3"><a href="practical-session-2.html#cb7-3" tabindex="-1"></a><span class="fu">rowData</span>(spe)<span class="sc">$</span>gene_name[is_mito]</span></code></pre></div>
+<pre><code>##  [1] &quot;MT-ND1&quot;  &quot;MT-ND2&quot;  &quot;MT-CO1&quot;  &quot;MT-CO2&quot;  &quot;MT-ATP8&quot; &quot;MT-ATP6&quot; &quot;MT-CO3&quot;  &quot;MT-ND3&quot;  &quot;MT-ND4L&quot; &quot;MT-ND4&quot;  &quot;MT-ND5&quot;  &quot;MT-ND6&quot;  &quot;MT-CYB&quot;</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="practical-session-2.html#cb9-1" tabindex="-1"></a><span class="do">## Calculate per-spot QC metrics and store in colData</span></span>
+<span id="cb9-2"><a href="practical-session-2.html#cb9-2" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">addPerCellQC</span>(spe, <span class="at">subsets =</span> <span class="fu">list</span>(<span class="at">mito =</span> is_mito))</span>
+<span id="cb9-3"><a href="practical-session-2.html#cb9-3" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">colData</span>(spe))</span></code></pre></div>
+<pre><code>## DataFrame with 6 rows and 13 columns
+##                            barcode_id     sample_id in_tissue array_row array_col ground_truth cell_count       sum  detected subsets_mito_sum subsets_mito_detected
+##                           &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;  &lt;character&gt;  &lt;integer&gt; &lt;numeric&gt; &lt;numeric&gt;        &lt;numeric&gt;             &lt;numeric&gt;
+## AAACAAGTATCTCCCA-1 AAACAAGTATCTCCCA-1 sample_151673         1        50       102       Layer3          6      8458      3586             1407                    13
+## AAACAATCTACTAGCA-1 AAACAATCTACTAGCA-1 sample_151673         1         3        43       Layer1         16      1667      1150              204                    11
+## AAACACCAATAACTGC-1 AAACACCAATAACTGC-1 sample_151673         1        59        19           WM          5      3769      1960              430                    13
+## AAACAGAGCGACTCCT-1 AAACAGAGCGACTCCT-1 sample_151673         1        14        94       Layer3          2      5433      2424             1316                    13
+## AAACAGCTTTCAGAAG-1 AAACAGCTTTCAGAAG-1 sample_151673         1        43         9       Layer5          4      4278      2264              651                    12
+## AAACAGGGTCTATATT-1 AAACAGGGTCTATATT-1 sample_151673         1        47        13       Layer6          6      4004      2178              621                    13
+##                    subsets_mito_percent     total
+##                               &lt;numeric&gt; &lt;numeric&gt;
+## AAACAAGTATCTCCCA-1              16.6351      8458
+## AAACAATCTACTAGCA-1              12.2376      1667
+## AAACACCAATAACTGC-1              11.4089      3769
+## AAACAGAGCGACTCCT-1              24.2223      5433
+## AAACAGCTTTCAGAAG-1              15.2174      4278
+## AAACAGGGTCTATATT-1              15.5095      4004</code></pre>
+<p>After calculating the necessary metrics, we need to apply some cut-off thresholds for each metric to perform QC over each spot. What is important to remember here is that each dataset might need slightly different cut-off values to be applied. As a result we cannot rely on identifying a value to use every time and we need to rely on plotting these metrics and making a decision on a dataset-by-dataset basis.</p>
+</div>
+<div id="library-size-threshold-plot" class="section level3 hasAnchor" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> Library size threshold plot<a href="practical-session-2.html#library-size-threshold-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+
+</div>
+</div>
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Amezquita2020Feb" class="csl-entry">
+Amezquita, Robert A., Aaron T. L. Lun, Etienne Becht, Vince J. Carey, Lindsay N. Carpp, Ludwig Geistlinger, Federico Marini, et al. 2020. <span>“<span class="nocase">Orchestrating single-cell analysis with Bioconductor</span>.”</span> <em>Nat Methods</em> 17 (February): 137–45. <a href="https://doi.org/10.1038/s41592-019-0654-x">https://doi.org/10.1038/s41592-019-0654-x</a>.
+</div>
+<div id="ref-Maynard2021Mar" class="csl-entry">
+Maynard, Kristen R., Leonardo Collado-Torres, Lukas M. Weber, Cedric Uytingco, Brianna K. Barry, Stephen R. Williams, Joseph L. Catallini, et al. 2021. <span>“<span class="nocase">Transcriptome-scale spatial gene expression in the human dorsolateral prefrontal cortex</span>.”</span> <em>Nat Neurosci</em> 24 (March): 425–36. <a href="https://doi.org/10.1038/s41593-020-00787-0">https://doi.org/10.1038/s41593-020-00787-0</a>.
+</div>
+<div id="ref-McCarthy2017Apr" class="csl-entry">
+McCarthy, Davis J., Kieran R. Campbell, Aaron T. L. Lun, and Quin F. Wills. 2017. <span>“<span class="nocase">Scater: pre-processing, quality control, normalization and visualization of single-cell RNA-seq data in R</span>.”</span> <em>Bioinformatics</em> 33 (8): 1179–86. <a href="https://doi.org/10.1093/bioinformatics/btw777">https://doi.org/10.1093/bioinformatics/btw777</a>.
+</div>
+<div id="ref-ggspavis2023Apr" class="csl-entry">
+Weber, Lukas M., and Helena L. Crowell. 2022. <em>Ggspavis: Visualization Functions for Spatially Resolved Transcriptomics Data</em>. <a href="https://github.com/lmweber/ggspavis">https://github.com/lmweber/ggspavis</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="practical-session-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="practical-session-2-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/02-stx-analysis.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
