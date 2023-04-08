@@ -23,7 +23,7 @@
 <meta name="author" content="Eleftherios Zormpas, Dr Simon J. Cockell" />
 
 
-<meta name="date" content="2023-04-06" />
+<meta name="date" content="2023-04-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -184,7 +184,26 @@ div.csl-indent {
 <li class="chapter" data-level="3.1.1" data-path="practical-session-2.html"><a href="practical-session-2.html#plot-tissue-map"><i class="fa fa-check"></i><b>3.1.1</b> Plot tissue map</a></li>
 <li class="chapter" data-level="3.1.2" data-path="practical-session-2.html"><a href="practical-session-2.html#calculating-qc-metrics"><i class="fa fa-check"></i><b>3.1.2</b> Calculating QC metrics</a></li>
 <li class="chapter" data-level="3.1.3" data-path="practical-session-2.html"><a href="practical-session-2.html#library-size-threshold-plot"><i class="fa fa-check"></i><b>3.1.3</b> Library size threshold plot</a></li>
+<li class="chapter" data-level="3.1.4" data-path="practical-session-2.html"><a href="practical-session-2.html#number-of-expressed-genes"><i class="fa fa-check"></i><b>3.1.4</b> Number of expressed genes</a></li>
+<li class="chapter" data-level="3.1.5" data-path="practical-session-2.html"><a href="practical-session-2.html#percentage-of-mitochondrial-expression"><i class="fa fa-check"></i><b>3.1.5</b> Percentage of mitochondrial expression</a></li>
+<li class="chapter" data-level="3.1.6" data-path="practical-session-2.html"><a href="practical-session-2.html#number-of-cells-per-spot"><i class="fa fa-check"></i><b>3.1.6</b> Number of cells per spot</a></li>
+<li class="chapter" data-level="3.1.7" data-path="practical-session-2.html"><a href="practical-session-2.html#remove-low-quality-spots"><i class="fa fa-check"></i><b>3.1.7</b> Remove low-quality spots</a></li>
 </ul></li>
+<li class="chapter" data-level="3.2" data-path="practical-session-2.html"><a href="practical-session-2.html#normalisation-of-counts"><i class="fa fa-check"></i><b>3.2</b> Normalisation of counts</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background"><i class="fa fa-check"></i><b>3.2.1</b> Background</a></li>
+<li class="chapter" data-level="3.2.2" data-path="practical-session-2.html"><a href="practical-session-2.html#log-tranformation-of-counts"><i class="fa fa-check"></i><b>3.2.2</b> Log-tranformation of counts</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="practical-session-2.html"><a href="practical-session-2.html#selecting-genes"><i class="fa fa-check"></i><b>3.3</b> Selecting genes</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background-1"><i class="fa fa-check"></i><b>3.3.1</b> Background</a></li>
+<li class="chapter" data-level="3.3.2" data-path="practical-session-2.html"><a href="practical-session-2.html#highly-variable-genes-hvgs"><i class="fa fa-check"></i><b>3.3.2</b> Highly Variable Genes (HVGs)</a></li>
+<li class="chapter" data-level="3.3.3" data-path="practical-session-2.html"><a href="practical-session-2.html#spatially-variable-genes-svgs"><i class="fa fa-check"></i><b>3.3.3</b> Spatially variable genes (SVGs)</a></li>
+<li class="chapter" data-level="3.3.4" data-path="practical-session-2.html"><a href="practical-session-2.html#integration-of-hvgs-and-svgs"><i class="fa fa-check"></i><b>3.3.4</b> Integration of HVGs and SVGs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="practical-session-2.html"><a href="practical-session-2.html#dimensionality-reduction"><i class="fa fa-check"></i><b>3.4</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="3.5" data-path="practical-session-2.html"><a href="practical-session-2.html#clustering"><i class="fa fa-check"></i><b>3.5</b> Clustering</a></li>
+<li class="chapter" data-level="3.6" data-path="practical-session-2.html"><a href="practical-session-2.html#other-visualisations"><i class="fa fa-check"></i><b>3.6</b> Other visualisations</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html"><i class="fa fa-check"></i><b>4</b> Practical session 2</a>
 <ul>
@@ -233,7 +252,9 @@ div.csl-indent {
 <div id="load-packages" class="section level2 unnumbered hasAnchor">
 <h2>Load packages<a href="practical-session-2.html#load-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="practical-session-2.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ggspavis)</span>
-<span id="cb1-2"><a href="practical-session-2.html#cb1-2" tabindex="-1"></a><span class="fu">library</span>(scater)</span></code></pre></div>
+<span id="cb1-2"><a href="practical-session-2.html#cb1-2" tabindex="-1"></a><span class="fu">library</span>(scater)</span>
+<span id="cb1-3"><a href="practical-session-2.html#cb1-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="practical-session-2.html#cb1-4" tabindex="-1"></a><span class="fu">library</span>(scran)</span></code></pre></div>
 <ul>
 <li><p><a href="https://bioconductor.org/packages/release/bioc/html/ggspavis.html"><code>ggspavis</code></a> is a Bioconductor package that includes visualization functions for spatially resolved transcriptomics datasets stored in <code>SpatialExperiment</code> format from spot-based (e.g., 10x Genomics Visium) platforms (<span class="citation">Weber and Crowell (<a href="#ref-ggspavis2023Apr">2022</a>)</span>).</p></li>
 <li><p><a href="https://bioconductor.org/packages/release/bioc/html/scater.html"><code>scater</code></a> is also a Bioconductor package that is a selection of tools for doing various analyses of scRNA-seq gene expression data, with a focus on quality control and visualization which has extended applications to STx data too. It is based on the <code>SingleCellExperiment</code> and <code>SpatialExperiment</code> classes and thus is interoperable with many other Bioconductor packages such as <a href="https://bioconductor.org/packages/3.16/scran"><code>scran</code></a>, <a href="https://bioconductor.org/packages/3.16/scuttle"><code>scuttle</code></a> and <a href="https://bioconductor.org/packages/3.16/iSEE"><code>iSEE</code></a>.</p></li>
@@ -260,7 +281,7 @@ div.csl-indent {
 <span id="cb2-4"><a href="practical-session-2.html#cb2-4" tabindex="-1"></a><span class="do">## Plot spatial coordinates with annotations</span></span>
 <span id="cb2-5"><a href="practical-session-2.html#cb2-5" tabindex="-1"></a><span class="fu">plotSpots</span>(spe,</span>
 <span id="cb2-6"><a href="practical-session-2.html#cb2-6" tabindex="-1"></a>          <span class="at">annotate =</span> <span class="st">&quot;ground_truth&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-3-1.png" width="50%" /><img src="_main_files/figure-html/unnamed-chunk-3-2.png" width="50%" /></p>
+<p><img src="_main_files/figure-html/02_plot-maps-gTruth-1.png" width="50%" /><img src="_main_files/figure-html/02_plot-maps-gTruth-2.png" width="50%" /></p>
 </div>
 <div id="calculating-qc-metrics" class="section level3 hasAnchor" number="3.1.2">
 <h3><span class="header-section-number">3.1.2</span> Calculating QC metrics<a href="practical-session-2.html#calculating-qc-metrics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -283,34 +304,379 @@ div.csl-indent {
 <span id="cb9-2"><a href="practical-session-2.html#cb9-2" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">addPerCellQC</span>(spe, <span class="at">subsets =</span> <span class="fu">list</span>(<span class="at">mito =</span> is_mito))</span>
 <span id="cb9-3"><a href="practical-session-2.html#cb9-3" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">colData</span>(spe))</span></code></pre></div>
 <pre><code>## DataFrame with 6 rows and 13 columns
-##                            barcode_id     sample_id in_tissue array_row array_col ground_truth cell_count       sum  detected subsets_mito_sum subsets_mito_detected
-##                           &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;  &lt;character&gt;  &lt;integer&gt; &lt;numeric&gt; &lt;numeric&gt;        &lt;numeric&gt;             &lt;numeric&gt;
-## AAACAAGTATCTCCCA-1 AAACAAGTATCTCCCA-1 sample_151673         1        50       102       Layer3          6      8458      3586             1407                    13
-## AAACAATCTACTAGCA-1 AAACAATCTACTAGCA-1 sample_151673         1         3        43       Layer1         16      1667      1150              204                    11
-## AAACACCAATAACTGC-1 AAACACCAATAACTGC-1 sample_151673         1        59        19           WM          5      3769      1960              430                    13
-## AAACAGAGCGACTCCT-1 AAACAGAGCGACTCCT-1 sample_151673         1        14        94       Layer3          2      5433      2424             1316                    13
-## AAACAGCTTTCAGAAG-1 AAACAGCTTTCAGAAG-1 sample_151673         1        43         9       Layer5          4      4278      2264              651                    12
-## AAACAGGGTCTATATT-1 AAACAGGGTCTATATT-1 sample_151673         1        47        13       Layer6          6      4004      2178              621                    13
-##                    subsets_mito_percent     total
-##                               &lt;numeric&gt; &lt;numeric&gt;
-## AAACAAGTATCTCCCA-1              16.6351      8458
-## AAACAATCTACTAGCA-1              12.2376      1667
-## AAACACCAATAACTGC-1              11.4089      3769
-## AAACAGAGCGACTCCT-1              24.2223      5433
-## AAACAGCTTTCAGAAG-1              15.2174      4278
-## AAACAGGGTCTATATT-1              15.5095      4004</code></pre>
-<p>After calculating the necessary metrics, we need to apply some cut-off thresholds for each metric to perform QC over each spot. What is important to remember here is that each dataset might need slightly different cut-off values to be applied. As a result we cannot rely on identifying a value to use every time and we need to rely on plotting these metrics and making a decision on a dataset-by-dataset basis.</p>
+##                            barcode_id     sample_id in_tissue array_row array_col ground_truth cell_count       sum  detected
+##                           &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;  &lt;character&gt;  &lt;integer&gt; &lt;numeric&gt; &lt;numeric&gt;
+## AAACAAGTATCTCCCA-1 AAACAAGTATCTCCCA-1 sample_151673         1        50       102       Layer3          6      8458      3586
+## AAACAATCTACTAGCA-1 AAACAATCTACTAGCA-1 sample_151673         1         3        43       Layer1         16      1667      1150
+## AAACACCAATAACTGC-1 AAACACCAATAACTGC-1 sample_151673         1        59        19           WM          5      3769      1960
+## AAACAGAGCGACTCCT-1 AAACAGAGCGACTCCT-1 sample_151673         1        14        94       Layer3          2      5433      2424
+## AAACAGCTTTCAGAAG-1 AAACAGCTTTCAGAAG-1 sample_151673         1        43         9       Layer5          4      4278      2264
+## AAACAGGGTCTATATT-1 AAACAGGGTCTATATT-1 sample_151673         1        47        13       Layer6          6      4004      2178
+##                    subsets_mito_sum subsets_mito_detected subsets_mito_percent     total
+##                           &lt;numeric&gt;             &lt;numeric&gt;            &lt;numeric&gt; &lt;numeric&gt;
+## AAACAAGTATCTCCCA-1             1407                    13              16.6351      8458
+## AAACAATCTACTAGCA-1              204                    11              12.2376      1667
+## AAACACCAATAACTGC-1              430                    13              11.4089      3769
+## AAACAGAGCGACTCCT-1             1316                    13              24.2223      5433
+## AAACAGCTTTCAGAAG-1              651                    12              15.2174      4278
+## AAACAGGGTCTATATT-1              621                    13              15.5095      4004</code></pre>
+<p>After calculating the necessary metrics, we need to apply some cut-off thresholds for each metric to perform QC over each spot. What is important to remember here is that each dataset might need slightly different cut-off values to be applied. As a result we cannot rely on identifying a single value to use every time and we need to rely on plotting these metrics and making a decision on a dataset-by-dataset basis.</p>
 </div>
 <div id="library-size-threshold-plot" class="section level3 hasAnchor" number="3.1.3">
 <h3><span class="header-section-number">3.1.3</span> Library size threshold plot<a href="practical-session-2.html#library-size-threshold-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-
+<p>We can plot a histogram of the library sizes across spots. The library size is the number of UMI counts in each spot. We can find this information in the <code>sum</code> column in the <code>colData</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="practical-session-2.html#cb11-1" tabindex="-1"></a><span class="do">## Density and histogram of library sizes</span></span>
+<span id="cb11-2"><a href="practical-session-2.html#cb11-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(<span class="fu">colData</span>(spe)),</span>
+<span id="cb11-3"><a href="practical-session-2.html#cb11-3" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> sum)) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="practical-session-2.html#cb11-4" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
+<span id="cb11-5"><a href="practical-session-2.html#cb11-5" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, </span>
+<span id="cb11-6"><a href="practical-session-2.html#cb11-6" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="practical-session-2.html#cb11-7" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>,</span>
+<span id="cb11-8"><a href="practical-session-2.html#cb11-8" tabindex="-1"></a>               <span class="at">adjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb11-9"><a href="practical-session-2.html#cb11-9" tabindex="-1"></a>               <span class="at">fill =</span> <span class="st">&quot;#A0CBE8&quot;</span>,</span>
+<span id="cb11-10"><a href="practical-session-2.html#cb11-10" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">&quot;#4E79A7&quot;</span>) <span class="sc">+</span></span>
+<span id="cb11-11"><a href="practical-session-2.html#cb11-11" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">10</span>)) <span class="sc">+</span> </span>
+<span id="cb11-12"><a href="practical-session-2.html#cb11-12" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">10</span>)) <span class="sc">+</span> </span>
+<span id="cb11-13"><a href="practical-session-2.html#cb11-13" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Library size&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb11-14"><a href="practical-session-2.html#cb11-14" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Density&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb11-15"><a href="practical-session-2.html#cb11-15" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_plot-libSize-histo-1.png" width="672" /></p>
+<p>As we can see there are no obvious issues with the library sizes. An example of an issue could be a high frequency of small libraries which would indicate poor experimental output. Generally we do not want to keep spots with too small libraries.</p>
+<p>If the dataset we are analysing contains the number of cells that are present in each spot (this one does), then it makes sense to also plot the library sizes against the number of cells per spot. In that way we are making sure that we don’t remove any spots that may have biological meaning. In many cases though the datasets do not have such information unless we can generate it using a nuclei segmentation tool to extract this information from the H&amp;E images.</p>
+<p>The horizontal red line (argument <code>threshold</code> in the <code>plotQC</code> function) shows a first guess at a possible filtering threshold for library size based on the above histogram. The below plot can also be plotted using ggplot. For the ggplot implementation have a look at the <a href="XXXX">appendix</a>.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="practical-session-2.html#cb12-1" tabindex="-1"></a><span class="do">## Scatter plot, library size against number of cells per spot</span></span>
+<span id="cb12-2"><a href="practical-session-2.html#cb12-2" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;scatter&quot;</span>, </span>
+<span id="cb12-3"><a href="practical-session-2.html#cb12-3" tabindex="-1"></a>       <span class="at">metric_x =</span> <span class="st">&quot;cell_count&quot;</span>, <span class="at">metric_y =</span> <span class="st">&quot;sum&quot;</span>, </span>
+<span id="cb12-4"><a href="practical-session-2.html#cb12-4" tabindex="-1"></a>       <span class="at">threshold_y =</span> <span class="dv">700</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_plot-libSizeVScelNo-1.png" width="576" /></p>
+<p>We need to keep in mind here that the threshold is, up to an extend, arbitrary. It is crucial, then, to have a look at the number of spots that are left out of the dataset because of this cut-off value and also have a look at their putative spatial patterns. If, by any chance, we filtered out spots with biological relevance, then we will observe some patterns on the tissue map that are correlating with some of the known biological structures of the tissue. As a result, we probably have set our threshold too high.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="practical-session-2.html#cb13-1" tabindex="-1"></a><span class="do">## Select library size threshold</span></span>
+<span id="cb13-2"><a href="practical-session-2.html#cb13-2" tabindex="-1"></a>qc_lib_size <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>sum <span class="sc">&lt;</span> <span class="dv">700</span></span>
+<span id="cb13-3"><a href="practical-session-2.html#cb13-3" tabindex="-1"></a><span class="do">## Check how many spots are filtered out</span></span>
+<span id="cb13-4"><a href="practical-session-2.html#cb13-4" tabindex="-1"></a><span class="fu">table</span>(qc_lib_size)</span></code></pre></div>
+<pre><code>## qc_lib_size
+## FALSE  TRUE 
+##  3628    11</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="practical-session-2.html#cb15-1" tabindex="-1"></a><span class="do">## Apply threshold</span></span>
+<span id="cb15-2"><a href="practical-session-2.html#cb15-2" tabindex="-1"></a><span class="fu">colData</span>(spe)<span class="sc">$</span>qc_lib_size <span class="ot">&lt;-</span> qc_lib_size</span>
+<span id="cb15-3"><a href="practical-session-2.html#cb15-3" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="practical-session-2.html#cb15-4" tabindex="-1"></a><span class="do">## Check putative spatial patterns of removed spots</span></span>
+<span id="cb15-5"><a href="practical-session-2.html#cb15-5" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;spots&quot;</span>, </span>
+<span id="cb15-6"><a href="practical-session-2.html#cb15-6" tabindex="-1"></a>       <span class="at">discard =</span> <span class="st">&quot;qc_lib_size&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_libSize-thresh-1.png" width="672" /></p>
+<p>As an aside, try to illustrate what happens if we set the threshold too high (i.e., 2000 UMI counts).<br />
+<strong>NOTE:</strong> For reference, remember the ground truth layers in this dataset that we <a href="practical-session-2.html#plot-tissue-map">plotted</a> at the beginning.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="practical-session-2.html#cb16-1" tabindex="-1"></a><span class="do">## Select library size threshold</span></span>
+<span id="cb16-2"><a href="practical-session-2.html#cb16-2" tabindex="-1"></a>code...</span>
+<span id="cb16-3"><a href="practical-session-2.html#cb16-3" tabindex="-1"></a><span class="do">## Check how many spots are filtered out</span></span>
+<span id="cb16-4"><a href="practical-session-2.html#cb16-4" tabindex="-1"></a>code...</span>
+<span id="cb16-5"><a href="practical-session-2.html#cb16-5" tabindex="-1"></a><span class="do">## Apply threshold</span></span>
+<span id="cb16-6"><a href="practical-session-2.html#cb16-6" tabindex="-1"></a>code...</span>
+<span id="cb16-7"><a href="practical-session-2.html#cb16-7" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="practical-session-2.html#cb16-8" tabindex="-1"></a><span class="do">## Check putative spatial patterns of removed spots</span></span>
+<span id="cb16-9"><a href="practical-session-2.html#cb16-9" tabindex="-1"></a><span class="fu">plotQC</span>(...)</span></code></pre></div>
 </div>
+<div id="number-of-expressed-genes" class="section level3 hasAnchor" number="3.1.4">
+<h3><span class="header-section-number">3.1.4</span> Number of expressed genes<a href="practical-session-2.html#number-of-expressed-genes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As we did with the library sizes, we can plot a histogram of the number of expressed genes across spots. A gene is expressed in a spot if it has at least one count in it. We can find this information in the <code>detected</code> column in the <code>colData</code>.</p>
+<p>We will follow the same logic for the plots as we did for the library size earlier.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="practical-session-2.html#cb17-1" tabindex="-1"></a><span class="do">## Density and histogram of expressed genes</span></span>
+<span id="cb17-2"><a href="practical-session-2.html#cb17-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(<span class="fu">colData</span>(spe)),</span>
+<span id="cb17-3"><a href="practical-session-2.html#cb17-3" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> detected)) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="practical-session-2.html#cb17-4" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
+<span id="cb17-5"><a href="practical-session-2.html#cb17-5" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, </span>
+<span id="cb17-6"><a href="practical-session-2.html#cb17-6" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="practical-session-2.html#cb17-7" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>,</span>
+<span id="cb17-8"><a href="practical-session-2.html#cb17-8" tabindex="-1"></a>               <span class="at">adjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb17-9"><a href="practical-session-2.html#cb17-9" tabindex="-1"></a>               <span class="at">fill =</span> <span class="st">&quot;#A0CBE8&quot;</span>,</span>
+<span id="cb17-10"><a href="practical-session-2.html#cb17-10" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">&quot;#4E79A7&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-11"><a href="practical-session-2.html#cb17-11" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">10</span>)) <span class="sc">+</span> </span>
+<span id="cb17-12"><a href="practical-session-2.html#cb17-12" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">10</span>)) <span class="sc">+</span> </span>
+<span id="cb17-13"><a href="practical-session-2.html#cb17-13" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Genes expressed in each spot&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb17-14"><a href="practical-session-2.html#cb17-14" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Density&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb17-15"><a href="practical-session-2.html#cb17-15" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_plot-genesInSpot-histo-1.png" width="672" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="practical-session-2.html#cb18-1" tabindex="-1"></a><span class="co"># plot number of expressed genes vs. number of cells per spot</span></span>
+<span id="cb18-2"><a href="practical-session-2.html#cb18-2" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;scatter&quot;</span>, </span>
+<span id="cb18-3"><a href="practical-session-2.html#cb18-3" tabindex="-1"></a>       <span class="at">metric_x =</span> <span class="st">&quot;cell_count&quot;</span>, <span class="at">metric_y =</span> <span class="st">&quot;detected&quot;</span>, </span>
+<span id="cb18-4"><a href="practical-session-2.html#cb18-4" tabindex="-1"></a>       <span class="at">threshold_y =</span> <span class="dv">500</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_genesInSpot-scatter-1.png" width="576" /></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="practical-session-2.html#cb19-1" tabindex="-1"></a><span class="do">## Select expressed genes threshold</span></span>
+<span id="cb19-2"><a href="practical-session-2.html#cb19-2" tabindex="-1"></a>qc_detected <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>detected <span class="sc">&lt;</span> <span class="dv">500</span></span>
+<span id="cb19-3"><a href="practical-session-2.html#cb19-3" tabindex="-1"></a><span class="do">## Check how many spots are filtered out</span></span>
+<span id="cb19-4"><a href="practical-session-2.html#cb19-4" tabindex="-1"></a><span class="fu">table</span>(qc_detected)</span></code></pre></div>
+<pre><code>## qc_detected
+## FALSE  TRUE 
+##  3628    11</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="practical-session-2.html#cb21-1" tabindex="-1"></a><span class="do">## Apply threshold</span></span>
+<span id="cb21-2"><a href="practical-session-2.html#cb21-2" tabindex="-1"></a><span class="fu">colData</span>(spe)<span class="sc">$</span>qc_detected <span class="ot">&lt;-</span> qc_detected</span>
+<span id="cb21-3"><a href="practical-session-2.html#cb21-3" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="practical-session-2.html#cb21-4" tabindex="-1"></a><span class="do">## Check for putative spatial pattern of removed spots</span></span>
+<span id="cb21-5"><a href="practical-session-2.html#cb21-5" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;spots&quot;</span>, </span>
+<span id="cb21-6"><a href="practical-session-2.html#cb21-6" tabindex="-1"></a>       <span class="at">discard =</span> <span class="st">&quot;qc_detected&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_genesInSpot-thresh-1.png" width="672" /></p>
+<p>Again, try to illustrate what happens if we set the threshold too high (i.e., 1000 expressed genes).<br />
+<strong>NOTE:</strong> For reference, remember the ground truth layers in this dataset that we <a href="practical-session-2.html#plot-tissue-map">plotted</a> at the beginning.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="practical-session-2.html#cb22-1" tabindex="-1"></a><span class="do">## Select library size threshold</span></span>
+<span id="cb22-2"><a href="practical-session-2.html#cb22-2" tabindex="-1"></a>code...</span>
+<span id="cb22-3"><a href="practical-session-2.html#cb22-3" tabindex="-1"></a><span class="do">## Check how many spots are filtered out</span></span>
+<span id="cb22-4"><a href="practical-session-2.html#cb22-4" tabindex="-1"></a>code...</span>
+<span id="cb22-5"><a href="practical-session-2.html#cb22-5" tabindex="-1"></a><span class="do">## Apply threshold</span></span>
+<span id="cb22-6"><a href="practical-session-2.html#cb22-6" tabindex="-1"></a>code...</span>
+<span id="cb22-7"><a href="practical-session-2.html#cb22-7" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="practical-session-2.html#cb22-8" tabindex="-1"></a><span class="do">## Check putative spatial patterns of removed spots</span></span>
+<span id="cb22-9"><a href="practical-session-2.html#cb22-9" tabindex="-1"></a><span class="fu">plotQC</span>(...)</span></code></pre></div>
+</div>
+<div id="percentage-of-mitochondrial-expression" class="section level3 hasAnchor" number="3.1.5">
+<h3><span class="header-section-number">3.1.5</span> Percentage of mitochondrial expression<a href="practical-session-2.html#percentage-of-mitochondrial-expression" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>As we briefly touched at the beginning, a high proportion of mitochondrial reads indicates low cell quality, probably due to cell damage.</p>
+<p>To investigate the percentage of mitochondrial expression across spots we need to take a look in the column <code>subsets_mito_percent</code> in the <code>colData</code>.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="practical-session-2.html#cb23-1" tabindex="-1"></a><span class="do">## Density and histogram of percentage of mitochondrial expression</span></span>
+<span id="cb23-2"><a href="practical-session-2.html#cb23-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(<span class="fu">colData</span>(spe)),</span>
+<span id="cb23-3"><a href="practical-session-2.html#cb23-3" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> subsets_mito_percent)) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="practical-session-2.html#cb23-4" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
+<span id="cb23-5"><a href="practical-session-2.html#cb23-5" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, </span>
+<span id="cb23-6"><a href="practical-session-2.html#cb23-6" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb23-7"><a href="practical-session-2.html#cb23-7" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>,</span>
+<span id="cb23-8"><a href="practical-session-2.html#cb23-8" tabindex="-1"></a>               <span class="at">adjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb23-9"><a href="practical-session-2.html#cb23-9" tabindex="-1"></a>               <span class="at">fill =</span> <span class="st">&quot;#A0CBE8&quot;</span>,</span>
+<span id="cb23-10"><a href="practical-session-2.html#cb23-10" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">&quot;#4E79A7&quot;</span>) <span class="sc">+</span></span>
+<span id="cb23-11"><a href="practical-session-2.html#cb23-11" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">10</span>)) <span class="sc">+</span> </span>
+<span id="cb23-12"><a href="practical-session-2.html#cb23-12" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">10</span>)) <span class="sc">+</span> </span>
+<span id="cb23-13"><a href="practical-session-2.html#cb23-13" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Percentage of mitochondrial expression&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb23-14"><a href="practical-session-2.html#cb23-14" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Density&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb23-15"><a href="practical-session-2.html#cb23-15" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_plot-mitoPercent-histo-1.png" width="672" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="practical-session-2.html#cb24-1" tabindex="-1"></a><span class="co"># plot mitochondrial read proportion vs. number of cells per spot</span></span>
+<span id="cb24-2"><a href="practical-session-2.html#cb24-2" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;scatter&quot;</span>, </span>
+<span id="cb24-3"><a href="practical-session-2.html#cb24-3" tabindex="-1"></a>       <span class="at">metric_x =</span> <span class="st">&quot;cell_count&quot;</span>, <span class="at">metric_y =</span> <span class="st">&quot;subsets_mito_percent&quot;</span>, </span>
+<span id="cb24-4"><a href="practical-session-2.html#cb24-4" tabindex="-1"></a>       <span class="at">threshold_y =</span> <span class="dv">28</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_mitoPercent-scatter-1.png" width="576" /></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="practical-session-2.html#cb25-1" tabindex="-1"></a><span class="do">## Select expressed genes threshold</span></span>
+<span id="cb25-2"><a href="practical-session-2.html#cb25-2" tabindex="-1"></a>qc_mito <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>subsets_mito_percent <span class="sc">&gt;</span> <span class="dv">28</span></span>
+<span id="cb25-3"><a href="practical-session-2.html#cb25-3" tabindex="-1"></a><span class="do">## Check how many spots are filtered out</span></span>
+<span id="cb25-4"><a href="practical-session-2.html#cb25-4" tabindex="-1"></a><span class="fu">table</span>(qc_mito)</span></code></pre></div>
+<pre><code>## qc_mito
+## FALSE  TRUE 
+##  3622    17</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="practical-session-2.html#cb27-1" tabindex="-1"></a><span class="do">## Apply threshold</span></span>
+<span id="cb27-2"><a href="practical-session-2.html#cb27-2" tabindex="-1"></a><span class="fu">colData</span>(spe)<span class="sc">$</span>qc_mito <span class="ot">&lt;-</span> qc_mito</span>
+<span id="cb27-3"><a href="practical-session-2.html#cb27-3" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="practical-session-2.html#cb27-4" tabindex="-1"></a><span class="do">## Check for putative spatial pattern of removed spots</span></span>
+<span id="cb27-5"><a href="practical-session-2.html#cb27-5" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;spots&quot;</span>, </span>
+<span id="cb27-6"><a href="practical-session-2.html#cb27-6" tabindex="-1"></a>       <span class="at">discard =</span> <span class="st">&quot;qc_mito&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_mitoPercent-thresh-1.png" width="672" /></p>
+<p>Again, try to illustrate what happens if we set the threshold too low (i.e., 20 0r 25%).<br />
+<strong>NOTE:</strong> For reference, remember the ground truth layers in this dataset that we <a href="practical-session-2.html#plot-tissue-map">plotted</a> at the beginning.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="practical-session-2.html#cb28-1" tabindex="-1"></a><span class="do">## Select library size threshold</span></span>
+<span id="cb28-2"><a href="practical-session-2.html#cb28-2" tabindex="-1"></a>code...</span>
+<span id="cb28-3"><a href="practical-session-2.html#cb28-3" tabindex="-1"></a><span class="do">## Check how many spots are filtered out</span></span>
+<span id="cb28-4"><a href="practical-session-2.html#cb28-4" tabindex="-1"></a>code...</span>
+<span id="cb28-5"><a href="practical-session-2.html#cb28-5" tabindex="-1"></a><span class="do">## Apply threshold</span></span>
+<span id="cb28-6"><a href="practical-session-2.html#cb28-6" tabindex="-1"></a>code...</span>
+<span id="cb28-7"><a href="practical-session-2.html#cb28-7" tabindex="-1"></a></span>
+<span id="cb28-8"><a href="practical-session-2.html#cb28-8" tabindex="-1"></a><span class="do">## Check putative spatial patterns of removed spots</span></span>
+<span id="cb28-9"><a href="practical-session-2.html#cb28-9" tabindex="-1"></a><span class="fu">plotQC</span>(...)</span></code></pre></div>
+</div>
+<div id="number-of-cells-per-spot" class="section level3 hasAnchor" number="3.1.6">
+<h3><span class="header-section-number">3.1.6</span> Number of cells per spot<a href="practical-session-2.html#number-of-cells-per-spot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Number of cells per spot is an attribute that not all datasets include. Nonetheless, if it exists, we can use this information to further control the quality of the dataset prior to any downstream analysis. Ofcourse, the number of cells per spot depends on the tissue type and organism and according to <a href="https://kb.10xgenomics.com/hc/en-us/articles/360035487952-How-many-cells-are-captured-in-a-single-spot-">10X Genomics</a>, each spot can contain between 0 and 10 cells.</p>
+<p>To investigate the number of cells in each spot looking for any outlier values that could indicate problems we need to take a look in the column <code>cell_count</code> in the <code>colData</code>.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="practical-session-2.html#cb29-1" tabindex="-1"></a><span class="do">## Density and histogram of the number of cells in each spot</span></span>
+<span id="cb29-2"><a href="practical-session-2.html#cb29-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(<span class="fu">colData</span>(spe)),</span>
+<span id="cb29-3"><a href="practical-session-2.html#cb29-3" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> cell_count)) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="practical-session-2.html#cb29-4" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
+<span id="cb29-5"><a href="practical-session-2.html#cb29-5" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, </span>
+<span id="cb29-6"><a href="practical-session-2.html#cb29-6" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb29-7"><a href="practical-session-2.html#cb29-7" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>,</span>
+<span id="cb29-8"><a href="practical-session-2.html#cb29-8" tabindex="-1"></a>               <span class="co">#adjust = 0.5,</span></span>
+<span id="cb29-9"><a href="practical-session-2.html#cb29-9" tabindex="-1"></a>               <span class="at">fill =</span> <span class="st">&quot;#A0CBE8&quot;</span>,</span>
+<span id="cb29-10"><a href="practical-session-2.html#cb29-10" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">&quot;#4E79A7&quot;</span>) <span class="sc">+</span></span>
+<span id="cb29-11"><a href="practical-session-2.html#cb29-11" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">10</span>)) <span class="sc">+</span> </span>
+<span id="cb29-12"><a href="practical-session-2.html#cb29-12" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">10</span>)) <span class="sc">+</span> </span>
+<span id="cb29-13"><a href="practical-session-2.html#cb29-13" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Number of cells per spot&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb29-14"><a href="practical-session-2.html#cb29-14" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Density&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb29-15"><a href="practical-session-2.html#cb29-15" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_plot-cellsPerSpot-histo-1.png" width="672" /></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="practical-session-2.html#cb30-1" tabindex="-1"></a><span class="do">## Have a look at the values</span></span>
+<span id="cb30-2"><a href="practical-session-2.html#cb30-2" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">colData</span>(spe)<span class="sc">$</span>cell_count)</span></code></pre></div>
+<pre><code>## 
+##   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  25  26  27 
+##  84 211 483 623 617 541 421 287 140  92  50  25  18  10   9   3   8   2   1   2   3   2   1   1   2   2   1</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="practical-session-2.html#cb32-1" tabindex="-1"></a><span class="co"># plot number of expressed genes vs. number of cells per spot</span></span>
+<span id="cb32-2"><a href="practical-session-2.html#cb32-2" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;scatter&quot;</span>, </span>
+<span id="cb32-3"><a href="practical-session-2.html#cb32-3" tabindex="-1"></a>       <span class="at">metric_x =</span> <span class="st">&quot;cell_count&quot;</span>, <span class="at">metric_y =</span> <span class="st">&quot;detected&quot;</span>, </span>
+<span id="cb32-4"><a href="practical-session-2.html#cb32-4" tabindex="-1"></a>       <span class="at">threshold_x =</span> <span class="dv">10</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_cellsPerSpot-scatter-1.png" width="576" /></p>
+<p>As we can see from both the histogram and the scatter plot there is a tail of very high values, which could indicate problems for these spots. More specifically, we can see from the scatter plot that most of the spots with very high cell counts also have low numbers of expressed genes. This indicates problems with the experiment on these spots, and they should be removed.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="practical-session-2.html#cb33-1" tabindex="-1"></a><span class="do">## Select expressed genes threshold</span></span>
+<span id="cb33-2"><a href="practical-session-2.html#cb33-2" tabindex="-1"></a>qc_cell_count <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>cell_count <span class="sc">&gt;</span> <span class="dv">10</span></span>
+<span id="cb33-3"><a href="practical-session-2.html#cb33-3" tabindex="-1"></a><span class="do">## Check how many spots are filtered out</span></span>
+<span id="cb33-4"><a href="practical-session-2.html#cb33-4" tabindex="-1"></a><span class="fu">table</span>(qc_cell_count)</span></code></pre></div>
+<pre><code>## qc_cell_count
+## FALSE  TRUE 
+##  3549    90</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="practical-session-2.html#cb35-1" tabindex="-1"></a><span class="do">## Apply threshold</span></span>
+<span id="cb35-2"><a href="practical-session-2.html#cb35-2" tabindex="-1"></a><span class="fu">colData</span>(spe)<span class="sc">$</span>qc_cell_count <span class="ot">&lt;-</span> qc_cell_count</span>
+<span id="cb35-3"><a href="practical-session-2.html#cb35-3" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="practical-session-2.html#cb35-4" tabindex="-1"></a><span class="do">## Check for putative spatial pattern of removed spots</span></span>
+<span id="cb35-5"><a href="practical-session-2.html#cb35-5" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;spots&quot;</span>, </span>
+<span id="cb35-6"><a href="practical-session-2.html#cb35-6" tabindex="-1"></a>       <span class="at">discard =</span> <span class="st">&quot;qc_cell_count&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_cellsPerSpot-thresh-1.png" width="672" /></p>
+<p>While there is a spatial pattern to the discarded spots, it does not appear to be correlated with the known biological features (cortical layers). The discarded spots are all on the edges of the tissue. It seems plausible that something has gone wrong with the cell segmentation on the edges of the images, so it makes sense to remove these spots.</p>
+<p>The discarded spots are located at the tissue edges, indicating a potential issue with cell segmentation in those regions. Therefore, it is reasonable to remove these spots from the analysis.</p>
+</div>
+<div id="remove-low-quality-spots" class="section level3 hasAnchor" number="3.1.7">
+<h3><span class="header-section-number">3.1.7</span> Remove low-quality spots<a href="practical-session-2.html#remove-low-quality-spots" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Since we have calculated different spot-level QC metrics and selected thresholds for each one, we can combine them to identify a set of low-quality spots, and remove them from our <code>spe</code> object.</p>
+<p>We also check again that the combined set of discarded spots does not correspond to any obvious biologically relevant group of spots.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="practical-session-2.html#cb36-1" tabindex="-1"></a><span class="do">## Check the number of discarded spots for each metric</span></span>
+<span id="cb36-2"><a href="practical-session-2.html#cb36-2" tabindex="-1"></a><span class="fu">apply</span>(<span class="fu">cbind</span>(qc_lib_size, qc_detected, qc_mito, qc_cell_count), <span class="dv">2</span>, sum)</span></code></pre></div>
+<pre><code>##   qc_lib_size   qc_detected       qc_mito qc_cell_count 
+##            11            11            17            90</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="practical-session-2.html#cb38-1" tabindex="-1"></a><span class="do">## Combine together the set of discarded spots</span></span>
+<span id="cb38-2"><a href="practical-session-2.html#cb38-2" tabindex="-1"></a>discard <span class="ot">&lt;-</span> qc_lib_size <span class="sc">|</span> qc_detected <span class="sc">|</span> qc_mito <span class="sc">|</span> qc_cell_count</span>
+<span id="cb38-3"><a href="practical-session-2.html#cb38-3" tabindex="-1"></a><span class="do">## Store the set in the object</span></span>
+<span id="cb38-4"><a href="practical-session-2.html#cb38-4" tabindex="-1"></a><span class="fu">colData</span>(spe)<span class="sc">$</span>discard <span class="ot">&lt;-</span> discard</span>
+<span id="cb38-5"><a href="practical-session-2.html#cb38-5" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="practical-session-2.html#cb38-6" tabindex="-1"></a><span class="do">## Check the spatial pattern of combined set of discarded spots</span></span>
+<span id="cb38-7"><a href="practical-session-2.html#cb38-7" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;spots&quot;</span>, </span>
+<span id="cb38-8"><a href="practical-session-2.html#cb38-8" tabindex="-1"></a>       <span class="at">discard =</span> <span class="st">&quot;discard&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_checkQC-thresh-1.png" width="672" />
+Since this dataset has also manual annotation (remember <a href="practical-session-2.html#plot-tissue-map">here</a>) we see that there are locations that are not annotated (marked with <code>NA</code>). We could further remove those locations to reduce noise and further increase the quality of the dataset.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="practical-session-2.html#cb39-1" tabindex="-1"></a><span class="do">## Select locations without annotation</span></span>
+<span id="cb39-2"><a href="practical-session-2.html#cb39-2" tabindex="-1"></a>qc_NA_spots <span class="ot">&lt;-</span> <span class="fu">is.na</span>(<span class="fu">colData</span>(spe)<span class="sc">$</span>ground_truth)</span>
+<span id="cb39-3"><a href="practical-session-2.html#cb39-3" tabindex="-1"></a><span class="do">## Combine together the set of discarded spots</span></span>
+<span id="cb39-4"><a href="practical-session-2.html#cb39-4" tabindex="-1"></a>discard <span class="ot">&lt;-</span> qc_lib_size <span class="sc">|</span> qc_detected <span class="sc">|</span> qc_mito <span class="sc">|</span> qc_cell_count <span class="sc">|</span> qc_NA_spots</span>
+<span id="cb39-5"><a href="practical-session-2.html#cb39-5" tabindex="-1"></a><span class="do">## Store the set in the object</span></span>
+<span id="cb39-6"><a href="practical-session-2.html#cb39-6" tabindex="-1"></a><span class="fu">colData</span>(spe)<span class="sc">$</span>discard <span class="ot">&lt;-</span> discard</span>
+<span id="cb39-7"><a href="practical-session-2.html#cb39-7" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="practical-session-2.html#cb39-8" tabindex="-1"></a><span class="do">## Check the spatial pattern of combined set of discarded spots</span></span>
+<span id="cb39-9"><a href="practical-session-2.html#cb39-9" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;spots&quot;</span>, </span>
+<span id="cb39-10"><a href="practical-session-2.html#cb39-10" tabindex="-1"></a>       <span class="at">discard =</span> <span class="st">&quot;discard&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_notAnnotSpots-1.png" width="672" /></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="practical-session-2.html#cb40-1" tabindex="-1"></a><span class="do">## remove combined set of low-quality spots</span></span>
+<span id="cb40-2"><a href="practical-session-2.html#cb40-2" tabindex="-1"></a>spe <span class="ot">&lt;-</span> spe[, <span class="sc">!</span><span class="fu">colData</span>(spe)<span class="sc">$</span>discard]</span></code></pre></div>
+</div>
+</div>
+<div id="normalisation-of-counts" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Normalisation of counts<a href="practical-session-2.html#normalisation-of-counts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="background" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Background<a href="practical-session-2.html#background" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The most common method (if not the only one so far) of normalising gene expression in STx data is the method used in scRNA-seq data. Namely, this is a log-transformation (logcounts). For this to be applied, we treat each spot as being a single cell.</p>
+<p>It is clear from what we discussed <a href="practical-session-2.html#number-of-cells-per-spot">earlier</a> that each spot can contain more than one cells. This is a limitation to the technology itself and to our methods of analysing STx data so far. Nonetheless, since STx expression data look like scRNA-seq we apply scRNA-seq methods for normalising (not all methods can be applied though).</p>
+<p>Here we will be using methods from the <code>scater</code> <span class="citation">(<a href="#ref-McCarthy2017Apr">McCarthy et al. 2017</a>)</span> and <code>scran</code> <span class="citation">(<a href="#ref-Lun2016Oct">Lun, McCarthy, and Marioni 2016</a>)</span> packages that calculate logcounts using library size factors. The library size factors approach is arguably the simplest approach for STx data. Other approaches used in scRNA-seq are more difficult to justify their use in STx because of two main reasons:</p>
+<ol style="list-style-type: decimal">
+<li>Spots can contain multiple cells of different cell-types.</li>
+<li>Datasets can include multiple tissue samples which will lead to different clusterings.</li>
+</ol>
+</div>
+<div id="log-tranformation-of-counts" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> Log-tranformation of counts<a href="practical-session-2.html#log-tranformation-of-counts" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="practical-session-2.html#cb41-1" tabindex="-1"></a><span class="do">## Calculate library size factors</span></span>
+<span id="cb41-2"><a href="practical-session-2.html#cb41-2" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">computeLibraryFactors</span>(spe)</span>
+<span id="cb41-3"><a href="practical-session-2.html#cb41-3" tabindex="-1"></a><span class="do">## Have a look at the size factors</span></span>
+<span id="cb41-4"><a href="practical-session-2.html#cb41-4" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">sizeFactors</span>(spe))</span></code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.1514  0.6326  0.9011  1.0000  1.2849  3.7500</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="practical-session-2.html#cb43-1" tabindex="-1"></a><span class="do">## Density and histogram of library sizes</span></span>
+<span id="cb43-2"><a href="practical-session-2.html#cb43-2" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">sFact =</span> <span class="fu">sizeFactors</span>(spe)), </span>
+<span id="cb43-3"><a href="practical-session-2.html#cb43-3" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> sFact)) <span class="sc">+</span></span>
+<span id="cb43-4"><a href="practical-session-2.html#cb43-4" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), </span>
+<span id="cb43-5"><a href="practical-session-2.html#cb43-5" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, </span>
+<span id="cb43-6"><a href="practical-session-2.html#cb43-6" tabindex="-1"></a>                 <span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb43-7"><a href="practical-session-2.html#cb43-7" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>,</span>
+<span id="cb43-8"><a href="practical-session-2.html#cb43-8" tabindex="-1"></a>               <span class="at">adjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb43-9"><a href="practical-session-2.html#cb43-9" tabindex="-1"></a>               <span class="at">fill =</span> <span class="st">&quot;#A0CBE8&quot;</span>,</span>
+<span id="cb43-10"><a href="practical-session-2.html#cb43-10" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">&quot;#4E79A7&quot;</span>) <span class="sc">+</span></span>
+<span id="cb43-11"><a href="practical-session-2.html#cb43-11" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">10</span>)) <span class="sc">+</span> </span>
+<span id="cb43-12"><a href="practical-session-2.html#cb43-12" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">pretty_breaks</span>(<span class="at">n =</span> <span class="dv">10</span>)) <span class="sc">+</span> </span>
+<span id="cb43-13"><a href="practical-session-2.html#cb43-13" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">&quot;Library size&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb43-14"><a href="practical-session-2.html#cb43-14" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;Density&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb43-15"><a href="practical-session-2.html#cb43-15" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_plot-labfact-histo-1.png" width="672" /></p>
+<p>The log-transformation that takes place is a log2-transformation and in order to avoid <em>- Infinity</em> values we add a pseudo value of 1. Both the log2- transformation and the pseudocount of 1 are defaults in this method.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="practical-session-2.html#cb44-1" tabindex="-1"></a><span class="do">## Calculate logcounts and store in the spe object</span></span>
+<span id="cb44-2"><a href="practical-session-2.html#cb44-2" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">logNormCounts</span>(spe)</span>
+<span id="cb44-3"><a href="practical-session-2.html#cb44-3" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="practical-session-2.html#cb44-4" tabindex="-1"></a><span class="do">## Check that a new assay has been added</span></span>
+<span id="cb44-5"><a href="practical-session-2.html#cb44-5" tabindex="-1"></a><span class="fu">assayNames</span>(spe)</span></code></pre></div>
+<pre><code>## [1] &quot;counts&quot;    &quot;logcounts&quot;</code></pre>
+</div>
+</div>
+<div id="selecting-genes" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Selecting genes<a href="practical-session-2.html#selecting-genes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="background-1" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Background<a href="practical-session-2.html#background-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Gene selection -or alternatively “feature selection”- is applied to identify genes that are going to be informative and can produce valuable information form the downstream analyses. The most common way of applying gene selection is to select genes that are highly variable (HVGs). The assumption is that since we quality-controled and normalised our dataset, the genes with high variability are the ones that contain high levels of biological variability too. Since here we have a spatial dataset we can also try to identify spatially variable genes too (SVGs).</p>
+<p>What is important to note here is that HVGs are identified using features like gene expression. Spatial information does not play a role in finding HVGs. STx data pose a dilemma; does the meaningful spatial information reflects only spatial distribution of major cell types or reflects additional important spatial features? If the first is true, then, relying on HVGs can be enough. If the second also holds true, then, it is important to identify SVGs as well.</p>
+</div>
+<div id="highly-variable-genes-hvgs" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> Highly Variable Genes (HVGs)<a href="practical-session-2.html#highly-variable-genes-hvgs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Here we will be using methods from the <code>scran</code> package <span class="citation">(<a href="#ref-Lun2016Oct">Lun, McCarthy, and Marioni 2016</a>)</span> to identify a set of HVGs. Again, here we need to remember that <code>scran</code> methods were developed for scRNA-seq and we are performing the analysis under the assumption that the spots of an STx experiment can be treated as single cells.</p>
+<p>In this dataset, the mitochondrial genes are too highly expressed and are not of major biological interest. As a result, if we are to identify true HVGs, we first need to remove the mitochondrial genes.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="practical-session-2.html#cb46-1" tabindex="-1"></a><span class="do">## Remove mitochondrial genes</span></span>
+<span id="cb46-2"><a href="practical-session-2.html#cb46-2" tabindex="-1"></a>spe <span class="ot">&lt;-</span> spe[<span class="sc">!</span>is_mito, ]</span></code></pre></div>
+<p>Then, we apply methods from <code>scran</code> that give a list of HVGs, which can be used for further downstream analyses.</p>
+<p>First we model the variance of the log-expression profiles for each gene, decomposing it into technical and biological components based on a fitted mean-variance trend.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="practical-session-2.html#cb47-1" tabindex="-1"></a><span class="do">## Fit mean-variance relationship</span></span>
+<span id="cb47-2"><a href="practical-session-2.html#cb47-2" tabindex="-1"></a>dec <span class="ot">&lt;-</span> <span class="fu">modelGeneVar</span>(spe)</span>
+<span id="cb47-3"><a href="practical-session-2.html#cb47-3" tabindex="-1"></a><span class="do">## Visualize mean-variance relationship</span></span>
+<span id="cb47-4"><a href="practical-session-2.html#cb47-4" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">metadata</span>(dec)</span>
+<span id="cb47-5"><a href="practical-session-2.html#cb47-5" tabindex="-1"></a>fit_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">mean =</span> fit<span class="sc">$</span>mean,</span>
+<span id="cb47-6"><a href="practical-session-2.html#cb47-6" tabindex="-1"></a>                     <span class="at">var =</span> fit<span class="sc">$</span>var,</span>
+<span id="cb47-7"><a href="practical-session-2.html#cb47-7" tabindex="-1"></a>                     <span class="at">trend =</span> fit<span class="sc">$</span><span class="fu">trend</span>(fit<span class="sc">$</span>mean))</span>
+<span id="cb47-8"><a href="practical-session-2.html#cb47-8" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="practical-session-2.html#cb47-9" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> fit_df, </span>
+<span id="cb47-10"><a href="practical-session-2.html#cb47-10" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> mean, <span class="at">y =</span> var)) <span class="sc">+</span> </span>
+<span id="cb47-11"><a href="practical-session-2.html#cb47-11" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb47-12"><a href="practical-session-2.html#cb47-12" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> trend), <span class="at">colour =</span> <span class="st">&quot;dodgerblue&quot;</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb47-13"><a href="practical-session-2.html#cb47-13" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;mean of log-expression&quot;</span>,</span>
+<span id="cb47-14"><a href="practical-session-2.html#cb47-14" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;variance of log-expression&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb47-15"><a href="practical-session-2.html#cb47-15" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_features_FitModel-1.png" width="672" />
+The <code>trend</code> function that we used above is returned from the <code>modelGeneVar</code> function and returns the fitted value of the trend at any value of the mean.</p>
+<p>We select the top 10% of genes based on their variability The parameter <code>prop</code> defines how many HVGs we want. For example <code>prop = 0.1</code> returns the top 10% of genes.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="practical-session-2.html#cb48-1" tabindex="-1"></a><span class="do">## Select top HVGs</span></span>
+<span id="cb48-2"><a href="practical-session-2.html#cb48-2" tabindex="-1"></a>top_hvgs <span class="ot">&lt;-</span> <span class="fu">getTopHVGs</span>(dec, <span class="at">prop =</span> <span class="fl">0.1</span>)</span>
+<span id="cb48-3"><a href="practical-session-2.html#cb48-3" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="practical-session-2.html#cb48-4" tabindex="-1"></a><span class="do">## How many are the HVGs?</span></span>
+<span id="cb48-5"><a href="practical-session-2.html#cb48-5" tabindex="-1"></a><span class="fu">length</span>(top_hvgs)</span></code></pre></div>
+<pre><code>## [1] 1429</code></pre>
+</div>
+<div id="spatially-variable-genes-svgs" class="section level3 hasAnchor" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> Spatially variable genes (SVGs)<a href="practical-session-2.html#spatially-variable-genes-svgs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>SVGs are genes with a highly spatially correlated pattern of expression, which varies along with the spatial distribution of a tissue structure of interest.</p>
+<p>For example, standard statistical measures such as <a href="https://en.wikipedia.org/wiki/Moran%27s_I">Moran’s I</a> or <a href="https://en.wikipedia.org/wiki/Geary%27s_C">Geary’s C</a> can be used to rank genes by the observed spatial autocorrelation. This requires assumptions such as the distance metric and bandwidth.</p>
+<p>Several sophisticated new statistical methods to identify SVGs in SRT data have also recently been developed. These include <a href="https://github.com/Teichlab/SpatialDE">SpatialDE</a> <span class="citation">(<a href="#ref-Svensson2018"><strong>Svensson2018?</strong></a>)</span>, <a href="https://xzhoulab.github.io/SPARK/">SPARK</a> <span class="citation">(<a href="#ref-Sun2020"><strong>Sun2020?</strong></a>)</span>, and <a href="https://xzhoulab.github.io/SPARK/">SPARK-X</a> <span class="citation">(<a href="#ref-Zhu2021"><strong>Zhu2021?</strong></a>)</span>. However, these methods do not scale to large datasets containing thousands of spatial coordinates and / or are only available from GitHub. Therefore, due to Bioconductor build guidelines, they cannot be included in the interactive examples here. We encourage developers to contribute their packages to managed repositories (i.e. CRAN, Bioconductor, and pip), and will expand this section in the future to include additional examples as these methods become available.</p>
+<p>Here, we will demonstrate a short example showing how to define a set of top SVGs by ranking genes according to Moran’s I statistic, using an efficient implementation of the calculation that takes advantage of sparsity in SRT data. Alternatively, widely used implementations of Moran’s I in existing R packages such as <a href="https://cran.r-project.org/web/packages/ape/index.html">ape</a> <span class="citation">(<a href="#ref-Paradis2019"><strong>Paradis2019?</strong></a>)</span> (from CRAN) can be used for individual genes, but these calculations do not scale to tens of thousands of genes.</p>
+</div>
+<div id="integration-of-hvgs-and-svgs" class="section level3 hasAnchor" number="3.3.4">
+<h3><span class="header-section-number">3.3.4</span> Integration of HVGs and SVGs<a href="practical-session-2.html#integration-of-hvgs-and-svgs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A recent benchmark paper <span class="citation">(<a href="#ref-Li2022Jan">Li et al. 2022</a>)</span> showed that integrating HVGs and SVGs to generate a combined set of features can improve downstream clustering performance in SRT data. This confirms that SVGs contain additional biologically relevant information that is not captured by HVGs in these datasets. For example, a simple way to combine these features is to concatenate columns of principal components (PCs) calculated on the set of HVGs and the set of SVGs (excluding overlapping HVGs), and then using the combined set of features for further downstream analyses <span class="citation">(<a href="#ref-Li2022Jan">Li et al. 2022</a>)</span>.</p>
+</div>
+</div>
+<div id="dimensionality-reduction" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Dimensionality reduction<a href="practical-session-2.html#dimensionality-reduction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="clustering" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Clustering<a href="practical-session-2.html#clustering" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="other-visualisations" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Other visualisations<a href="practical-session-2.html#other-visualisations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
 </div>
 </div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Amezquita2020Feb" class="csl-entry">
 Amezquita, Robert A., Aaron T. L. Lun, Etienne Becht, Vince J. Carey, Lindsay N. Carpp, Ludwig Geistlinger, Federico Marini, et al. 2020. <span>“<span class="nocase">Orchestrating single-cell analysis with Bioconductor</span>.”</span> <em>Nat Methods</em> 17 (February): 137–45. <a href="https://doi.org/10.1038/s41592-019-0654-x">https://doi.org/10.1038/s41592-019-0654-x</a>.
+</div>
+<div id="ref-Li2022Jan" class="csl-entry">
+Li, Yijun, Stefan Stanojevic, Bing He, Zheng Jing, Qianhui Huang, Jian Kang, and Lana X. Garmire. 2022. <span>“<span class="nocase">Benchmarking Computational Integration Methods for Spatial Transcriptomics Data</span>.”</span> <em>bioRxiv</em>, January, 2021.08.27.457741. <a href="https://doi.org/10.1101/2021.08.27.457741">https://doi.org/10.1101/2021.08.27.457741</a>.
+</div>
+<div id="ref-Lun2016Oct" class="csl-entry">
+Lun, Aaron T. L., Davis J. McCarthy, and John C. Marioni. 2016. <span>“<span class="nocase">A step-by-step workflow for low-level analysis of single-cell RNA-seq data with Bioconductor</span>.”</span> <em>F1000Research</em> 5 (2122): 2122. <a href="https://doi.org/10.12688/f1000research.9501.2">https://doi.org/10.12688/f1000research.9501.2</a>.
 </div>
 <div id="ref-Maynard2021Mar" class="csl-entry">
 Maynard, Kristen R., Leonardo Collado-Torres, Lukas M. Weber, Cedric Uytingco, Brianna K. Barry, Stephen R. Williams, Joseph L. Catallini, et al. 2021. <span>“<span class="nocase">Transcriptome-scale spatial gene expression in the human dorsolateral prefrontal cortex</span>.”</span> <em>Nat Neurosci</em> 24 (March): 425–36. <a href="https://doi.org/10.1038/s41593-020-00787-0">https://doi.org/10.1038/s41593-020-00787-0</a>.

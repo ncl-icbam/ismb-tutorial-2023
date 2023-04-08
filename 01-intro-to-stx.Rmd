@@ -10,7 +10,7 @@ The dataset a single sample from the dorsolateral prefrontal cortex (DLPFC) 10x 
 
 Here, we show how to load the data from the `STexampleData` package.
 
-```{r, message=FALSE, eval=FALSE}
+```{r 01_load-data, message=FALSE, eval=FALSE}
 library(SpatialExperiment)
 library(STexampleData)
 
@@ -44,7 +44,7 @@ knitr::include_graphics("images/SpatialExperiment.png")
 For more details, see the related publication from Righelli et al., 2021 describing the `SpatialExperiment` [@Righelli2022Jun].
 
 ### Inspect the object
-```{r, message=FALSE}
+```{r 01_data-inspect, message=FALSE}
 ## Check the object's structure
 spe
 
@@ -56,27 +56,29 @@ assayNames(spe)
 ```
 
 ### Counts table and gene metadata
-```{r, message=FALSE}
+```{r 01_counts-inspect, message=FALSE}
 ## Have a look at the counts table
 head(assay(spe))
 ```
 
 As you can see here the counts table is of class `dgTMatrix` which is a sparse matrix. This is because much like scRNA-seq data, STx data are sparse and include many zeros. As a result, to make the counts table as light as possible we resort to using sparse matrices. The next code chunk will demonstrate a part of the matrix that includes genes with some level of expression.
 
-```{r, message=FALSE}
+```{r 01_counts-chunks, message=FALSE}
 assay(spe)[20:40, 2000:2010]
 
 assay(spe)[33488:33508, 2000:2010]
 ```
 
-```{r, message=FALSE}
+As you can see, the levels of expression of different genes in the same spots differ significantly with many low values being present. We have to remember here that we look at un-normalised expression data which are affected by factors like library size. Nonetheless, this is a fact in STx data as it is for scRNA-seq data; many genes will show low expression in individual spots.
+
+```{r 01_gene-metaData, message=FALSE}
 ## Have a look at the genes metadata
 head(rowData(spe))
 
 ```
 
 ### Coordinates table and spot metadata
-```{r, message=FALSE}
+```{r 01_coordinates-inspect, message=FALSE}
 ## Check the spatial coordinates
 head(spatialCoords(spe))
 
@@ -86,7 +88,7 @@ head(colData(spe))
 ```
 
 ### Image metadata
-```{r, message=FALSE}
+```{r 01_image-inspect, message=FALSE}
 ## Have a look at the image metadata
 imgData(spe)
 ```

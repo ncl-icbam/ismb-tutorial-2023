@@ -23,7 +23,7 @@
 <meta name="author" content="Eleftherios Zormpas, Dr Simon J. Cockell" />
 
 
-<meta name="date" content="2023-04-06" />
+<meta name="date" content="2023-04-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -119,6 +119,28 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -149,22 +171,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="1.3.1" data-path="practical-session-1.html"><a href="practical-session-1.html#spatialexperiment-class"><i class="fa fa-check"></i><b>1.3.1</b> SpatialExperiment class</a></li>
 <li class="chapter" data-level="1.3.2" data-path="practical-session-1.html"><a href="practical-session-1.html#inspect-the-object"><i class="fa fa-check"></i><b>1.3.2</b> Inspect the object</a></li>
-<li class="chapter" data-level="1.3.3" data-path="practical-session-1.html"><a href="practical-session-1.html#counts-table"><i class="fa fa-check"></i><b>1.3.3</b> Counts table</a></li>
-<li class="chapter" data-level="1.3.4" data-path="practical-session-1.html"><a href="practical-session-1.html#coordinates-table"><i class="fa fa-check"></i><b>1.3.4</b> Coordinates table</a></li>
-<li class="chapter" data-level="1.3.5" data-path="practical-session-1.html"><a href="practical-session-1.html#image-data"><i class="fa fa-check"></i><b>1.3.5</b> Image data</a></li>
+<li class="chapter" data-level="1.3.3" data-path="practical-session-1.html"><a href="practical-session-1.html#counts-table-and-gene-metadata"><i class="fa fa-check"></i><b>1.3.3</b> Counts table and gene metadata</a></li>
+<li class="chapter" data-level="1.3.4" data-path="practical-session-1.html"><a href="practical-session-1.html#coordinates-table-and-spot-metadata"><i class="fa fa-check"></i><b>1.3.4</b> Coordinates table and spot metadata</a></li>
+<li class="chapter" data-level="1.3.5" data-path="practical-session-1.html"><a href="practical-session-1.html#image-metadata"><i class="fa fa-check"></i><b>1.3.5</b> Image metadata</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="practical-session-2.html"><a href="practical-session-2.html"><i class="fa fa-check"></i><b>2</b> Practical session 2</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="practical-session-2.html"><a href="practical-session-2.html#section"><i class="fa fa-check"></i><b>2.1</b> </a></li>
+<li class="chapter" data-level="" data-path="practical-session-2.html"><a href="practical-session-2.html#load-packages"><i class="fa fa-check"></i>Load packages</a></li>
+<li class="chapter" data-level="2.1" data-path="practical-session-2.html"><a href="practical-session-2.html#spot-level-quality-control"><i class="fa fa-check"></i><b>2.1</b> Spot-level Quality Control</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="practical-session-2.html"><a href="practical-session-2.html#plot-tissue-map"><i class="fa fa-check"></i><b>2.1.1</b> Plot tissue map</a></li>
+<li class="chapter" data-level="2.1.2" data-path="practical-session-2.html"><a href="practical-session-2.html#calculating-qc-metrics"><i class="fa fa-check"></i><b>2.1.2</b> Calculating QC metrics</a></li>
+<li class="chapter" data-level="2.1.3" data-path="practical-session-2.html"><a href="practical-session-2.html#library-size-threshold-plot"><i class="fa fa-check"></i><b>2.1.3</b> Library size threshold plot</a></li>
+<li class="chapter" data-level="2.1.4" data-path="practical-session-2.html"><a href="practical-session-2.html#number-of-expressed-genes"><i class="fa fa-check"></i><b>2.1.4</b> Number of expressed genes</a></li>
+<li class="chapter" data-level="2.1.5" data-path="practical-session-2.html"><a href="practical-session-2.html#percentage-of-mitochondrial-expression"><i class="fa fa-check"></i><b>2.1.5</b> Percentage of mitochondrial expression</a></li>
+<li class="chapter" data-level="2.1.6" data-path="practical-session-2.html"><a href="practical-session-2.html#number-of-cells-per-spot"><i class="fa fa-check"></i><b>2.1.6</b> Number of cells per spot</a></li>
+<li class="chapter" data-level="2.1.7" data-path="practical-session-2.html"><a href="practical-session-2.html#remove-low-quality-spots"><i class="fa fa-check"></i><b>2.1.7</b> Remove low-quality spots</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="practical-session-2.html"><a href="practical-session-2.html#normalisation-of-counts"><i class="fa fa-check"></i><b>2.2</b> Normalisation of counts</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background"><i class="fa fa-check"></i><b>2.2.1</b> Background</a></li>
+<li class="chapter" data-level="2.2.2" data-path="practical-session-2.html"><a href="practical-session-2.html#log-tranformation-of-counts"><i class="fa fa-check"></i><b>2.2.2</b> Log-tranformation of counts</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="practical-session-2.html"><a href="practical-session-2.html#selecting-genes"><i class="fa fa-check"></i><b>2.3</b> Selecting genes</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background-1"><i class="fa fa-check"></i><b>2.3.1</b> Background</a></li>
+<li class="chapter" data-level="2.3.2" data-path="practical-session-2.html"><a href="practical-session-2.html#highly-variable-genes-hvgs"><i class="fa fa-check"></i><b>2.3.2</b> Highly Variable Genes (HVGs)</a></li>
+<li class="chapter" data-level="2.3.3" data-path="practical-session-2.html"><a href="practical-session-2.html#spatially-variable-genes-svgs"><i class="fa fa-check"></i><b>2.3.3</b> Spatially variable genes (SVGs)</a></li>
+<li class="chapter" data-level="2.3.4" data-path="practical-session-2.html"><a href="practical-session-2.html#integration-of-hvgs-and-svgs"><i class="fa fa-check"></i><b>2.3.4</b> Integration of HVGs and SVGs</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="practical-session-2.html"><a href="practical-session-2.html#dimensionality-reduction"><i class="fa fa-check"></i><b>2.4</b> Dimensionality reduction</a></li>
+<li class="chapter" data-level="2.5" data-path="practical-session-2.html"><a href="practical-session-2.html#clustering"><i class="fa fa-check"></i><b>2.5</b> Clustering</a></li>
+<li class="chapter" data-level="2.6" data-path="practical-session-2.html"><a href="practical-session-2.html#other-visualisations"><i class="fa fa-check"></i><b>2.6</b> Other visualisations</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html"><i class="fa fa-check"></i><b>3</b> Practical session 2</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html#section-1"><i class="fa fa-check"></i><b>3.1</b> </a></li>
+<li class="chapter" data-level="3.1" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html#section"><i class="fa fa-check"></i><b>3.1</b> </a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="practical-session-2-2.html"><a href="practical-session-2-2.html"><i class="fa fa-check"></i><b>4</b> Practical session 2</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="practical-session-2-2.html"><a href="practical-session-2-2.html#section-2"><i class="fa fa-check"></i><b>4.1</b> </a></li>
+<li class="chapter" data-level="4.1" data-path="practical-session-2-2.html"><a href="practical-session-2-2.html#section-1"><i class="fa fa-check"></i><b>4.1</b> </a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>5</b> Blocks</a>
 <ul>
@@ -202,7 +249,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="practical-session-2-2" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Practical session 2<a href="practical-session-2-2.html#practical-session-2-2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>In this session we will have a hands-on exploration of GW-PCA and its application to STx data. What can we learn from this novel technique?</p>
-<div id="section-2" class="section level2" number="4.1">
+<div id="section-1" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> </h2>
 
 </div>

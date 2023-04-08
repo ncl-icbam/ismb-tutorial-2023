@@ -2,9 +2,11 @@
 In this session we will demonstrate the implementation of the methods discussed earlier and will particularly focus on the most common analysis routines in STx: QC, data visualisation and clustering analysis always inside the interoperable Bioconductor environment.
 
 ## Load packages {-}
-```{r, message=FALSE}
+```{r 02_load-packages, message=FALSE}
 library(ggspavis)
 library(scater)
+library(ggplot2)
+library(scran)
 ```
 
 - [`ggspavis`](https://bioconductor.org/packages/release/bioc/html/ggspavis.html) is a Bioconductor package that includes visualization functions for spatially resolved transcriptomics datasets stored in `SpatialExperiment` format from spot-based (e.g., 10x Genomics Visium) platforms (@ggspavis2023Apr).
@@ -30,7 +32,7 @@ A few publications for further reading that can help you understand the quality 
 ### Plot tissue map
 The DLPFC dataset we will be using comes with manual annotations by the authors @Maynard2021Mar. We can plot the tissue map with and without the annotations to get a complete view.
 
-```{r, fig.show = 'hold', out.width="50%", fig.height=5, fig.width=4}
+```{r 02_plot-maps-gTruth, fig.show = 'hold', out.width="50%", fig.height=5, fig.width=4}
 ## Plot spatial coordinates without annotations
 plotSpots(spe)
 
@@ -46,7 +48,7 @@ So far, the dataset contains both on- and off-tissue spots. For the analysis tho
 
 ***NOTE***: the on- or off-tissue information for each spot can be found in the `colData` of the `spe` object and in the `in_tissue` column where *0 = off-tissue* and *1 = on-tissue*.
 
-```{r}
+```{r 02_keep_on-tissue}
 ## Dataset dimensions before the filtering
 dim(spe)
 
@@ -57,24 +59,24 @@ dim(spe)
 
 The next thing we need to do before we make decisions on how to quality *"trim"* the dataset is to calculate the percentage per spot of mitochodrial gene expression and store this information inside the `colData`.
 
-```{r}
+```{r 02_find-mitoGenes}
 ## Fetch mitochondrial gene names
 is_mito <- grepl("(^MT-)|(^mt-)", rowData(spe)$gene_name)
 rowData(spe)$gene_name[is_mito]
 ```
 
-```{r}
+```{r 02_perCellQCs}
 ## Calculate per-spot QC metrics and store in colData
 spe <- addPerCellQC(spe, subsets = list(mito = is_mito))
 head(colData(spe))
 ```
 
-After calculating the necessary metrics, we need to apply some cut-off thresholds for each metric to perform QC over each spot. What is important to remember here is that each dataset might need slightly different cut-off values to be applied. As a result we cannot rely on identifying a value to use every time and we need to rely on plotting these metrics and making a decision on a dataset-by-dataset basis.
+After calculating the necessary metrics, we need to apply some cut-off thresholds for each metric to perform QC over each spot. What is important to remember here is that each dataset might need slightly different cut-off values to be applied. As a result we cannot rely on identifying a single value to use every time and we need to rely on plotting these metrics and making a decision on a dataset-by-dataset basis.
 
 ### Library size threshold plot
 We can plot a histogram of the library sizes across spots. The library size is the number of UMI counts in each spot. We can find this information in the `sum` column in the `colData`.
 
-```{r, fig.height=3.5, warning=FALSE, message=FALSE}
+```{r 02_plot-libSize-histo, fig.height=3.5, warning=FALSE, message=FALSE}
 ## Density and histogram of library sizes
 ggplot(data = as.data.frame(colData(spe)),
        aes(x = sum)) +
@@ -94,52 +96,367 @@ ggplot(data = as.data.frame(colData(spe)),
 
 As we can see there are no obvious issues with the library sizes. An example of an issue could be a high frequency of small libraries which would indicate poor experimental output. Generally we do not want to keep spots with too small libraries.
 
-If the dataset we are analysing contains the number of cells that are present in each spot (this one does), then it makes sense to also plot the library sizes against the number of cells per spot. In that way we are making sure that we don't remove any spots that have biological meaning. 
+If the dataset we are analysing contains the number of cells that are present in each spot (this one does), then it makes sense to also plot the library sizes against the number of cells per spot. In that way we are making sure that we don't remove any spots that may have biological meaning. In many cases though the datasets do not have such information unless we can generate it using a nuclei segmentation tool to extract this information from the H&E images.
 
-The horizontal red line (argument `threshold` in the `plotQC` function) shows a first guess at a possible filtering threshold for library size based on the above histogram.
+The horizontal red line (argument `threshold` in the `plotQC` function) shows a first guess at a possible filtering threshold for library size based on the above histogram. The below plot can also be plotted using ggplot. For the ggplot implementation have a look at the [appendix](XXXX).
 
-```{r, fig.width=7, fig.height=5, warning=FALSE, message=FALSE}
-# plot library size vs. number of cells per spot
+```{r 02_plot-libSizeVScelNo, fig.width=6, fig.height=5, warning=FALSE, message=FALSE}
+## Scatter plot, library size against number of cells per spot
 plotQC(spe, type = "scatter", 
        metric_x = "cell_count", metric_y = "sum", 
-       threshold_y = 600)
+       threshold_y = 700)
 ```
 
-The plot shows that setting a filtering threshold for library size (e.g. at the value shown) does not appear to select for any obvious biologically consistent group of spots.
+We need to keep in mind here that the threshold is, up to an extend, arbitrary. It is crucial, then, to have a look at the number of spots that are left out of the dataset because of this cut-off value and also have a look at their putative spatial patterns. If, by any chance, we filtered out spots with biological relevance, then we will observe some patterns on the tissue map that are correlating with some of the known biological structures of the tissue. As a result, we probably have set our threshold too high.
 
-We set a relatively arbitrary threshold of 600 UMI counts per spot, and then check the number of spots below this threshold.
-
-```{r}
-# select QC threshold for library size
-qc_lib_size <- colData(spe)$sum < 600
+```{r 02_libSize-thresh, fig.height=4}
+## Select library size threshold
+qc_lib_size <- colData(spe)$sum < 700
+## Check how many spots are filtered out
 table(qc_lib_size)
+## Apply threshold
 colData(spe)$qc_lib_size <- qc_lib_size
-```
 
-Finally, we also check that the discarded spots do not have any obvious spatial pattern that correlates with known biological features. Otherwise, removing these spots could indicate that we have set the threshold too high, and are removing biologically informative spots.
-
-```{r, fig.height=3.5}
-# check spatial pattern of discarded spots
+## Check putative spatial patterns of removed spots
 plotQC(spe, type = "spots", 
        discard = "qc_lib_size")
 ```
 
-As an aside, here we can also illustrate what happens if we set the threshold too high. For example, if we set the threshold to 2000 UMI counts per spot -- which may also seem like a reasonable value based on the histogram and scatterplot -- then we see a possible spatial pattern in the discarded spots, matching the cortical layers. This illustrates the importance of interactively checking exploratory visualizations when choosing these thresholds.
+As an aside, try to illustrate what happens if we set the threshold too high (i.e., 2000 UMI counts).  
+**NOTE:** For reference, remember the ground truth layers in this dataset that we [plotted][Plot tissue map] at the beginning.
 
-```{r, fig.height=3.5}
-# check spatial pattern of discarded spots if threshold is too high
-qc_lib_size_2000 <- colData(spe)$sum < 2000
-colData(spe)$qc_lib_size_2000 <- qc_lib_size_2000
-plotQC(spe, type = "spots", 
-       discard = "qc_lib_size_2000")
+```{r 02_exercise01, fig.height=4, eval=FALSE}
+## Select library size threshold
+code...
+## Check how many spots are filtered out
+code...
+## Apply threshold
+code...
+
+## Check putative spatial patterns of removed spots
+plotQC(...)
 ```
 
-For reference, remember the ground truth layers in this dataset that we [plotted][Plot tissue map] at the beginning.
+
+### Number of expressed genes
+As we did with the library sizes, we can plot a histogram of the number of expressed genes across spots. A gene is expressed in a spot if it has at least one count in it. We can find this information in the `detected` column in the `colData`.
+
+We will follow the same logic for the plots as we did for the library size earlier.
+
+```{r 02_plot-genesInSpot-histo, fig.height=4, warning=FALSE, message=FALSE}
+## Density and histogram of expressed genes
+ggplot(data = as.data.frame(colData(spe)),
+       aes(x = detected)) +
+  geom_histogram(aes(y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  xlab("Genes expressed in each spot") + 
+  ylab("Density") + 
+  theme_classic()
+```
+
+```{r 02_genesInSpot-scatter, fig.width=6, fig.height=5, warning=FALSE, message=FALSE}
+# plot number of expressed genes vs. number of cells per spot
+plotQC(spe, type = "scatter", 
+       metric_x = "cell_count", metric_y = "detected", 
+       threshold_y = 500)
+```
+
+```{r 02_genesInSpot-thresh, fig.height=4}
+## Select expressed genes threshold
+qc_detected <- colData(spe)$detected < 500
+## Check how many spots are filtered out
+table(qc_detected)
+## Apply threshold
+colData(spe)$qc_detected <- qc_detected
+
+## Check for putative spatial pattern of removed spots
+plotQC(spe, type = "spots", 
+       discard = "qc_detected")
+```
+
+Again, try to illustrate what happens if we set the threshold too high (i.e., 1000 expressed genes).  
+**NOTE:** For reference, remember the ground truth layers in this dataset that we [plotted][Plot tissue map] at the beginning.
+
+```{r 02_exercise02, fig.height=4, eval=FALSE}
+## Select library size threshold
+code...
+## Check how many spots are filtered out
+code...
+## Apply threshold
+code...
+
+## Check putative spatial patterns of removed spots
+plotQC(...)
+```
+
+### Percentage of mitochondrial expression
+As we briefly touched at the beginning, a high proportion of mitochondrial reads indicates low cell quality, probably due to cell damage.
+
+To investigate the percentage of mitochondrial expression across spots we need to take a look in the column `subsets_mito_percent` in the `colData`.
+
+```{r 02_plot-mitoPercent-histo, fig.height=4, warning=FALSE, message=FALSE}
+## Density and histogram of percentage of mitochondrial expression
+ggplot(data = as.data.frame(colData(spe)),
+       aes(x = subsets_mito_percent)) +
+  geom_histogram(aes(y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  xlab("Percentage of mitochondrial expression") + 
+  ylab("Density") + 
+  theme_classic()
+```
+
+```{r 02_mitoPercent-scatter, fig.width=6, fig.height=5, warning=FALSE, message=FALSE}
+# plot mitochondrial read proportion vs. number of cells per spot
+plotQC(spe, type = "scatter", 
+       metric_x = "cell_count", metric_y = "subsets_mito_percent", 
+       threshold_y = 28)
+```
+
+```{r 02_mitoPercent-thresh, fig.height=4}
+## Select expressed genes threshold
+qc_mito <- colData(spe)$subsets_mito_percent > 28
+## Check how many spots are filtered out
+table(qc_mito)
+## Apply threshold
+colData(spe)$qc_mito <- qc_mito
+
+## Check for putative spatial pattern of removed spots
+plotQC(spe, type = "spots", 
+       discard = "qc_mito")
+```
+
+Again, try to illustrate what happens if we set the threshold too low (i.e., 20 0r 25%).  
+**NOTE:** For reference, remember the ground truth layers in this dataset that we [plotted][Plot tissue map] at the beginning.
+
+```{r 02_exercise03, fig.height=4, eval=FALSE}
+## Select library size threshold
+code...
+## Check how many spots are filtered out
+code...
+## Apply threshold
+code...
+
+## Check putative spatial patterns of removed spots
+plotQC(...)
+```
+
+### Number of cells per spot
+Number of cells per spot is an attribute that not all datasets include. Nonetheless, if it exists, we can use this information to further control the quality of the dataset prior to any downstream analysis. Ofcourse, the number of cells per spot depends on the tissue type and organism and according to [10X Genomics](https://kb.10xgenomics.com/hc/en-us/articles/360035487952-How-many-cells-are-captured-in-a-single-spot-), each spot can contain between 0 and 10 cells.
+
+To investigate the number of cells in each spot looking for any outlier values that could indicate problems we need to take a look in the column `cell_count` in the `colData`.
+
+```{r 02_plot-cellsPerSpot-histo, fig.height=4, warning=FALSE, message=FALSE}
+## Density and histogram of the number of cells in each spot
+ggplot(data = as.data.frame(colData(spe)),
+       aes(x = cell_count)) +
+  geom_histogram(aes(y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(alpha = 0.5,
+               #adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  xlab("Number of cells per spot") + 
+  ylab("Density") + 
+  theme_classic()
+
+## Have a look at the values
+table(colData(spe)$cell_count)
+```
+
+```{r 02_cellsPerSpot-scatter, fig.width=6, fig.height=5, warning=FALSE, message=FALSE}
+# plot number of expressed genes vs. number of cells per spot
+plotQC(spe, type = "scatter", 
+       metric_x = "cell_count", metric_y = "detected", 
+       threshold_x = 10)
+```
+
+As we can see from both the histogram and the scatter plot there is a tail of very high values, which could indicate problems for these spots. More specifically, we can see from the scatter plot that most of the spots with very high cell counts also have low numbers of expressed genes. This indicates problems with the experiment on these spots, and they should be removed.
+
+```{r 02_cellsPerSpot-thresh, fig.height=4}
+## Select expressed genes threshold
+qc_cell_count <- colData(spe)$cell_count > 10
+## Check how many spots are filtered out
+table(qc_cell_count)
+## Apply threshold
+colData(spe)$qc_cell_count <- qc_cell_count
+
+## Check for putative spatial pattern of removed spots
+plotQC(spe, type = "spots", 
+       discard = "qc_cell_count")
+```
+
+While there is a spatial pattern to the discarded spots, it does not appear to be correlated with the known biological features (cortical layers). The discarded spots are all on the edges of the tissue. It seems plausible that something has gone wrong with the cell segmentation on the edges of the images, so it makes sense to remove these spots.
+
+The discarded spots are located at the tissue edges, indicating a potential issue with cell segmentation in those regions. Therefore, it is reasonable to remove these spots from the analysis.
+
+### Remove low-quality spots
+
+Since we have calculated different spot-level QC metrics and selected thresholds for each one, we can combine them to identify a set of low-quality spots, and remove them from our `spe` object.
+
+We also check again that the combined set of discarded spots does not correspond to any obvious biologically relevant group of spots.
+
+```{r 02_checkQC-thresh, fig.height=4}
+## Check the number of discarded spots for each metric
+apply(cbind(qc_lib_size, qc_detected, qc_mito, qc_cell_count), 2, sum)
+## Combine together the set of discarded spots
+discard <- qc_lib_size | qc_detected | qc_mito | qc_cell_count
+## Store the set in the object
+colData(spe)$discard <- discard
+
+## Check the spatial pattern of combined set of discarded spots
+plotQC(spe, type = "spots", 
+       discard = "discard")
+```
+Since this dataset has also manual annotation (remember [here][Plot tissue map]) we see that there are locations that are not annotated (marked with `NA`). We could further remove those locations to reduce noise and further increase the quality of the dataset.
+```{r 02_notAnnotSpots, fig.height=4}
+## Select locations without annotation
+qc_NA_spots <- is.na(colData(spe)$ground_truth)
+## Combine together the set of discarded spots
+discard <- qc_lib_size | qc_detected | qc_mito | qc_cell_count | qc_NA_spots
+## Store the set in the object
+colData(spe)$discard <- discard
+
+## Check the spatial pattern of combined set of discarded spots
+plotQC(spe, type = "spots", 
+       discard = "discard")
+```
+```{r 02_applyFilter}
+## remove combined set of low-quality spots
+spe <- spe[, !colData(spe)$discard]
+```
+
+## Normalisation of counts
+### Background
+The most common method (if not the only one so far) of normalising gene expression in STx data is the method used in scRNA-seq data. Namely, this is a log-transformation (logcounts). For this to be applied, we treat each spot as being a single cell.
+
+It is clear from what we discussed [earlier][Number of cells per spot] that each spot can contain more than one cells. This is a limitation to the technology itself and to our methods of analysing STx data so far. Nonetheless, since STx expression data look like scRNA-seq we apply scRNA-seq methods for normalising (not all methods can be applied though). 
+
+Here we will be using methods from the `scater` [@McCarthy2017Apr] and `scran` [@Lun2016Oct] packages that calculate logcounts using library size factors. The library size factors approach is arguably the simplest approach for STx data. Other approaches used in scRNA-seq are more difficult to justify their use in STx because of two main reasons:
+
+  1. Spots can contain multiple cells of different cell-types.
+  2. Datasets can include multiple tissue samples which will lead to different clusterings.
+
+### Log-tranformation of counts
+```{r 02_libraryFactors, message=FALSE}
+## Calculate library size factors
+spe <- computeLibraryFactors(spe)
+## Have a look at the size factors
+summary(sizeFactors(spe))
+```
+
+```{r 02_plot-labfact-histo, fig.height=4, warning=FALSE, message=FALSE}
+## Density and histogram of library sizes
+ggplot(data = data.frame(sFact = sizeFactors(spe)), 
+       aes(x = sFact)) +
+  geom_histogram(aes(y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  xlab("Library size") + 
+  ylab("Density") + 
+  theme_classic()
+```
 
 
+The log-transformation that takes place is a log2-transformation and in order to avoid *- Infinity* values we add a pseudo value of 1. Both the log2- transformation and the pseudocount of 1 are defaults in this method.
+```{r 02_logNormCounts}
+## Calculate logcounts and store in the spe object
+spe <- logNormCounts(spe)
+
+## Check that a new assay has been added
+assayNames(spe)
+```
+
+## Selecting genes
+### Background
+Gene selection -or alternatively "feature selection"- is applied to identify genes that are going to be informative and can produce valuable information form the downstream analyses. The most common way of applying gene selection is to select genes that are highly variable (HVGs). The assumption is that since we quality-controled and normalised our dataset, the genes with high variability are the ones that contain high levels of biological variability too. Since here we have a spatial dataset we can also try to identify spatially variable genes too (SVGs).
+
+What is important to note here is that HVGs are identified using features like gene expression. Spatial information does not play a role in finding HVGs. STx data pose a dilemma; does the meaningful spatial information reflects only spatial distribution of major cell types or reflects additional important spatial features? If the first is true, then, relying on HVGs can be enough. If the second also holds true, then, it is important to identify SVGs as well.
+
+### Highly Variable Genes (HVGs)
+
+Here we will be using methods from the `scran` package [@Lun2016Oct] to identify a set of HVGs. Again, here we need to remember that `scran` methods were developed for scRNA-seq and we are performing the analysis under the assumption that the spots of an STx experiment can be treated as single cells.
+
+In this dataset, the mitochondrial genes are too highly expressed and are not of major biological interest. As a result, if we are to identify true HVGs, we first need to remove the mitochondrial genes.
+
+```{r 02_features_remvMito, message=FALSE}
+## Remove mitochondrial genes
+spe <- spe[!is_mito, ]
+```
 
 
+Then, we apply methods from `scran` that give a list of HVGs, which can be used for further downstream analyses. 
+
+First we model the variance of the log-expression profiles for each gene, decomposing it into technical and biological components based on a fitted mean-variance trend.
+
+```{r 02_features_FitModel, message=FALSE, fig.height=5}
+## Fit mean-variance relationship
+dec <- modelGeneVar(spe)
+## Visualize mean-variance relationship
+fit <- metadata(dec)
+fit_df <- data.frame(mean = fit$mean,
+                     var = fit$var,
+                     trend = fit$trend(fit$mean))
+
+ggplot(data = fit_df, 
+       aes(x = mean, y = var)) + 
+  geom_point() + 
+  geom_line(aes(y = trend), colour = "dodgerblue", linewidth = 1.5) + 
+  labs(x = "mean of log-expression",
+       y = "variance of log-expression") + 
+  theme_classic()
+```
+The `trend` function that we used above is returned from the `modelGeneVar` function and returns the fitted value of the trend at any value of the mean.
+
+We select the top 10% of genes based on their variability The parameter `prop` defines how many HVGs we want. For example `prop = 0.1` returns the top 10% of genes.
+```{r 02_features_selectHVGs}
+## Select top HVGs
+top_hvgs <- getTopHVGs(dec, prop = 0.1)
+
+## How many are the HVGs?
+length(top_hvgs)
+```
 
 
+### Spatially variable genes (SVGs)
+
+SVGs are genes with a highly spatially correlated pattern of expression, which varies along with the spatial distribution of a tissue structure of interest.
+
+For example, standard statistical measures such as [Moran's I](https://en.wikipedia.org/wiki/Moran%27s_I) or [Geary's C](https://en.wikipedia.org/wiki/Geary%27s_C) can be used to rank genes by the observed spatial autocorrelation. This requires assumptions such as the distance metric and bandwidth.
+
+Several sophisticated new statistical methods to identify SVGs in SRT data have also recently been developed. These include [SpatialDE](https://github.com/Teichlab/SpatialDE) [@Svensson2018], [SPARK](https://xzhoulab.github.io/SPARK/) [@Sun2020], and [SPARK-X](https://xzhoulab.github.io/SPARK/) [@Zhu2021]. However, these methods do not scale to large datasets containing thousands of spatial coordinates and / or are only available from GitHub. Therefore, due to Bioconductor build guidelines, they cannot be included in the interactive examples here. We encourage developers to contribute their packages to managed repositories (i.e. CRAN, Bioconductor, and pip), and will expand this section in the future to include additional examples as these methods become available.
+
+Here, we will demonstrate a short example showing how to define a set of top SVGs by ranking genes according to Moran's I statistic, using an efficient implementation of the calculation that takes advantage of sparsity in SRT data. Alternatively, widely used implementations of Moran's I in existing R packages such as [ape](https://cran.r-project.org/web/packages/ape/index.html) [@Paradis2019] (from CRAN) can be used for individual genes, but these calculations do not scale to tens of thousands of genes.
 
 
+### Integration of HVGs and SVGs
+
+A recent benchmark paper [@Li2022Jan] showed that integrating HVGs and SVGs to generate a combined set of features can improve downstream clustering performance in SRT data. This confirms that SVGs contain additional biologically relevant information that is not captured by HVGs in these datasets. For example, a simple way to combine these features is to concatenate columns of principal components (PCs) calculated on the set of HVGs and the set of SVGs (excluding overlapping HVGs), and then using the combined set of features for further downstream analyses [@Li2022Jan].
+
+## Dimensionality reduction
+
+## Clustering
+
+## Other visualisations
