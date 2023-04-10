@@ -4,9 +4,11 @@ In this session we will demonstrate the implementation of the methods discussed 
 ## Load packages {-}
 ```{r 02_load-packages, message=FALSE}
 library(ggspavis)
-library(scater)
 library(ggplot2)
+library(scater)
 library(scran)
+library(igraph)
+library(pheatmap)
 ```
 
 - [`ggspavis`](https://bioconductor.org/packages/release/bioc/html/ggspavis.html) is a Bioconductor package that includes visualization functions for spatially resolved transcriptomics datasets stored in `SpatialExperiment` format from spot-based (e.g., 10x Genomics Visium) platforms (@ggspavis2023Apr).
@@ -442,13 +444,11 @@ length(top_hvgs)
 
 ### Spatially variable genes (SVGs)
 
-SVGs are genes with a highly spatially correlated pattern of expression, which varies along with the spatial distribution of a tissue structure of interest.
+SVGs are genes with a highly spatially correlated pattern of expression, which varies along with the spatial distribution of a tissue structure of interest. This phenomenon is also called *spatial autocorrelation* and is a phenomenon that underlies all types of spatial data as we will discuss later.
 
-For example, standard statistical measures such as [Moran's I](https://en.wikipedia.org/wiki/Moran%27s_I) or [Geary's C](https://en.wikipedia.org/wiki/Geary%27s_C) can be used to rank genes by the observed spatial autocorrelation. This requires assumptions such as the distance metric and bandwidth.
+The field of geography has developed some statistical measures to calculate spatial autocorrelation. Examples of these are Moran's *I* [@Moran1950Jun] and Geary's *C* [@Geary1954Nov] that can be used to rank genes by the observed spatial autocorrelation to identify SVGs.
 
-Several sophisticated new statistical methods to identify SVGs in SRT data have also recently been developed. These include [SpatialDE](https://github.com/Teichlab/SpatialDE) [@Svensson2018], [SPARK](https://xzhoulab.github.io/SPARK/) [@Sun2020], and [SPARK-X](https://xzhoulab.github.io/SPARK/) [@Zhu2021]. However, these methods do not scale to large datasets containing thousands of spatial coordinates and / or are only available from GitHub. Therefore, due to Bioconductor build guidelines, they cannot be included in the interactive examples here. We encourage developers to contribute their packages to managed repositories (i.e. CRAN, Bioconductor, and pip), and will expand this section in the future to include additional examples as these methods become available.
-
-Here, we will demonstrate a short example showing how to define a set of top SVGs by ranking genes according to Moran's I statistic, using an efficient implementation of the calculation that takes advantage of sparsity in SRT data. Alternatively, widely used implementations of Moran's I in existing R packages such as [ape](https://cran.r-project.org/web/packages/ape/index.html) [@Paradis2019] (from CRAN) can be used for individual genes, but these calculations do not scale to tens of thousands of genes.
+Several sophisticated new statistical methods to identify SVGs in SRT data have also recently been developed. These include [SpatialDE](https://github.com/Teichlab/SpatialDE) [@Svensson2018May], [SPARK](https://xzhoulab.github.io/SPARK/) [@Sun2020Feb], and [SPARK-X](https://xzhoulab.github.io/SPARK/) [@Zhu2021Dec].
 
 
 ### Integration of HVGs and SVGs
@@ -456,7 +456,182 @@ Here, we will demonstrate a short example showing how to define a set of top SVG
 A recent benchmark paper [@Li2022Jan] showed that integrating HVGs and SVGs to generate a combined set of features can improve downstream clustering performance in SRT data. This confirms that SVGs contain additional biologically relevant information that is not captured by HVGs in these datasets. For example, a simple way to combine these features is to concatenate columns of principal components (PCs) calculated on the set of HVGs and the set of SVGs (excluding overlapping HVGs), and then using the combined set of features for further downstream analyses [@Li2022Jan].
 
 ## Dimensionality reduction
+### Background  
 
+Dimensionality reduction is an important step prior to any downstream clustering attempts. There are two main ways of reducing the dimensions of a dataset. The gold standard is Principal Components Analysis (PCA) and the other -a more recent one- Uniform manifold Approximation and Projection (UMAP) [@McInnes2018Feb]. The main difference between the two is that the distances between the data points in PCA space are interpretable and can be used to cluster the data points while the distances in a UMAP embedding are not interpretable and thus, cannot be used to cluster the data points. As a result, we will be using PCA to reduce the dimensions of our dataset to assist clustering and UMAP to further reduce the principal components (PCs) in a two-dimensional space and produce better visualisations for the PCA.
+
+Reducing the dimensions of the dataset is the output of a PCA. But, what are the main reasons we do so? One reason is to reduce the noise introduced by biologically uninteresting genes that their expression might show some random variation -and that is why they are in the HVGs list-. The other reason is to improve the computational efficiency of downstream analyses like clustering. In an STx experiment, like the one we are analysing here, we have more than 3000 spots and almost 1500 HVGs. As as result, each spot has 1500 attributes based on which the clustering will take place. This increase in the number of variables that differentiate or cluster together spots is leading to the *curse of dimensionality* [@Keogh2017Apr] which makes the data points (spots) look equidistant in attribute space resulting in poor clustering output. 
+
+### PCA: Principal component analysis
+
+Here we will use an efficient implementation of PCA provided in the `scater` package [@McCarthy2017Apr] and retain the top 50 PCs for further downstream analyses. The random seed is required for reproducibility reasons because this implementation uses randomisation.
+
+```{r 02_dimRedct_PCA}
+## Set seed
+set.seed(987)
+## Compute PCA
+spe <- runPCA(spe, subset_row = top_hvgs)
+## Check correctness - names
+reducedDimNames(spe)
+## Check correctness - dimensions
+dim(reducedDim(spe, "PCA"))
+```
+ 
+
+### UMAP: Uniform Manifold Approximation and Projection
+
+Here we will also run UMAP -using `scater`'s implementation- on the 50 PCs generated above and retain the top 2 UMAP components to visualise results.
+
+```{r 02_dimRed_UMAP}
+## Set seed
+set.seed(987)
+## Compute UMAP on top 50 PCs
+spe <- runUMAP(spe, dimred = "PCA")
+## Check correctness - names
+reducedDimNames(spe)
+## Check correctness - dimensions
+dim(reducedDim(spe, "UMAP"))
+## Update column names for easier plotting
+colnames(reducedDim(spe, "UMAP")) <- paste0("UMAP", 1:2)
+```
+
+### UMAP visualisations
+
+We can generate plots either using plotting functions from the [ggspavis](https://bioconductor.org/packages/ggspavis) package or [`ggplot2`](https://ggplot2.tidyverse.org/) package. Later on clustering, we will add cluster labels to these reduced dimension plots for an off-tissue visualisation.
+
+```{r 02_dimRed_UMAP-vis, fig.width=5, fig.height=5, fig.show='hold'}
+## Plot top 2 PCA dimensions
+plotDimRed(spe, type = "PCA")
+
+ggplot(data = as.data.frame(spe@int_colData@listData$reducedDims$PCA),
+       aes(x = PC1, y = PC2)) + 
+  geom_point(size = 0.5) + 
+  labs(title = "Reduced dimensions: PCA",
+       x = "PC1",
+       y = "PC2") +
+  theme_classic()
+
+## Plot top 2 UMAP dimensions
+plotDimRed(spe, type = "UMAP")
+
+ggplot(data = as.data.frame(spe@int_colData@listData$reducedDims$UMAP),
+       aes(x = UMAP1, y = UMAP2)) + 
+  geom_point(size = 0.5) + 
+  labs(title = "Reduced dimensions: UMAP",
+       x = "UMAP1",
+       y = "UMAP2") +
+  theme_classic()
+```
 ## Clustering
+### Background
+
+The clustering of observations into statistically similar groups is a well-established application in both bulk and single-cell RNA-Seq analysis. Clustering is a helpful tool because it structures and orders the data, allowing useful insights to be gained from complex, multivariate datasets and use those insights to classify the observed data or to generate hypotheses.
+
+Common clustering methods are applied to ST data based on correlation or statistical distance of gene expression measurements. As we briefly touched above, the dimensionality of ST data means that sample distances in gene expression space tend to be small and not reliable for identifying clusters, so feature selection (gene selection) or dimensionality reduction approaches (i.e., PCA, UMAP) tend to be taken before clustering.
+
+Common approaches to clustering gene expression data include k-means, hierarchical and Louvain algorithms, and all have been applied to the clustering of ST data. Some of these methods are implemented in some of the most popular single-cell analysis packages, such as `Seurat` [@Hao2021Jun] and `scran` [@Lun2016Oct] and have been used for clustering in a number of ST studies.
+
+### Clustering on HVGs
+
+Here, we apply graph-based clustering to the top 50 PCs calculated on the set of selected HVGs, using the Walktrap method implemented in `scran` [@Lun2016Oct]. To do so, we assume that (i) each spot is equal to a cell and (ii) we can detect from the gene expression the biologically informative spatial distribution patterns of cell types.
+
+```{r 02_clustering}
+## Set seed
+set.seed(987)
+## Set number of Nearest-Neighbours (NNs)
+k <- 10
+## Build the k-NN graph
+g <- buildSNNGraph(spe, k = k, use.dimred = "PCA")
+## Run walktrap clustering
+g_walk <- igraph::cluster_walktrap(g)
+## Get the cluster labels
+clus <- g_walk$membership
+## Check how many
+table(clus)
+## Store cluster labels in column 'label' in colData
+colLabels(spe) <- factor(clus)
+```
+
+### HVGs clustering visualisations
+
+We can visualise the clusters in two ways:  
+1. plotting in spatial coordinates on the tissue map
+2. plotting in the UMAP/PCA embeddings.
+
+We can use plotting functions either from the [ggspavis](https://bioconductor.org/packages/ggspavis)package.
+
+For reference, we will also display the ground truth (manually annotated) labels available for this dataset.
+
+```{r 02_clust_vis-map, fig.show = 'hold', out.width="50%", fig.height=5, fig.width=4}
+## Plot in tissue map
+plotSpots(spe, annotate = "label", 
+          palette = "libd_layer_colors")
+
+## Plot ground truth in tissue map
+plotSpots(spe, annotate = "ground_truth", 
+          palette = "libd_layer_colors")
+```
+
+```{r 02_clust_vis-DimRed, message=FALSE, fig.show = 'hold', out.width="50%", fig.height=4, fig.width=4}
+## Plot clusters in PCA space
+plotDimRed(spe, type = "PCA", 
+           annotate = "label", palette = "libd_layer_colors")
+
+## Plot clusters in UMAP space
+plotDimRed(spe, type = "UMAP", 
+           annotate = "label", palette = "libd_layer_colors")
+```
+
+From the visualizations, we can see that the clustering reproduces, up to an extend, the known biological structure of the tissue, but not perfectly. One reason for this could be the fact that each spot may comprise of many different cells whose gene expression profiles are diluted in the overall profile of the spot, thus leading to low-quality clustering.
+
+### Spatially-aware clustering
+
+In STx data, we can also perform clustering that takes spatial information into account, for example to identify spatially compact or spatially connected clusters.
+
+A simple strategy is to perform graph-based clustering on a set of features (columns) that includes both molecular features (gene expression) and spatial features (x-y coordinates). In this case, a crucial tuning parameter is the relative amount of scaling between the two data modalities -- if the scaling is chosen poorly, either the molecular or spatial features will dominate the clustering. Depending on data availability, further modalities could also be included. In this section, we will include some examples on this clustering approach.
+
+## Inter-cluster differentially expressed genes (DGEs)
+### Background
+
+Here, we will identify differentially expressed genes bewteen clusters.
+
+We will use the `findMarkers` implementation from the `scran` [@Lun2016Oct]. This implementation uses a binomial test, which tests for genes that differ in the proportion expressed vs. not expressed between clusters. This is a more stringent test than the default t-tests, and tends to select genes that are easier to interpret and validate experimentally.
+
+### DGEs identification
+
+```{r 02_dges}
+## Set gene names as row names ease of plotting
+rownames(spe) <- rowData(spe)$gene_name
+## Test for DGEs
+markers <- findMarkers(spe, test = "binom", direction = "up")
+## Check output
+markers
+```
+
+The output from the `findMarkers` implementation is a list of length equal to the number of clusters. Each element of the list contains the Log-Fold-Change (LogFC) of each gene between one cluster and all others.
+
+### DGEs visualisation
+
+Here we will plot LogFCs for cluster 1 against all other clusters
+
+```{r 02_dges_vis-clst1, message=FALSE, fig.show = 'hold', out.width="50%", fig.height=4, fig.width=4}
+## Select cluster 1 genes
+interesting <- markers[[1]]
+## Get the top genes
+best_set <- interesting[interesting$Top <= 5, ]
+## Calculate the effect
+logFCs <- getMarkerEffects(best_set)
+## Plot a heat map
+pheatmap(logFCs, breaks = seq(-5, 5, length.out = 101))
+```
+
+Below we will plot the log-transformed normalised expression of the top genes for one cluster alongside their expression in the other clusters.
+
+```{r 02_dges_vis-clst1, message=FALSE, fig.width=7, fig.height=7}
+## Select genes
+top_genes <- head(rownames(interesting))
+## Plot expression
+plotExpression(spe, x = "label", features = top_genes)
+```
 
 ## Other visualisations
