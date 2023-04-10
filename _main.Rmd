@@ -1,3 +1,151 @@
+--- 
+title: "Spatial transcriptomics data analysis: theory and practice"
+author: "Eleftherios Zormpas, Dr Simon J. Cockell"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: "This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice."
+link-citations: yes
+github-repo: https://github.com/ncl-icbam/ismb-tutorial-2023.git
+---
+
+# Welcome {-}
+This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: *"Spatial transcriptomics data analysis: theory and practice"*.
+
+## Abstract {-}
+Recent technological advances have led to the application of RNA Sequencing *in situ*. This allows for whole-transcriptome characterisation, at approaching single-cell resolution, while retaining the spatial information inherent in the intact tissue. Since tissues are congregations of intercommunicating cells, identifying local and global patterns of spatial association is imperative to elucidate the processes which underlie tissue function. Performing spatial data analysis requires particular considerations of the distinct properties of data with a spatial dimension, which gives rise to an association with a different set of *statistical* and *inferential* considerations. 
+
+In this comprehensive tutorial, we will introduce users to spatial transcriptomics (STx) technologies and current pipelines of STx data analysis inside the **Bioconductor** framework. Furthermore, we will introduce attendees to the underlying features of spatial data analysis and how they can effectively utilise space to extract in-depth information from STx datasets.
+
+
+## Learning objectives {-}
+
+Participants in this tutorial will gain understanding of the core technologies for undertaking a spatial transcriptomics experiment, and the common tools used for the analysis of this data. In particular, participants will appreciate the strengths of geospatial data analysis methods in relation to this type of data. Specific learning objectives will include:
+
+1.	Describe and discuss core technologies for spatial transcriptomics
+2.	Make use of key computational technologies to process and analyse STx data
+3.	Apply an analysis strategy to obtain derived results and data visualisations
+4.	Appreciate the principles underlying spatial data analysis
+5.	Understand some of the methods available for spatial data analysis
+6.	Apply said methods to an example STx data set
+
+
+```{r eval=FALSE, include=FALSE}
+bookdown::serve_book()
+```
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+<!--chapter:end:index.Rmd-->
+
+# Practical session 1
+In this practical session you will familiarise yourself with the data and their different aspects.
+
+## Log into the Posit Cloud server
+
+## Import 10X Visium data
+In this tutorial we will be using some already prepared data from the [STexampleData](https://bioconductor.org/packages/STexampleData) package. These data are stored in the `SpatialExperiment` format (the format is described below).
+
+The dataset a single sample from the dorsolateral prefrontal cortex (DLPFC) 10x Genomics Visium dataset, that was published by @Maynard2021Mar.
+
+Here, we show how to load the data from the `STexampleData` package.
+
+```{r 01_load-data, message=FALSE, eval=FALSE}
+library(SpatialExperiment)
+library(STexampleData)
+
+# Load the object
+spe <- Visium_humanDLPFC()
+```
+
+## Explore data types
+The below discussion will help you familiarise with the different data types that we will be using.
+
+### SpatialExperiment class
+
+For the first part of this tutorial (practical sessions 1 and 2), we will be using the  [SpatialExperiment](https://bioconductor.org/packages/SpatialExperiment) S4 class from Bioconductor as the main data structure for storing and manipulating datasets.
+
+`SpatialExperiment` is a specialized object class that supports the storing of spatially-resolved transcriptomics datasets within the Bioconductor framework. It builds on the [SingleCellExperiment](https://bioconductor.org/packages/SingleCellExperiment) class [@Amezquita2020Feb] for single-cell RNA sequencing data. More specifically, has extra customisations to store spatial information (i.e., spatial coordinates and images).
+
+An overview of the `SpatialExperiment` object structure is is presented in Figure 2.1. In brief, the `SpatialExperiment` object consists of the below five parts:  
+
+ 1. `assays`: gene expression counts  
+ 2. `rowData`: information about features, usually genes  
+ 3. `colData`: information on spots (non-spatial and spatial metadata)  
+ 4. `spatialCoords`: spatial coordinates  
+ 5. `imgData`: image data 
+
+**NOTE:** For spot-based STx data (i.e., 10x Genomics Visium), a single `assay` named `counts` is used.
+
+```{r SpExp-overview, echo=FALSE, out.width = "100%", fig.align="center", fig.cap="Overview of the `SpatialExperiment` object class structure."}
+knitr::include_graphics("images/SpatialExperiment.png")
+```
+
+For more details, see the related publication from Righelli et al., 2021 describing the `SpatialExperiment` [@Righelli2022Jun].
+
+### Inspect the object
+```{r 01_data-inspect, message=FALSE}
+## Check the object's structure
+spe
+
+## Check number of features/genes (rows) and spots (columns)
+dim(spe)
+
+## Check names of 'assay' tables
+assayNames(spe)
+```
+
+### Counts table and gene metadata
+```{r 01_counts-inspect, message=FALSE}
+## Have a look at the counts table
+head(assay(spe))
+```
+
+As you can see here the counts table is of class `dgTMatrix` which is a sparse matrix. This is because much like scRNA-seq data, STx data are sparse and include many zeros. As a result, to make the counts table as light as possible we resort to using sparse matrices. The next code chunk will demonstrate a part of the matrix that includes genes with some level of expression.
+
+```{r 01_counts-chunks, message=FALSE}
+assay(spe)[20:40, 2000:2010]
+
+assay(spe)[33488:33508, 2000:2010]
+```
+
+As you can see, the levels of expression of different genes in the same spots differ significantly with many low values being present. We have to remember here that we look at un-normalised expression data which are affected by factors like library size. Nonetheless, this is a fact in STx data as it is for scRNA-seq data; many genes will show low expression in individual spots.
+
+```{r 01_gene-metaData, message=FALSE}
+## Have a look at the genes metadata
+head(rowData(spe))
+
+```
+
+### Coordinates table and spot metadata
+```{r 01_coordinates-inspect, message=FALSE}
+## Check the spatial coordinates
+head(spatialCoords(spe))
+
+## spot-level metadata
+head(colData(spe))
+
+```
+
+### Image metadata
+```{r 01_image-inspect, message=FALSE}
+## Have a look at the image metadata
+imgData(spe)
+```
+
+
+
+<!--chapter:end:01-intro-to-stx.Rmd-->
+
 # Practical session 2
 In this session we will demonstrate the implementation of the methods discussed earlier and will particularly focus on the most common analysis routines in STx: QC, data visualisation and clustering analysis always inside the interoperable Bioconductor environment.
 
@@ -627,7 +775,7 @@ pheatmap(logFCs, breaks = seq(-5, 5, length.out = 101))
 
 Below we will plot the log-transformed normalised expression of the top genes for one cluster alongside their expression in the other clusters.
 
-```{r 02_dges_vis-2, message=FALSE, fig.width=7, fig.height=7}
+```{r 02_dges_vis-clst1, message=FALSE, fig.width=7, fig.height=7}
 ## Select genes
 top_genes <- head(rownames(interesting))
 ## Plot expression
@@ -635,3 +783,93 @@ plotExpression(spe, x = "label", features = top_genes)
 ```
 
 ## Other visualisations
+
+<!--chapter:end:02-stx-analysis.Rmd-->
+
+# Practical session 2
+This practical session will demonstrate the application of the most commonly used spatial analysis tools to STx data, and how we work with coordinate data alongside expression data. 
+
+##
+
+<!--chapter:end:03-intro-geospatial.Rmd-->
+
+# Practical session 2
+In this session we will have a hands-on exploration of GW-PCA and its application to STx data. What can we learn from this novel technique?
+
+##
+
+<!--chapter:end:04-gwpca.Rmd-->
+
+# Blocks
+
+## Equations
+
+Here is an equation.
+
+\begin{equation} 
+  f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k}
+  (\#eq:binom)
+\end{equation} 
+
+You may refer to using `\@ref(eq:binom)`, like see Equation \@ref(eq:binom).
+
+
+## Theorems and proofs
+
+Labeled theorems can be referenced in text using `\@ref(thm:tri)`, for example, check out this smart theorem \@ref(thm:tri).
+
+::: {.theorem #tri}
+For a right triangle, if $c$ denotes the *length* of the hypotenuse
+and $a$ and $b$ denote the lengths of the **other** two sides, we have
+$$a^2 + b^2 = c^2$$
+:::
+
+Read more here <https://bookdown.org/yihui/bookdown/markdown-extensions-by-bookdown.html>.
+
+## Callout blocks
+
+
+The R Markdown Cookbook provides more help on how to use custom blocks to design your own callouts: https://bookdown.org/yihui/rmarkdown-cookbook/custom-blocks.html
+
+<!--chapter:end:05-blocks.Rmd-->
+
+# Sharing your book
+
+## Publishing
+
+HTML books can be published online, see: https://bookdown.org/yihui/bookdown/publishing.html
+
+## 404 pages
+
+By default, users will be directed to a 404 page if they try to access a webpage that cannot be found. If you'd like to customize your 404 page instead of using the default, you may add either a `_404.Rmd` or `_404.md` file to your project root and use code and/or Markdown syntax.
+
+## Metadata for sharing
+
+Bookdown HTML books will provide HTML metadata for social sharing on platforms like Twitter, Facebook, and LinkedIn, using information you provide in the `index.Rmd` YAML. To setup, set the `url` for your book and the path to your `cover-image` file. Your book's `title` and `description` are also used.
+
+
+
+This `gitbook` uses the same social sharing data across all chapters in your book- all links shared will look the same.
+
+Specify your book's source repository on GitHub using the `edit` key under the configuration options in the `_output.yml` file, which allows users to suggest an edit by linking to a chapter's source file. 
+
+Read more about the features of this output format here:
+
+https://pkgs.rstudio.com/bookdown/reference/gitbook.html
+
+Or use:
+
+```{r eval=FALSE}
+?bookdown::gitbook
+```
+
+
+
+<!--chapter:end:06-share.Rmd-->
+
+`r if (knitr::is_html_output()) '
+# References {-}
+'`
+
+<!--chapter:end:07-references.Rmd-->
+
