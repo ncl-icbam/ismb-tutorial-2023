@@ -23,7 +23,7 @@
 <meta name="author" content="Eleftherios Zormpas, Dr Simon J. Cockell" />
 
 
-<meta name="date" content="2023-04-08" />
+<meta name="date" content="2023-04-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -201,8 +201,22 @@ div.csl-indent {
 <li class="chapter" data-level="2.3.3" data-path="practical-session-2.html"><a href="practical-session-2.html#spatially-variable-genes-svgs"><i class="fa fa-check"></i><b>2.3.3</b> Spatially variable genes (SVGs)</a></li>
 <li class="chapter" data-level="2.3.4" data-path="practical-session-2.html"><a href="practical-session-2.html#integration-of-hvgs-and-svgs"><i class="fa fa-check"></i><b>2.3.4</b> Integration of HVGs and SVGs</a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="practical-session-2.html"><a href="practical-session-2.html#dimensionality-reduction"><i class="fa fa-check"></i><b>2.4</b> Dimensionality reduction</a></li>
-<li class="chapter" data-level="2.5" data-path="practical-session-2.html"><a href="practical-session-2.html#clustering"><i class="fa fa-check"></i><b>2.5</b> Clustering</a></li>
+<li class="chapter" data-level="2.4" data-path="practical-session-2.html"><a href="practical-session-2.html#dimensionality-reduction"><i class="fa fa-check"></i><b>2.4</b> Dimensionality reduction</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background-2"><i class="fa fa-check"></i><b>2.4.1</b> Background</a></li>
+<li class="chapter" data-level="2.4.2" data-path="practical-session-2.html"><a href="practical-session-2.html#pca-principal-component-analysis"><i class="fa fa-check"></i><b>2.4.2</b> PCA: Principal component analysis</a></li>
+<li class="chapter" data-level="2.4.3" data-path="practical-session-2.html"><a href="practical-session-2.html#umap-uniform-manifold-approximation-and-projection"><i class="fa fa-check"></i><b>2.4.3</b> UMAP: Uniform Manifold Approximation and Projection</a></li>
+<li class="chapter" data-level="2.4.4" data-path="practical-session-2.html"><a href="practical-session-2.html#umap-visualisations"><i class="fa fa-check"></i><b>2.4.4</b> UMAP visualisations</a></li>
+<li class="chapter" data-level="2.4.5" data-path="practical-session-2.html"><a href="practical-session-2.html#clustering-on-hvgs"><i class="fa fa-check"></i><b>2.4.5</b> Clustering on HVGs</a></li>
+<li class="chapter" data-level="2.4.6" data-path="practical-session-2.html"><a href="practical-session-2.html#hvgs-clustering-visualisations"><i class="fa fa-check"></i><b>2.4.6</b> HVGs clustering visualisations</a></li>
+<li class="chapter" data-level="2.4.7" data-path="practical-session-2.html"><a href="practical-session-2.html#spatially-aware-clustering"><i class="fa fa-check"></i><b>2.4.7</b> Spatially-aware clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="practical-session-2.html"><a href="practical-session-2.html#inter-cluster-differentially-expressed-genes-dges"><i class="fa fa-check"></i><b>2.5</b> Inter-cluster differentially expressed genes (DGEs)</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background-3"><i class="fa fa-check"></i><b>2.5.1</b> Background</a></li>
+<li class="chapter" data-level="2.5.2" data-path="practical-session-2.html"><a href="practical-session-2.html#dges-identification"><i class="fa fa-check"></i><b>2.5.2</b> DGEs identification</a></li>
+<li class="chapter" data-level="2.5.3" data-path="practical-session-2.html"><a href="practical-session-2.html#dges-visualisation"><i class="fa fa-check"></i><b>2.5.3</b> DGEs visualisation</a></li>
+</ul></li>
 <li class="chapter" data-level="2.6" data-path="practical-session-2.html"><a href="practical-session-2.html#other-visualisations"><i class="fa fa-check"></i><b>2.6</b> Other visualisations</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html"><i class="fa fa-check"></i><b>3</b> Practical session 2</a>
@@ -301,8 +315,7 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 ## assays(1): counts
 ## rownames(33538): ENSG00000243485 ENSG00000237613 ... ENSG00000277475 ENSG00000268674
 ## rowData names(3): gene_id gene_name feature_type
-## colnames(4992): AAACAACGAATAGTTC-1 AAACAAGTATCTCCCA-1 ... TTGTTTGTATTACACG-1
-##   TTGTTTGTGTAAATTC-1
+## colnames(4992): AAACAACGAATAGTTC-1 AAACAAGTATCTCCCA-1 ... TTGTTTGTATTACACG-1 TTGTTTGTGTAAATTC-1
 ## colData names(7): barcode_id sample_id ... ground_truth cell_count
 ## reducedDimNames(0):
 ## mainExpName: NULL
@@ -321,13 +334,13 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="practical-session-1.html#cb8-1" tabindex="-1"></a><span class="do">## Have a look at the counts table</span></span>
 <span id="cb8-2"><a href="practical-session-1.html#cb8-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">assay</span>(spe))</span></code></pre></div>
 <pre><code>## 6 x 4992 sparse Matrix of class &quot;dgTMatrix&quot;
-##                                                                                                    
-## ENSG00000243485 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-## ENSG00000237613 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-## ENSG00000186092 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-## ENSG00000238009 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-## ENSG00000239945 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-## ENSG00000239906 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+##                                                                                                            
+## ENSG00000243485 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+## ENSG00000237613 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+## ENSG00000186092 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+## ENSG00000238009 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+## ENSG00000239945 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+## ENSG00000239906 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 ##                           
 ## ENSG00000243485 . . ......
 ## ENSG00000237613 . . ......
@@ -336,7 +349,7 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 ## ENSG00000239945 . . ......
 ## ENSG00000239906 . . ......
 ## 
-##  .....suppressing 4948 columns in show(); maybe adjust &#39;options(max.print= *, width = *)&#39;
+##  .....suppressing 4944 columns in show(); maybe adjust &#39;options(max.print= *, width = *)&#39;
 ##  ..............................</code></pre>
 <p>As you can see here the counts table is of class <code>dgTMatrix</code> which is a sparse matrix. This is because much like scRNA-seq data, STx data are sparse and include many zeros. As a result, to make the counts table as light as possible we resort to using sparse matrices. The next code chunk will demonstrate a part of the matrix that includes genes with some level of expression.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="practical-session-1.html#cb10-1" tabindex="-1"></a><span class="fu">assay</span>(spe)[<span class="dv">20</span><span class="sc">:</span><span class="dv">40</span>, <span class="dv">2000</span><span class="sc">:</span><span class="dv">2010</span>]</span></code></pre></div>
@@ -414,22 +427,14 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="practical-session-1.html#cb18-1" tabindex="-1"></a><span class="do">## spot-level metadata</span></span>
 <span id="cb18-2"><a href="practical-session-1.html#cb18-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">colData</span>(spe))</span></code></pre></div>
 <pre><code>## DataFrame with 6 rows and 7 columns
-##                            barcode_id     sample_id in_tissue array_row array_col ground_truth
-##                           &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;  &lt;character&gt;
-## AAACAACGAATAGTTC-1 AAACAACGAATAGTTC-1 sample_151673         0         0        16           NA
-## AAACAAGTATCTCCCA-1 AAACAAGTATCTCCCA-1 sample_151673         1        50       102       Layer3
-## AAACAATCTACTAGCA-1 AAACAATCTACTAGCA-1 sample_151673         1         3        43       Layer1
-## AAACACCAATAACTGC-1 AAACACCAATAACTGC-1 sample_151673         1        59        19           WM
-## AAACAGAGCGACTCCT-1 AAACAGAGCGACTCCT-1 sample_151673         1        14        94       Layer3
-## AAACAGCTTTCAGAAG-1 AAACAGCTTTCAGAAG-1 sample_151673         1        43         9       Layer5
-##                    cell_count
-##                     &lt;integer&gt;
-## AAACAACGAATAGTTC-1         NA
-## AAACAAGTATCTCCCA-1          6
-## AAACAATCTACTAGCA-1         16
-## AAACACCAATAACTGC-1          5
-## AAACAGAGCGACTCCT-1          2
-## AAACAGCTTTCAGAAG-1          4</code></pre>
+##                            barcode_id     sample_id in_tissue array_row array_col ground_truth cell_count
+##                           &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;  &lt;character&gt;  &lt;integer&gt;
+## AAACAACGAATAGTTC-1 AAACAACGAATAGTTC-1 sample_151673         0         0        16           NA         NA
+## AAACAAGTATCTCCCA-1 AAACAAGTATCTCCCA-1 sample_151673         1        50       102       Layer3          6
+## AAACAATCTACTAGCA-1 AAACAATCTACTAGCA-1 sample_151673         1         3        43       Layer1         16
+## AAACACCAATAACTGC-1 AAACACCAATAACTGC-1 sample_151673         1        59        19           WM          5
+## AAACAGAGCGACTCCT-1 AAACAGAGCGACTCCT-1 sample_151673         1        14        94       Layer3          2
+## AAACAGCTTTCAGAAG-1 AAACAGCTTTCAGAAG-1 sample_151673         1        43         9       Layer5          4</code></pre>
 </div>
 <div id="image-metadata" class="section level3 hasAnchor" number="1.3.5">
 <h3><span class="header-section-number">1.3.5</span> Image metadata<a href="practical-session-1.html#image-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>

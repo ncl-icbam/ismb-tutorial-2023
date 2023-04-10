@@ -522,6 +522,8 @@ ggplot(data = as.data.frame(spe@int_colData@listData$reducedDims$UMAP),
        y = "UMAP2") +
   theme_classic()
 ```
+
+
 ## Clustering
 ### Background
 
