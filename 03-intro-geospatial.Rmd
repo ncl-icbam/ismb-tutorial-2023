@@ -318,13 +318,31 @@ As we can see here we have two geometry columns; one named `geom_pol` and one na
 ### Identify neighbours
 #### By contiguity
 We can contiguity-based neighbours for each spot using the `poly2nb` function from `spdep`. The function is using heuristics to identify polygons sharing boundary points as neighbours. It also has a `snap =` argument, to allow the shared boundary points to be a short distance from one another. Here we select `snap = 0` because the tessellation generated polygons with shared borders. Finally, the `queen =` argument is set to `TRUE`. This means that the function will look for a chess queen-style of contiguities.
-```{r get_adjacent_neighbours}
+```{r get_adjacent_neighbours_a, message=FALSE, collapse=TRUE}
 ## Get contiguity neighbours
 nb_adjc <- poly2nb(pl = polygons,
                    snap = 0,
                    queen = TRUE)
 length(nb_adjc)
 head(nb_adjc)
+```
+```{r get_adjacent_neighbours_b, message=FALSE, fig.show = 'hold', out.width="50%", fig.height=4, fig.width=5}
+nb_adjc_n <- card(nb_adjc)
+
+ggplot() + 
+  geom_histogram(aes(x = nb_adjc_n, y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(aes(x = nb_adjc_n),
+               alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 6)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  xlab("Number of Neighbours") +
+  theme_classic()
+
 ggplot() + 
   geom_sf(data = polygons, 
           aes(geometry = geom_pol), 
@@ -337,14 +355,14 @@ ggplot() +
   theme_void()
 ```
 
-As you can see, the neighbours object is a `list` of length equal to the number of spots we have in the dataset. Each element of the list represents a spot and the numbers stored inside the indexes of the neighbouring spots. As you can see, the spots have different numbers of neighbours.
+As you can see, the neighbours object is a `list` of length equal to the number of spots we have in the dataset. Each element of the list represents a spot and the numbers stored inside the indexes of the neighbouring spots and the spots have a different numbers of neighbours. The connectivity histogram visualises the distribution of the number of neighbours in the data.
 
 #### By graph
 Once representative points are available, the criteria for neighbourhood can be extended from just contiguity to include graph measures, distance thresholds, and 𝑘-nearest neighbours.
 
 The most direct graph representation of neighbours is to make a Delaunay triangulation of the points, which extends outwards to the convex hull of the points. Note that graph-based representations construct the interpoint relationships based on Euclidean distance. Because it joins distant points around the convex hull, it may be worthwhile to thin the triangulation as a Sphere of Influence (SOI) graph, removing links that are relatively long. Points are SOI neighbours if circles centred on the points, of radius equal to the points’ nearest neighbour distances, intersect in two places [@Avis1985].
 
-```{r get_graph_neighbours1}
+```{r get_graph_neighbours1a, message=FALSE, collapse=TRUE}
 ## Set centroids as default geometry
 st_geometry(polygons) <- "geom_cntd"
 ## Get the neighbour names
@@ -354,6 +372,24 @@ nb_names <- polygons$Barcode
 nb_tri <- tri2nb(polygons$geom_cntd, row.names = nb_names)
 length(nb_tri)
 head(nb_tri)
+```
+```{r get_graph_neighbours1b, message=FALSE, fig.show = 'hold', out.width="50%", fig.height=4, fig.width=5}
+nb_tri_n <- card(nb_tri)
+
+ggplot() + 
+  geom_histogram(aes(x = nb_tri_n, y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(aes(x = nb_tri_n),
+               alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  xlab("Number of Neighbours") +
+  theme_classic()
+
 ggplot() + 
   geom_sf(data = polygons, 
           aes(geometry = geom_pol), 
@@ -365,12 +401,29 @@ ggplot() +
           colour = "black", size = 1) +
   theme_void()
 ```
-```{r get_graph_neighbours2}
+```{r get_graph_neighbours2a, message=FALSE, collapse=TRUE}
 ## Get neighbours by SOI
 nb_soi <- graph2nb(soi.graph(nb_tri, polygons$geom_cntd), 
                    row.names = nb_names)
 length(nb_soi)
 head(nb_soi)
+nb_soi_n <- card(nb_soi)
+```
+``````{r get_graph_neighbours2b, message=FALSE, fig.show = 'hold', out.width="50%", fig.height=4, fig.width=5}
+ggplot() + 
+  geom_histogram(aes(x = nb_soi_n, y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(aes(x = nb_soi_n),
+               alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 8)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  xlab("Number of Neighbours") +
+  theme_classic()
+
 ggplot() + 
   geom_sf(data = polygons, 
           aes(geometry = geom_pol), 
@@ -382,12 +435,29 @@ ggplot() +
           colour = "black", size = 1) +
   theme_void()
 ```
-```{r get_graph_neighbours3}
+```{r get_graph_neighbours3a, message=FALSE, collapse=TRUE}
 ## Get neighbours by Gabriel graph
 nb_gbn <- graph2nb(gabrielneigh(polygons$geom_cntd), 
                    row.names = nb_names)
 length(nb_gbn)
 head(nb_gbn)
+nb_gbn_n <- card(nb_gbn)
+```
+```{r get_graph_neighbours3b, message=FALSE, fig.show = 'hold', out.width="50%", fig.height=4, fig.width=5}
+ggplot() + 
+  geom_histogram(aes(x = nb_gbn_n, y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(aes(x = nb_gbn_n),
+               alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 4)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  xlab("Number of Neighbours") +
+  theme_classic()
+
 ggplot() + 
   geom_sf(data = polygons, 
           aes(geometry = geom_pol), 
@@ -399,12 +469,29 @@ ggplot() +
           colour = "black", size = 1) +
   theme_void()
 ```
-```{r get_graph_neighbours4}
+```{r get_graph_neighbours4a, message=FALSE, collapse=TRUE}
 ## Get Relative graph neighbours
 nb_rn <- graph2nb(relativeneigh(polygons$geom_cntd), 
                    row.names = nb_names)
 length(nb_rn)
 head(nb_rn)
+nb_rn_n <- card(nb_rn)
+```
+```{r get_graph_neighbours4b, message=FALSE, fig.show = 'hold', out.width="50%", fig.height=4, fig.width=5}
+ggplot() + 
+  geom_histogram(aes(x = nb_rn_n, y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(aes(x = nb_rn_n),
+               alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  xlab("Number of Neighbours") +
+  theme_classic()
+
 ggplot() + 
   geom_sf(data = polygons, 
           aes(geometry = geom_pol), 
@@ -421,7 +508,7 @@ Delaunay triangulation neighbours and SOI neighbours are symmetric by design –
 
 #### By distance
 An alternative method is to choose the 𝑘 nearest points as neighbours – this adapts across the study area, taking account of differences in the densities of areal entities. Naturally, in the overwhelming majority of cases, it leads to asymmetric neighbours, but will ensure that all areas have 𝑘 neighbours.
-```{r get_distance_neighbours1}
+```{r get_distance_neighbours1a, collapse=TRUE}
 ## Set centroids as default geometry
 st_geometry(polygons) <- "geom_cntd"
 ## Get distance-based neighbours
@@ -429,6 +516,8 @@ nb_knn <- knn2nb(knearneigh(polygons, k = 6),
                  row.names = nb_names)
 length(nb_knn)
 head(nb_knn)
+```
+```{r get_distance_neighbours1b, fig.height=4, fig.width=5}
 ggplot() + 
   geom_sf(data = polygons, 
           aes(geometry = geom_pol), 
@@ -454,14 +543,32 @@ max_1nn <- max(dsts)
 min_1nn <- min(dsts)
 ```
 
-As you can see, because the 10X Visium spots are equidistant, the majority of the distances is around 6 pixels. Additionally, the maximum distance is almost 20 times the minimum. This is due to the one spot we keep having on the left of our tissue area. As a result in our dataset we will use as upper bound a value that is a function of the minimum distance.
+As you can see, because the 10X Visium spots are equidistant, the majority of the distances is around 6 pixels. Additionally, the maximum distance is almost 20 times the minimum. This is due to the one spot we keep having on the left of our tissue area. As a result in our dataset we will use as upper bound a value that is a function of the minimum distance instead of the maximum.
 
-```{r get_distance_neighbours2b, fig.show = 'hold', out.width="33%", fig.height=5, fig.width=4}
+Let's have a look at how the dataset looks with the maximum as upper boundary
+
+```{r get_distance_neighbours2b_a}
 nb_1nna <- dnearneigh(polygons$geom_cntd, d1 = 0, d2 = 1*max_1nn, row.names = nb_names)
 str(nb_1nna[1:5])
+nb_1nna_n <- card(nb_1nna)
+```
+```{r get_distance_neighbours2b_b, message=FALSE, fig.height=4, fig.width=5}
+ggplot() + 
+  geom_histogram(aes(x = nb_1nna_n, y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(aes(x = nb_1nna_n),
+               alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+  xlab("Number of Neighbours") +
+  theme_classic()
 ```
 
-As you can see, the number of neighbours each spot acquires because we use the max distance as the upper bound is massive and as a result it will not plot correctly.
+As you can see, the number of neighbours each spot acquires because we use the maximum distance as the upper bound is massive and as a result it will not plot correctly.
 
 ```{r get_distance_neighbours2c, fig.show = 'hold', out.width="33%", fig.height=5, fig.width=4}
 nb_1nnb <- dnearneigh(polygons$geom_cntd, d1 = 0, d2 = 1*min_1nn, row.names = nb_names)
@@ -485,11 +592,63 @@ for (p in ps) {
       theme_void()) %>% print()
 }
 ```
+```{r get_distance_neighbours2d, fig.show = 'hold', out.width="33%", fig.height=5, fig.width=4}
+for(p in ps) {
+  q <- get(p)
+  q_n <- card(q)
+
+  (ggplot() + 
+    geom_histogram(aes(x = q_n, y = after_stat(density)), 
+                   colour = "black", 
+                   fill = "grey") +
+    geom_density(aes(x = q_n),
+                 alpha = 0.5,
+                 adjust = 0.5,
+                 fill = "#A0CBE8",
+                 colour = "#4E79A7") +
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+    scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) +
+    labs(title = p, 
+         x = "Number of Neighbours") +
+    theme_classic()) %>% print()
+}
+```
+Using the maximum as the upper limit is not prohibited, it is just not advised if you plan to plot the neighbour relationships on a map.
 
 *The above for identifying neighbours are partially taken from the very well written, well-descriptive and thorough `spdep` package [vignette](https://r-spatial.github.io/spdep/articles/nb.html#distance-based-neighbours) for neighbours identification.*  
 
 #### Adding spatial weights
+The neighbour lists can be supplemented with spatial weights using the `nb2listw` and `nb2listwdist` function from `spdep` package for the chosen type and coding scheme style. There are 6 different coding scheme styles that can be used to weigh neighbour relationships:
 
+1. **B**: is the basic binary coding (1 for neighbour, 0 for no neighbour).
+2. **W**: is row standardised (sums over all links to n).
+3. **C**: is globally standardised (sums over all links to n).
+4. **U**: is equal to C divided by the number of neighbours (sums over all links to unity).
+5. **S**: is the variance-stabilizing coding scheme (sums over all links to n).
+6. **minmax**: divides the weights by the minimum of the maximum row sums and maximum column sums of the input weights; It is similar to the C and U styles.
+
+The coding scheme style is practically the value each neighbour will get. For example, in a binary coding scheme style (**B**) if a spot is a neighbour of the spot in focus then gets the value of **1**, else gets **0**. Another example, in a row standardised coding scheme style (**W**) if the spot in focus has a total of 10 neighbours and each neighbour has a weight of 1, then the sum of all neighbour weights is 10, and each neighbour will get a normalised weight of 1/10 = 0.1. As a result, in the row standardised coding scheme, spots with many neighbours will have neighbours with lower weights and thus will not be over-emphasised.
+
+Starting from a binary neighbours list, in which regions are either listed as neighbours or are absent (thus not in the set of neighbours for some definition), we can add a distance-based weights list. The `nb2listwdist` function supplements a neighbours list with spatial weights for the chosen types of distance modelling and coding scheme. While the offered coding schemes parallel those of the `nb2listw` function above, three distance-based types of weights are available: inverse distance weighting (IDW), double-power distance weights (DPD), and exponential distance decay (EXP). The three types of distance weight calculations are based on pairwise distances 𝑑𝑖𝑗, all of which are controlled by parameter *“alpha”* (𝛼 below):
+
+1. **idw**: 𝑤𝑖𝑗=𝑑−𝛼𝑖𝑗,
+2. **exp**: 𝑤𝑖𝑗=exp(−𝛼⋅𝑑𝑖𝑗),
+3. **dpd**: 𝑤𝑖𝑗=[1−(𝑑𝑖𝑗/𝑑max)𝛼]𝛼,
+
+the latter of which leads to 𝑤𝑖𝑗=0 for all 𝑑𝑖𝑗>𝑑max. Note that *IDW* weights show extreme behaviour close to 0 and can take on the value infinity. In such cases, the infinite values are replaced by the largest finite weight present in the weights list.
+
+The default coding scheme for `nb2listwdist` is “raw”, which outputs the raw distance-based weights without applying any kind of normalisation. In addition, the same coding scheme styles that are also available in the `nb2listw` function can be chosen.
+
+Below we will use only the `nb2listwdist` function which can accommodate both weight types and coding scheme styles.
+
+```{r 03_spatial_weights_to_nb}
+## Set centroids as default geometry
+st_geometry(polygons) <- "geom_cntd"
+## Add weights
+nb_adjc_w <- nb2listwdist(nb_adjc, polygons, type = "idw", style = "W", zero.policy = TRUE)
+## Have a look
+nb_adjc_w$weights[1:5]
+```
 
 ### Generate distance matrices
 A distance matrix is a mirrored matrix that contains the distance between a spot and every other spot. This distance can be weighted according to a bandwidth around each spot using a kernel that gives higher scores to distances between spots that are closer together compared to the ones that are farther away. These weighted distance matrices are later used to run geographically weighted (GW) models.
@@ -517,7 +676,7 @@ bw = (range(dist.Mat)[2])/2
 bw
 ## Select a kernel
 kernel = "bisquare"
-## Calculate W distance matrix ----
+## Calculate W distance matrix
 w <- gw.weight(vdist = dist.Mat, 
                bw = bw,
                kernel = kernel,
@@ -529,3 +688,69 @@ w[1:5, 1:4]
 
 
 ### Putting it all together
+The below code puts all these steps in order by selecting one of the options at each step.
+
+```{r all_in_one}
+## Load data and metadata
+inputD <- readRDS(file = "./data/hsLivSteat_JBO019_inputD.rds")
+inputMD <- readRDS(file = "./data/hsLivSteat_JBO019_inputMD.rds")
+## Create point geometries
+spot_position <- inputMD %>% 
+    select(c("Barcode", "pixel_x", "pixel_y", "Section"))
+centroids <- spot_position %>% 
+  st_as_sf(coords = c("pixel_x", "pixel_y"), 
+           remove = FALSE)
+## Tessellate space
+cntd_union <- st_union(centroids)
+voronoi <- st_voronoi(cntd_union, bOnlyEdges = TRUE)
+voronoi_env <- st_intersection(st_cast(voronoi), st_convex_hull(cntd_union))
+## Polygonise tessellation
+polygons <- st_polygonize(voronoi_env) %>% 
+    st_cast() %>% 
+    st_sf() %>%  
+    st_join(., 
+            centroids[centroids$Section == 1,],
+            join = st_contains,
+            left = FALSE) %>%
+    rename(geom_pol = geometry) %>% 
+    mutate(Barcode_rn = Barcode) %>% 
+    column_to_rownames("Barcode_rn") %>% 
+    st_sf() 
+## Update the polygon object to keep the centroid geometries as well
+polygons <- polygons %>% 
+  left_join(as.data.frame(centroids)) %>% 
+  rename(geom_cntd = geometry) %>% 
+  st_sf(sf_column_name = "geom_pol") 
+## Identify neighbours by Sphere Of Influence
+st_geometry(polygons) <- "geom_cntd"
+nb_tri <- tri2nb(polygons$geom_cntd, row.names = nb_names)
+nb_soi <- graph2nb(soi.graph(nb_tri, polygons$geom_cntd), 
+                   row.names = nb_names)
+nb_soi_w <- nb2listwdist(nb_soi, polygons, type = "idw", style = "W", zero.policy = TRUE)
+## Generate distance matrix
+dist.Mat <- gw.dist(dp.locat = st_coordinates(polygons), p = 2)
+rownames(dist.Mat) <- nb_names
+colnames(dist.Mat) <- nb_names
+bw = (range(dist.Mat)[2])/2
+kernel = "bisquare"
+w <- gw.weight(vdist = dist.Mat, 
+               bw = bw,
+               kernel = kernel,
+               adaptive = FALSE)
+```
+
+```{r all_in_one_plots, fig.show = 'hold', out.width="50%", fig.height=4, fig.width=5}
+## Plot on tissue polygons
+ggplot(data = polygons) + geom_sf(aes(geometry = geom_pol)) + theme_void()
+## Plot neighbour graph
+ggplot() + 
+  geom_sf(data = polygons, 
+          aes(geometry = geom_pol), 
+          colour = "grey30", fill = "white") +
+  geom_sf(data = as(nb2lines(nb_soi, coords = polygons$geom_cntd), "sf"), 
+          colour = "black", linewidth = 0.25) +
+  geom_sf(data = polygons,
+          aes(geometry = geom_cntd),
+          colour = "black", size = 1) +
+  theme_void()
+```

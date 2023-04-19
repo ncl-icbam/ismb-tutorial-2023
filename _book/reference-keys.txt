@@ -81,3 +81,5 @@ load-new-dataset
 polygonise-the-tessellation
 by-contiguity
 by-graph
+adding-spatial-weights
+putting-it-all-together

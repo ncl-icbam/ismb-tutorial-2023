@@ -1,4 +1,30 @@
 # Practical session 2
 In this session we will have a hands-on exploration of GW-PCA and its application to STx data. What can we learn from this novel technique?
 
-##
+## Geographically Weighted Principal Components Analysis (GWPCA)
+A standard PCA can pick out the key multivariate modes of variability in the data. Looking at outlying values of the principal components of these data gives us an idea of unusual sites (in terms of combinations of gene expression profiles -and to a certain extend of combinations of cell types in each spot). Next, Geographically weighted PCA can be used to find spatial multivariate outliers. Sounds complicated, but really all this means is it identifies sites that have an unusual multi-way combination of gene expression in relation to their immediate geographical neighbours. It might be that the values observed at these sites as a combination is not uncommon in the tissue as a whole - but is very unusual in its locality.
+
+To find such outliers the procedure is relatively simple - instead of doing a PCA on the tissue as a whole, for each sample we do a PCA on data falling into a window centred on the location of that spot. In that way we can check whether the spot is like its neighbours or not, from a multivariate viewpoint.
+
+The following code carries out a geographically weighted PCA. In short, it runs a ‘windowed’ PCA around each of the spots.
+
+## Load Quality Controled and Normalised data
+```{r QC_Norm_LiverData, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+## Keep on-tissue spots
+colDATA <- inputMD %>%
+  dplyr::filter(Section == 1)
+
+## Ground truth from dataset authors
+groundTruth <- read.table("./data/spotzonationGroup.txt", header = TRUE)
+colDATA <- colDATA %>%
+  left_join(groundTruth)
+
+## Get mitochondrial gene names
+biomartHuman87 <- create_biomart("human", version = "GRCh37")
+rowDATA <- annotate_vector(rownames(inputD), biomartHuman87)
+is_mito <- grepl("(^MT-)|(^mt-)", rowDATA$gene_name)
+
+### Calculate per-spot QC metrics and store in colData
+colDATA <- colDATA %>% 
+  perCellQCMetrics(inputD, subsets = list(mito = is_mito))
+```

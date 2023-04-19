@@ -269,7 +269,7 @@ ggplot(data = as.data.frame(colData(spe)),
                  colour = "black", 
                  fill = "grey") +
   geom_density(alpha = 0.5,
-               #adjust = 0.5,
+               adjust = 1.5,
                fill = "#A0CBE8",
                colour = "#4E79A7") +
   scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
@@ -499,27 +499,31 @@ colnames(reducedDim(spe, "UMAP")) <- paste0("UMAP", 1:2)
 
 We can generate plots either using plotting functions from the [ggspavis](https://bioconductor.org/packages/ggspavis) package or [`ggplot2`](https://ggplot2.tidyverse.org/) package. Later on clustering, we will add cluster labels to these reduced dimension plots for an off-tissue visualisation.
 
-```{r 02_dimRed_UMAP-vis, fig.width=5, fig.height=5, fig.show='hold'}
+```{r 02_dimRed_UMAP-vis, fig.width=6, fig.height=5, fig.show='hold'}
 ## Plot top 2 PCA dimensions
-plotDimRed(spe, type = "PCA")
+# plotDimRed(spe, type = "PCA")
 
 ggplot(data = as.data.frame(spe@int_colData@listData$reducedDims$PCA),
-       aes(x = PC1, y = PC2)) + 
+       aes(x = PC1, y = PC2, colour = spe@colData$ground_truth)) + 
   geom_point(size = 0.5) + 
+  scale_colour_brewer(type = "qual") + 
   labs(title = "Reduced dimensions: PCA",
        x = "PC1",
-       y = "PC2") +
+       y = "PC2",
+       colour = "Layers") +
   theme_classic()
 
 ## Plot top 2 UMAP dimensions
-plotDimRed(spe, type = "UMAP")
+# plotDimRed(spe, type = "UMAP")
 
 ggplot(data = as.data.frame(spe@int_colData@listData$reducedDims$UMAP),
-       aes(x = UMAP1, y = UMAP2)) + 
+       aes(x = UMAP1, y = UMAP2, colour = spe@colData$ground_truth)) + 
   geom_point(size = 0.5) + 
+  scale_colour_brewer(type = "qual") + 
   labs(title = "Reduced dimensions: UMAP",
        x = "UMAP1",
-       y = "UMAP2") +
+       y = "UMAP2",
+       colour = "Layers") +
   theme_classic()
 ```
 

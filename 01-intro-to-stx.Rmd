@@ -10,7 +10,7 @@ The dataset a single sample from the dorsolateral prefrontal cortex (DLPFC) 10x 
 
 Here, we show how to load the data from the `STexampleData` package.
 
-```{r 01_load-data, message=FALSE, eval=FALSE}
+```{r 01_load-data, message=FALSE}
 library(SpatialExperiment)
 library(STexampleData)
 
@@ -58,7 +58,7 @@ assayNames(spe)
 ### Counts table and gene metadata
 ```{r 01_counts-inspect, message=FALSE}
 ## Have a look at the counts table
-head(assay(spe))
+assay(spe)[1:6,1:4]
 ```
 
 As you can see here the counts table is of class `dgTMatrix` which is a sparse matrix. This is because much like scRNA-seq data, STx data are sparse and include many zeros. As a result, to make the counts table as light as possible we resort to using sparse matrices. The next code chunk will demonstrate a part of the matrix that includes genes with some level of expression.
