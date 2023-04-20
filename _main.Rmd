@@ -1,0 +1,385 @@
+--- 
+title: "Spatial transcriptomics data analysis: theory and practice"
+author: "Eleftherios Zormpas, Dr Simon J. Cockell"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+documentclass: book
+bibliography: [book.bib, packages.bib]
+# url: your book url like https://bookdown.org/yihui/bookdown
+# cover-image: path to the social sharing image like images/cover.jpg
+description: "This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice."
+link-citations: yes
+github-repo: https://github.com/ncl-icbam/ismb-tutorial-2023.git
+---
+
+# url: your book url like https://bookdown.org/yihui/bookdown
+
+Placeholder
+
+
+## Abstract {-}
+## Learning objectives {-}
+
+<!--chapter:end:index.Rmd-->
+
+
+# Practical session 1
+
+Placeholder
+
+
+## Log into the Posit Cloud server
+## Import 10X Visium data
+## Explore data types
+### SpatialExperiment class
+### Inspect the object
+### Counts table and gene metadata
+### Coordinates table and spot metadata
+### Image metadata
+
+<!--chapter:end:01-intro-to-stx.Rmd-->
+
+
+# Practical session 2
+
+Placeholder
+
+
+## Load packages {-}
+## Spot-level Quality Control
+### Plot tissue map
+### Calculating QC metrics
+### Library size threshold plot
+### Number of expressed genes
+### Percentage of mitochondrial expression
+### Number of cells per spot
+### Remove low-quality spots
+## Normalisation of counts
+### Background
+### Log-tranformation of counts
+## Selecting genes
+### Background
+### Highly Variable Genes (HVGs)
+### Spatially variable genes (SVGs)
+### Integration of HVGs and SVGs
+## Dimensionality reduction
+### Background  
+### PCA: Principal component analysis
+### UMAP: Uniform Manifold Approximation and Projection
+### UMAP visualisations
+## Clustering
+### Background
+### Clustering on HVGs
+### HVGs clustering visualisations
+### Spatially-aware clustering
+## Inter-cluster differentially expressed genes (DGEs)
+### Background
+### DGEs identification
+### DGEs visualisation
+## Other visualisations
+
+<!--chapter:end:02-stx-analysis.Rmd-->
+
+
+# Practical session 3
+
+Placeholder
+
+
+## Load packages
+## Background
+### Main geocomputatinal data structures
+### The `sf` objects
+#### Simple feature geometry types
+#### sf: objects with simple features
+#### sfc: simple feature geometry list-column
+#### sfg: simple feature geometry
+## Data structures preparation
+### Load new dataset
+## Load counts table
+## Load spot metadata
+### Create point geometries
+## Extract coordinates
+## Convert spots to centroids
+### Tesselate space
+## Combine the points into a multipoint geometry:
+## Use the union of points to generate a voronoi object
+## Create an enveloped voronoi tessellation around the tissue
+## Plot tessellation as is
+## Plot enveloped tessellation
+### Polygonise the tessellation
+## Generate the POLYGONS from the MULTILINESTRING
+## Plot on tissue polygons
+## Update the polygon object to keep the centroid geometries as well
+### Identify neighbours
+#### By contiguity
+## Get contiguity neighbours
+#### By graph
+## Set centroids as default geometry
+## Get the neighbour names
+## By Delaunay triangulation
+## Get neighbours by SOI
+## Get neighbours by Gabriel graph
+## Get Relative graph neighbours
+#### By distance
+## Set centroids as default geometry
+## Get distance-based neighbours
+## Get distance-based neighbours for k = 1
+#### Adding spatial weights
+## Set centroids as default geometry
+## Add weights
+## Have a look
+### Generate distance matrices
+## Set centroids as default geometry
+## Get Euclidean distances between spots
+## Set bandwidth
+## Select a kernel
+## Calculate W distance matrix
+### Putting it all together
+## Load data and metadata
+## Create point geometries
+## Tessellate space
+## Polygonise tessellation
+## Update the polygon object to keep the centroid geometries as well
+## Identify neighbours by Sphere Of Influence
+## Generate distance matrix
+## Plot on tissue polygons
+## Plot neighbour graph
+
+<!--chapter:end:03-intro-geospatial.Rmd-->
+
+# Practical session 2
+In this session we will have a hands-on exploration of GW-PCA and its application to STx data. What can we learn from this novel technique?
+
+## Geographically Weighted Principal Components Analysis (GWPCA)
+A standard PCA can pick out the key multivariate modes of variability in the data. Looking at outlying values of the principal components of these data gives us an idea of unusual sites (in terms of combinations of gene expression profiles -and to a certain extend of combinations of cell types in each spot). Next, Geographically weighted PCA can be used to find spatial multivariate outliers. Sounds complicated, but really all this means is it identifies sites that have an unusual multi-way combination of gene expression in relation to their immediate geographical neighbours. It might be that the values observed at these sites as a combination is not uncommon in the tissue as a whole - but is very unusual in its locality.
+
+To find such outliers the procedure is relatively simple - instead of doing a PCA on the tissue as a whole, for each sample we do a PCA on data falling into a window centred on the location of that spot. In that way we can check whether the spot is like its neighbours or not, from a multivariate viewpoint.
+
+The following code carries out a geographically weighted PCA. In short, it runs a ‘windowed’ PCA around each of the spots.
+
+## Load Quality Controled and Normalised data
+```{r QC_Norm_LiverData, echo=FALSE, message=FALSE, warning=FALSE, results='hide'}
+## Keep on-tissue spots
+colDATA <- inputMD %>%
+  dplyr::filter(Section == 1)
+
+## Ground truth from dataset authors
+groundTruth <- read.table("./data/spotzonationGroup.txt", header = TRUE)
+colDATA <- colDATA %>%
+  left_join(groundTruth)
+
+## Get mitochondrial gene names
+#biomartHumanGRCh37 <- create_biomart("human", version = "GRCh37")
+biomartHumanGRCh37 <- readRDS(file = "./data/biomartHumanGRCh37.rds")
+#rowDATA <- annotate_vector(rownames(inputD), biomartHumanGRCh37)
+rowDATA <- readRDS(file = "./data/rowData.rds")
+is_mito <- grepl("(^MT-)|(^mt-)", rowDATA$gene_name)
+
+## Calculate per-spot QC metrics and store in colData
+perCellQC <- perCellQCMetrics(inputD, subsets = list(mito = is_mito)) %>% 
+  as.data.frame() %>%
+  rownames_to_column(var = "Barcode")
+colDATA <- colDATA %>% 
+  left_join(perCellQC)
+
+## Calculate size factors
+sizeFactor <- librarySizeFactors(inputD) %>% 
+  as.data.frame() %>%
+  rename("sizeFactor" = ".") %>%
+  rownames_to_column(var = "Barcode")
+colDATA <- colDATA %>% 
+  left_join(sizeFactor)
+
+## Add geometries to colData
+colDATA <- colDATA %>% 
+  left_join(polygons)
+
+## Select library size threshold
+qc_lib_size <- colDATA$sum < 700
+colDATA$qc_lib_size <- qc_lib_size
+## Select expressed genes threshold
+qc_detected <- colDATA$detected < 500
+colDATA$qc_detected <- qc_detected
+## Select expressed genes threshold
+qc_mito <- colDATA$subsets_mito_percent > 24
+colDATA$qc_mito <- qc_mito
+## Check the number of discarded spots for each metric
+apply(cbind(qc_lib_size, qc_detected, qc_mito), 2, sum)
+## Combine together the set of discarded spots
+discard <- qc_lib_size | qc_detected | qc_mito
+## Store the set in the object
+colDATA$discard <- discard
+
+## Remove spots that fail to pass the QC
+counts <- inputD[,!colDATA$discard]
+colDATA <- filter(colDATA, discard == FALSE)
+
+## Normalise counts
+sizeFactor <- colDATA$sizeFactor
+names(sizeFactor) <- colDATA$Barcode
+counts_norm <- normalizeCounts(counts, size.factors = sizeFactor)
+
+## Remove mitochondrial genes
+counts_norm <- counts_norm[!is_mito, ]
+
+## Fit mean-variance relationship
+dec <- modelGeneVar(counts_norm)
+
+## Select top HVGs
+top_hvgs <- getTopHVGs(dec, prop = 0.1)
+
+
+```
+
+```{r}
+# -------- plot annotation --------- ---------  ---- #
+ggplot(data = colDATA) + 
+  geom_sf(aes(geometry = geom_pol, fill = annotation)) + theme_void()
+
+# -------- library size QC --------- ---------  ---------  ---------  -------- #
+ggplot(data = colDATA, aes(x = "", y = sum)) +
+    geom_violin(fill = "#A6CEE3", colour = "orange", linewidth = 0.9) +
+    geom_jitter(width = 0.5, colour = "black", alpha = 0.5) +
+    geom_boxplot(width = 0.1, colour = "black", alpha = 0.2) +
+    geom_hline(yintercept = 500, colour = "red") +
+    scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) + 
+    ylab("Library size") + 
+    theme_classic()
+## Select library size threshold
+qc_lib_size <- colDATA$sum < 700
+## Check how many spots are filtered out
+table(qc_lib_size)
+colDATA$qc_lib_size <- qc_lib_size
+ggplot(data = colDATA) + 
+  geom_sf(aes(geometry = geom_pol, fill = qc_lib_size)) + theme_void()
+
+# -------- genes expressed QC --------- ---------  ---------  ---------  ----- #
+
+## Density and histogram of expressed genes
+ggplot(data = colDATA,
+       aes(x = detected)) +
+  geom_histogram(aes(y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  xlab("Genes expressed in each spot") + 
+  ylab("Density") + 
+  theme_classic()
+ggplot(data = colDATA, aes(x = "", y = detected)) +
+    geom_violin(fill = "#A6CEE3", colour = "orange", linewidth = 0.9) +
+    geom_jitter(width = 0.5, colour = "black", alpha = 0.5) +
+    geom_boxplot(width = 0.1, colour = "black", alpha = 0.2) +
+    geom_hline(yintercept = 500, colour = "red") +
+    scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) + 
+    ylab("detected genes") + 
+    theme_classic()
+## Select expressed genes threshold
+qc_detected <- colDATA$detected < 500
+## Check how many spots are filtered out
+table(qc_detected)
+## Add threshold in colData
+colDATA$qc_detected <- qc_detected
+ggplot(data = colDATA) + 
+  geom_sf(aes(geometry = geom_pol, fill = qc_detected)) + theme_void()
+
+# -------- Percentage of mitochondrial expression QC --------- ---------  ---- #
+
+ggplot(data = colDATA,
+       aes(x = subsets_mito_percent)) +
+  geom_histogram(aes(y = after_stat(density)), 
+                 colour = "black", 
+                 fill = "grey") +
+  geom_density(alpha = 0.5,
+               adjust = 0.5,
+               fill = "#A0CBE8",
+               colour = "#4E79A7") +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 10)) + 
+  xlab("Percentage of mitochondrial expression") + 
+  ylab("Density") + 
+  theme_classic()
+ggplot(data = colDATA, aes(x = "", y = subsets_mito_percent)) +
+    geom_violin(fill = "#A6CEE3", colour = "orange", linewidth = 0.9) +
+    geom_jitter(width = 0.5, colour = "black", alpha = 0.5) +
+    geom_boxplot(width = 0.1, colour = "black", alpha = 0.2) +
+    geom_hline(yintercept = 24, colour = "red") +
+    scale_y_continuous(breaks = scales::pretty_breaks(n = 20)) + 
+    ylab("Percentage of mitochondrial expression") + 
+    theme_classic()
+## Select expressed genes threshold
+qc_mito <- colDATA$subsets_mito_percent > 24
+## Check how many spots are filtered out
+table(qc_mito)
+## Add threshold in colData
+colDATA$qc_mito <- qc_mito
+ggplot(data = colDATA) + 
+  geom_sf(aes(geometry = polygons$geom_pol, fill = qc_mito)) + theme_void()
+
+# -------- Apply QC --------- --------- --------- --------- --------- -------- #
+
+## Check the number of discarded spots for each metric
+apply(cbind(qc_lib_size, qc_detected, qc_mito), 2, sum)
+## Combine together the set of discarded spots
+discard <- qc_lib_size | qc_detected | qc_mito
+## Store the set in the object
+colDATA$discard <- discard
+ggplot(data = colDATA) + 
+  geom_sf(aes(geometry = geom_pol, colour = discard, fill = annotation)) + scale_colour_manual(values = c("white", "red")) + theme_void()
+
+# -------- mean-variance relationship ---------- ---------- --------- -------- #
+
+## Visualize mean-variance relationship
+fit <- metadata(dec)
+fit_df <- data.frame(mean = fit$mean,
+                     var = fit$var,
+                     trend = fit$trend(fit$mean))
+ggplot(data = fit_df, 
+       aes(x = mean, y = var)) + 
+  geom_point() + 
+  geom_line(aes(y = trend), colour = "dodgerblue", linewidth = 1.5) + 
+  labs(x = "mean of log-expression",
+       y = "variance of log-expression") + 
+  theme_classic()
+
+
+
+```
+
+<!--chapter:end:04-gwpca.Rmd-->
+
+
+# Blocks
+
+Placeholder
+
+
+## Equations
+## Theorems and proofs
+## Callout blocks
+
+<!--chapter:end:05-blocks.Rmd-->
+
+
+# Sharing your book
+
+Placeholder
+
+
+## Publishing
+## 404 pages
+## Metadata for sharing
+
+<!--chapter:end:06-share.Rmd-->
+
+`r if (knitr::is_html_output()) '
+# References {-}
+'`
+
+<!--chapter:end:07-references.Rmd-->
+

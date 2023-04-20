@@ -1,4 +1,4 @@
-spot	zonationGroup
+Barcode	annotation
 AAACCCGAACGAAATC.1	Mid
 AAACGAGACGGTTGAT.1	Central
 AAAGTGTGATTTATCT.1	Mid

@@ -100,7 +100,7 @@ As we can see there are no obvious issues with the library sizes. An example of 
 
 If the dataset we are analysing contains the number of cells that are present in each spot (this one does), then it makes sense to also plot the library sizes against the number of cells per spot. In that way we are making sure that we don't remove any spots that may have biological meaning. In many cases though the datasets do not have such information unless we can generate it using a nuclei segmentation tool to extract this information from the H&E images.
 
-The horizontal red line (argument `threshold` in the `plotQC` function) shows a first guess at a possible filtering threshold for library size based on the above histogram. The below plot can also be plotted using ggplot. For the ggplot implementation have a look at the [appendix](XXXX).
+The horizontal red line (argument `threshold` in the `plotQC` function) shows a first guess at a possible filtering threshold for library size based on the above histogram. The below plot can also be plotted using ggplot.
 
 ```{r 02_plot-libSizeVScelNo, fig.width=6, fig.height=5, warning=FALSE, message=FALSE}
 ## Scatter plot, library size against number of cells per spot
@@ -116,7 +116,7 @@ We need to keep in mind here that the threshold is, up to an extend, arbitrary. 
 qc_lib_size <- colData(spe)$sum < 700
 ## Check how many spots are filtered out
 table(qc_lib_size)
-## Apply threshold
+## Add threshold in colData
 colData(spe)$qc_lib_size <- qc_lib_size
 
 ## Check putative spatial patterns of removed spots
@@ -132,7 +132,7 @@ As an aside, try to illustrate what happens if we set the threshold too high (i.
 code...
 ## Check how many spots are filtered out
 code...
-## Apply threshold
+## Add threshold in colData
 code...
 
 ## Check putative spatial patterns of removed spots
@@ -175,7 +175,7 @@ plotQC(spe, type = "scatter",
 qc_detected <- colData(spe)$detected < 500
 ## Check how many spots are filtered out
 table(qc_detected)
-## Apply threshold
+## Add threshold in colData
 colData(spe)$qc_detected <- qc_detected
 
 ## Check for putative spatial pattern of removed spots
@@ -191,7 +191,7 @@ Again, try to illustrate what happens if we set the threshold too high (i.e., 10
 code...
 ## Check how many spots are filtered out
 code...
-## Apply threshold
+## Add threshold in colData
 code...
 
 ## Check putative spatial patterns of removed spots
@@ -233,7 +233,7 @@ plotQC(spe, type = "scatter",
 qc_mito <- colData(spe)$subsets_mito_percent > 28
 ## Check how many spots are filtered out
 table(qc_mito)
-## Apply threshold
+## Add threshold in colData
 colData(spe)$qc_mito <- qc_mito
 
 ## Check for putative spatial pattern of removed spots
@@ -249,7 +249,7 @@ Again, try to illustrate what happens if we set the threshold too low (i.e., 20 
 code...
 ## Check how many spots are filtered out
 code...
-## Apply threshold
+## Add threshold in colData
 code...
 
 ## Check putative spatial patterns of removed spots
@@ -296,7 +296,7 @@ As we can see from both the histogram and the scatter plot there is a tail of ve
 qc_cell_count <- colData(spe)$cell_count > 10
 ## Check how many spots are filtered out
 table(qc_cell_count)
-## Apply threshold
+## Add threshold in colData
 colData(spe)$qc_cell_count <- qc_cell_count
 
 ## Check for putative spatial pattern of removed spots
