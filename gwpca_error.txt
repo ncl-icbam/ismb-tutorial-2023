@@ -1,0 +1,22 @@
+gwpca error for settings with bw = bw.choice = 671
+
+
+Show in New Window
+Warning in doTryCatch(return(expr), name, parentenv, handler) :
+  restarting interrupted promise evaluation
+
+Error in base::try(outliers, silent = TRUE) : object 'outliers' not found
+12. match.fun(FUN)
+11. sweep(x, 1, wt, "*")
+10. is.data.frame(x)
+9. colSums(sweep(x, 1, wt, "*"))
+8. sweep(x, 2, colSums(sweep(x, 1, wt, "*"))/sum(wt))
+7. local.center(x, wt)
+6. sweep(local.center(x, wt), 1, sqrt(wt), "*")
+5. as.matrix(x)
+4. svd(sweep(local.center(x, wt), 1, sqrt(wt), "*"), ...)
+3. pcafun(x[use, ], wt, nu = 0, nv = k)
+2. gwpca.cv.contrib(x, dp.locat, bw, k, robust, kernel, adaptive,
+p, theta, longlat, dMat)
+1. gwpca(inputPCAgw, vars = vars, bw = bw.choice, k = k, dMat = dist.Mat,
+adaptive = TRUE, kernel = "gaussian")
