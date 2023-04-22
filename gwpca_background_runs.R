@@ -9,7 +9,6 @@ rowDATA <- readRDS(file = "./data/rowDATA.rds")
 colDATA <- readRDS(file = "./data/colDATA.rds")
 ## Prepare for Geographically Weighted PCA (GWPCA)
 countsNormCenter <- countsNormCenter %>%
-  t() %>%
   as.data.frame() %>% 
   rownames_to_column(var = "rowname") %>%
   arrange("rowname") %>%
@@ -35,6 +34,16 @@ kernel = "gaussian"
 
 ## Set a bandwidth -in pixels- for neighbourhood 
 dist.Mat <- gw.dist(dp.locat = st_coordinates(colDATA$geom_cntd), p = 2)
+
+bw.choice <- bw.gwpca(inputPCAgw, 
+                      vars = vars, 
+                      k = k,
+                      kernel = kernel,
+                      dMat = dist.Mat, 
+                      adaptive = TRUE)
+
+## Save 
+saveRDS(bw.choice, file = "./data/bw.choice.rds")
 # bw.choice <- readRDS(file = "./data/bw.choice.rds")
 bw.choice <- 19
 
