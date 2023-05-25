@@ -1,6 +1,10 @@
 # Practical session 1
 In this practical session you will familiarise yourself with the data and their different aspects.
 
+```{r time_start, cache=FALSE, echo=FALSE, message=FALSE}
+begin <- Sys.time()
+```
+
 ## Log into the Posit Cloud server
 
 ## Import 10X Visium data
@@ -93,4 +97,9 @@ head(colData(spe))
 imgData(spe)
 ```
 
-
+```{r time_end, cache=FALSE}
+end <- Sys.time()
+time_taken <- difftime(end, begin)
+print(time_taken)
+# Time difference of 24.13201 secs
+```

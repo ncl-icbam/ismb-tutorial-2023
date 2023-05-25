@@ -1,5 +1,9 @@
-# Practical session 2
+# Practical session 4
 In this session we will have a hands-on exploration of GW-PCA and its application to STx data. What can we learn from this novel technique?
+
+```{r time_start4, cache=FALSE, echo=FALSE, message=FALSE}
+begin <- Sys.time()
+```
 
 ## Geographically Weighted Principal Components Analysis (GWPCA)
 A standard PCA can pick out the key multivariate modes of variability in the data. Looking at outlying values of the principal components of these data gives us an idea of unusual sites (in terms of combinations of gene expression profiles -and to a certain extend of combinations of cell types in each spot). Next, Geographically weighted PCA can be used to find spatial multivariate outliers. Sounds complicated, but really all this means is it identifies sites that have an unusual multi-way combination of gene expression in relation to their immediate geographical neighbours. It might be that the values observed at these sites as a combination is not uncommon in the tissue as a whole - but is very unusual in its locality.
@@ -9,7 +13,7 @@ To find such outliers the procedure is relatively simple - instead of doing a PC
 The following code carries out a geographically weighted PCA. In short, it runs a ‘windowed’ PCA around each of the spots.
 
 ## Load packages
-```{r 03_loadPackages, , message=FALSE}
+```{r 04_loadPackages, , message=FALSE}
 library(spdep)
 library(sf)
 library(GWmodel)
@@ -19,6 +23,16 @@ library(cols4all)
 library(scuttle)
 library(scater)
 library(scran)
+
+## to get this to work here...
+#List and source all scripts in the core folder.
+file.sources <- list.files(path = "/Users/Simon/Documents/GitHub/STExplorer/R/core", 
+                           pattern = "*.R$", 
+                           all.files = TRUE, 
+                           recursive = TRUE, 
+                           full.names = TRUE, 
+                           ignore.case = TRUE)
+sapply(file.sources, source, local = .GlobalEnv)
 ```
 
 ## Load Quality Controled and Normalised data
@@ -98,21 +112,21 @@ countsNormCenter <- scale(counts_topHVGs, center = TRUE, scale = TRUE)
 ## Add size factors in colData
 sizeFactor <- sizeFactor %>% 
   as.data.frame() %>%
-  rename("sizeFactor" = ".") %>%
+  dplyr::rename("sizeFactor" = ".") %>%
   rownames_to_column(var = "Barcode")
 colDATA <- colDATA %>% 
   left_join(sizeFactor)
 
 ## Save
-saveRDS(countsNormCenter, file = "./data/countsNormScaled.rds")
-saveRDS(rowDATA, file = "./data/rowDATA.rds")
-saveRDS(colDATA, file = "./data/colDATA.rds")
+# saveRDS(countsNormCenter, file = "./data/countsNormScaled.rds")
+# saveRDS(rowDATA, file = "./data/rowDATA.rds")
+# saveRDS(colDATA, file = "./data/colDATA.rds")
 ```
 
 ```{r 04_load_data}
-countsNormCenter <- readRDS(file = "./data/countsNormScaled.rds")
-rowDATA <- readRDS(file = "./data/rowDATA.rds")
-colDATA <- readRDS(file = "./data/colDATA.rds")
+# countsNormCenter <- readRDS(file = "./data/countsNormScaled.rds")
+# rowDATA <- readRDS(file = "./data/rowDATA.rds")
+# colDATA <- readRDS(file = "./data/colDATA.rds")
 ```
 
 We imported 3 tables:
@@ -158,19 +172,21 @@ dist.Mat <- gw.dist(dp.locat = st_coordinates(colDATA$geom_cntd), p = 2)
 ```
 
 The bandwidth is essentially the radius around each spot where every other spot that falls inside it is considered a neighbour. We can set bandwidth as a fixed value or we can select the bandwidth automatically. Without going into detail here, this is achieved by a form of cross validation, where each observation is omitted, and it is attempted to reconstruct the values on the basis of principal components, derived from the other observations. The bandwidth achieving the optimal results is the one selected. For a complete explanation, see @Harris2011Oct. The function `bw.gwpca` computes this:
-```{r 04_bw_choice, eval=FALSE}
-bw.choice <- bw.gwpca(inputPCAgw, 
-                      vars = vars, 
-                      k = k,
-                      kernel = kernel,
-                      dMat = dist.Mat, 
-                      adaptive = TRUE)
 
-## Save 
-saveRDS(bw.choice, file = "./data/bw.choice.rds")
+```{r 04_bw_choice, eval=FALSE}
+# bw.choice <- bw.gwpca(inputPCAgw, 
+#                       vars = vars, 
+#                       k = k,
+#                       kernel = kernel,
+#                       dMat = dist.Mat, 
+#                       adaptive = TRUE)
+# 
+# ## Save 
+# saveRDS(bw.choice, file = "./data/bw.choice.rds")
 ```
 
 Since this command computes several GWPCA estimates at different bandwidths in order to find an optimum, it will take noticeably longer than the version of the function with a prescribed bandwidth. Once run, `gwpca` is re-run with the bandwidth set to `bw.choice.` Below load the `bw.choice` object we already calculated for you:
+
 ```{r 04_bw_choice_load}
 bw.choice <- readRDS(file = "./data/bw.choice.rds")
 ```
@@ -179,7 +195,9 @@ bw.choice <- readRDS(file = "./data/bw.choice.rds")
 
 ## Run GWPCA
 Run the optimised GWPCA with the automatically estimated bandwidth:
+
 ```{r 04_run_gwpca1, eval=FALSE}
+begin_pca <- Sys.time()
 pcaGW <- gwpca(inputPCAgw,
                vars = vars,
                bw = bw.choice,
@@ -187,11 +205,15 @@ pcaGW <- gwpca(inputPCAgw,
                dMat = dist.Mat,
                adaptive = TRUE,
                kernel = kernel)
+end_pca <- Sys.time()
+time_pca <- difftime(end_pca, begin_pca)
+print(time_pca)
 ```
 
 Because GWPCA can take some time to run, we ran it for you and below you can load the output:
 ```{r 04_run_gwpca2}
-pcaGW <- readRDS(file = "./data/pcaGW.rds")
+# pcaGW <- readRDS(file = 
+#                    )
 ```
 
 ## Plot global PCA results
@@ -212,6 +234,7 @@ ggplot(pvar[1:10,], aes(x = PCs, y = var, group = 1)) +
     ylim(0, 1) + 
     theme_classic()
 ```
+
 In a Principal Component Analysis (PCA), the first three principal components may explain less than 15% of the variance in the data if the data is highly dispersed or if there is a large amount of noise in the data. This means that the first three principal components are not capturing a significant portion of the variability in the data. This could be due to a lack of clear structure in the data or a lack of meaningful patterns that can be captured by the PCA. Alternatively, it could be due to the presence of many irrelevant features or variables in the data that are not contributing to the overall variance.
 
 ## Identify the leading genes in each location
@@ -245,7 +268,9 @@ ggplot() +
 ```
 
 ## Percentage of Total Variation (PTV)
+
 Another useful diagnostic for PCA is the percentage of variability in the data explained by each of the components. This can be achieved by looking at the `var` component of `pcaGW`; this is written as `pcaGW$var`. This is an XXXX by XX matrix - where XXXX is the number of observations and XX is the number of components. For each location, the XX columns correspond to the variance of each of the principal components. Looking at the proportion of each component in the sum of all of the variances shows how much of the variability in the data each component contributes. If, say, the first two components contributed 90% of the total variance, then it is reasonable to assume that much of the variability in the data can be seen by just looking at these two components. Because this is geographically weighted PCA, however, this quantity varies across the map.
+
 ```{r 04_ptv}
 ## Calculate the PTV for multiple Components
 props <- gwpca.prop.var(gwpca.obj = pcaGW,
@@ -271,6 +296,7 @@ for (i in c(5, 10, 20, 30)) {
 
 ## Identify discrepancies
 Global PCA can be used to identify multivariate outliers. Extending this, it is also possible to use local PCA (i.e., GWPCA) to identify local outliers. One way of doing this links back to the cross-validation idea used earlier to select a bandwidth. Recall that this is based on a score of how well each observation can be reconstructed on the basis of local PCs. The score measures the total discrepancies of true data values from the reconstructed ones - and the bandwidth chosen is the one minimising this. However, the total discrepancy score is the sum of the individual discrepancies. A very large individual discrepancy associated with an observation suggests it is very different - in a multidimensional way, to the observations near to it. These discrepancies can be calculated with the `gwpca.cv.contrib` function.
+
 ```{r 04_discrep1}
 ## Calculate the discrepancies
 data.mat <- as.matrix(inputPCAgw@data)
@@ -339,4 +365,11 @@ gwpca.plot.outlier(countsNormCenter,
                    check.names = FALSE,
                    scale = "row",
                    color = rev(colorRampPalette(brewer.pal(11, "RdBu"))(1000)))
+```
+
+```{r time_end4, cache=FALSE}
+end <- Sys.time()
+time_taken <- difftime(end, begin)
+print(time_taken)
+# Time difference of 1.920817 mins
 ```
