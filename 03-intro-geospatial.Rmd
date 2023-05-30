@@ -1,8 +1,13 @@
 # Practical session 3
 This practical session will demonstrate the application of the most commonly used spatial analysis tools to STx data, and how we work with coordinate data alongside expression data. 
 
+```{r time_start3, cache=FALSE, echo=FALSE, message=FALSE}
+begin <- Sys.time()
+```
+
+
 ## Load packages
-```{r 03_loadPackages, , message=FALSE}
+```{r 03_loadPackages, message=FALSE}
 library(spdep)
 library(sf)
 library(GWmodel)
@@ -287,7 +292,7 @@ polygons <- st_polygonize(voronoi_env) %>% # polygonise the tessellation
             centroids[centroids$Section == 1,],
             join = st_contains,
             left = FALSE) %>%
-    rename(geom_pol = geometry) %>% # Join the centroids with the POLYGONS 
+    dplyr::rename(geom_pol = geometry) %>% # Join the centroids with the POLYGONS 
     mutate(Barcode_rn = Barcode) %>% # duplicate the barcode column
     column_to_rownames("Barcode_rn") %>% # move duplicate column to row names
     st_sf() # convert back to sf (mutate makes it a df)
@@ -307,7 +312,7 @@ Because there are times that we will need the polygons and times that we will ne
 ## Update the polygon object to keep the centroid geometries as well
 polygons <- polygons %>% # rename polygons geom column
   left_join(as.data.frame(centroids)) %>% # left joint pols and cntds
-  rename(geom_cntd = geometry) %>% # rename centroids geom column
+  dplyr::rename(geom_cntd = geometry) %>% # rename centroids geom column
   st_sf(sf_column_name = "geom_pol") # set polygons geom column to be the default (one must be)
 
 head(polygons)
@@ -712,14 +717,14 @@ polygons <- st_polygonize(voronoi_env) %>%
             centroids[centroids$Section == 1,],
             join = st_contains,
             left = FALSE) %>%
-    rename(geom_pol = geometry) %>% 
+    dplyr::rename(geom_pol = geometry) %>% 
     mutate(Barcode_rn = Barcode) %>% 
     column_to_rownames("Barcode_rn") %>% 
     st_sf() 
 ## Update the polygon object to keep the centroid geometries as well
 polygons <- polygons %>% 
   left_join(as.data.frame(centroids)) %>% 
-  rename(geom_cntd = geometry) %>% 
+  dplyr::rename(geom_cntd = geometry) %>% 
   st_sf(sf_column_name = "geom_pol") 
 ## Identify neighbours by Sphere Of Influence
 st_geometry(polygons) <- "geom_cntd"
@@ -753,4 +758,11 @@ ggplot() +
           aes(geometry = geom_cntd),
           colour = "black", size = 1) +
   theme_void()
+```
+
+```{r time_end3, cache=FALSE}
+end <- Sys.time()
+time_taken <- difftime(end, begin)
+print(time_taken)
+# Time difference of 1.920817 mins
 ```
