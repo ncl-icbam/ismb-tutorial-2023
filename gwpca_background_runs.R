@@ -35,6 +35,8 @@ kernel = "gaussian"
 ## Set a bandwidth -in pixels- for neighbourhood 
 dist.Mat <- gw.dist(dp.locat = st_coordinates(colDATA$geom_cntd), p = 2)
 
+print("bw.choice running...")
+
 bw.choice <- bw.gwpca(inputPCAgw, 
                       vars = vars, 
                       k = k,
@@ -46,6 +48,8 @@ bw.choice <- bw.gwpca(inputPCAgw,
 saveRDS(bw.choice, file = "./data/bw.choice.rds")
 # bw.choice <- readRDS(file = "./data/bw.choice.rds")
 bw.choice <- 19
+
+print("gwpca running...")
 
 pcaGW <- gwpca(inputPCAgw,
                vars = vars,
