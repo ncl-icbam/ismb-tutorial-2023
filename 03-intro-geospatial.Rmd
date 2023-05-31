@@ -8,11 +8,24 @@ begin <- Sys.time()
 
 ## Load packages
 ```{r 03_loadPackages, message=FALSE}
-library(spdep)
-library(sf)
-library(GWmodel)
-library(ggplot2)
+library(SpatialFeatureExperiment)
 library(tidyverse)
+library(scran)
+library(scater)
+library(ggspavis)
+library(sf)
+library(spdep)
+library(GWmodel)
+
+## to get this to work here...
+#List and source all scripts in the core folder.
+file.sources <- list.files(path = "./data/R/core", 
+                           pattern = "*.R$", 
+                           all.files = TRUE, 
+                           recursive = TRUE, 
+                           full.names = TRUE, 
+                           ignore.case = TRUE)
+sapply(file.sources, source, local = .GlobalEnv)
 ```
 
 - [`spdep`](https://cran.r-project.org/web/packages/spdep/index.html) is a collection of functions to create spatial weights matrix objects from polygon *'contiguities'*, from point patterns by distance and tessellations, for summarizing these objects, and for permitting their use in spatial data analysis like regional aggregation and tests for spatial *'autocorrelation'*.
@@ -209,10 +222,110 @@ length(x)
 *The above are taken from the very well written, well-descriptive and thorough `sf` package [vignette](https://cran.r-project.org/web/packages/sf/vignettes/sf1.html).*
 
 ## Data structures preparation
-For this practical we will be using a human steatotic kidney dataset from the [Liver Atlas](https://livercellatlas.org/index.php) [@GUILLIAMS2022379]. 
+For this practical we will be using a human steatotic kidney dataset from the [Liver Atlas](https://livercellatlas.org/index.php) [@GUILLIAMS2022379]. Specifically we will use the JBO019 sample.
 
 ### Load new dataset
-First we load the counts table with genes in rows and spots in columns.
+First we generate the `SpatialFeaturesExperiment` object which is an extension of the `SpatialExperiment` (SPE) object that we used in the 2nd practical session. The difference is that the SFE object has incorporated the `sf` object structure and thus can accommodate the use of geocomputational tools.
+
+```{r 03_load_sfe, warning=FALSE}
+sampleDir <- "./data/spaceranger_outs/Human_Liver_Steatotic/JBO019_Results"
+sampleNames <- "JBO019"
+sfe <- read10xVisiumSFE(samples = sampleDir, 
+                        sample_id = sampleNames, 
+                        type = "sparse", 
+                        data = "filtered", 
+                        images = "lowres", 
+                        style = "W", 
+                        zero.policy = TRUE)
+
+ground_truth <- read_table("./data/spotzonationGroup.txt")
+```
+
+```{r 03_QC_sfe}
+is_mito <- grepl("(^MT-)|(^mt-)", rowData(sfe)$symbol)
+sfe <- addPerLocQC(sfe, gTruth = ground_truth, assay = "counts", 2, subsets = list(mito = is_mito))
+sfe <- addGeometries(sfe, samples = sampleDir, sample_id = sampleNames, res = "fullres")
+sfe <- addPerGeneQC(sfe, assay = "counts", version = 92)
+sfe <- get.spatialNeighGraphs(sfe, sampleNames, type = "knearneigh", style = "W", distMod = "raw", k = 6)
+
+
+colData(sfe)
+rowData(sfe)
+colGeometries(sfe)
+colGraphs(sfe)
+
+# >>>>>>>>>possible break point to continue on Pract 4<<<<<<<<<<<<<<< #
+
+# Above we load the data and calculate some statistics, generate some 
+# neighbour graphs and we can explore the data structures. Below we 
+# apply the QC.
+
+# There is a catch in the above. The get.spatialNeighGraphs is going to be used
+# here to showcase the neighbour graphs but actually it is better to be called 
+# after we remove unwanted locations through QC application
+
+# Ensembl version 92 does not match the dataset. Need to find out which
+# ensembl version they used with SpaceRanger. Otherwise some genes will not have
+# proper annotation.
+
+# >>>>>>>>>possible break point to continue on Pract 4<<<<<<<<<<<<<<< #
+
+## Select library size threshold
+qc_lib_size <- colData(sfe)$sum < 700
+## Check how many spots are filtered out
+table(qc_lib_size)
+## Add threshold in colData
+colData(sfe)$qc_lib_size <- qc_lib_size
+
+## Select expressed genes threshold
+qc_detected <- colData(sfe)$detected < 500
+## Check how many spots are filtered out
+table(qc_detected)
+## Add threshold in colData
+colData(sfe)$qc_detected <- qc_detected
+
+## Select expressed genes threshold
+qc_mito <- colData(sfe)$subsets_mito_percent > 25
+## Check how many spots are filtered out
+table(qc_mito)
+## Add threshold in colData
+colData(sfe)$qc_mito <- qc_mito
+
+## Check the number of discarded spots for each metric
+apply(cbind(qc_lib_size, qc_detected, qc_mito), 2, sum)
+## Combine together the set of discarded spots
+discard <- qc_lib_size | qc_detected | qc_mito
+## Store the set in the object
+colData(sfe)$discard <- discard
+
+## Check the spatial pattern of combined set of discarded spots
+plotQC(sfe, type = "spots", 
+       discard = "discard")
+
+## remove combined set of low-quality spots
+sfe <- sfe[, !colData(sfe)$discard]
+
+## Calculate library size factors
+sfe <- computeLibraryFactors(sfe)
+## Have a look at the size factors
+summary(sizeFactors(sfe))
+
+# calculate logcounts using library size factors
+sfe <- logNormCounts(sfe)
+
+# FEATURE SELECTION
+
+# remove mitochondrial genes
+sfe <- sfe[!is_mito, ]
+# fit mean-variance relationship
+dec <- modelGeneVar(sfe)
+# select top HVGs
+top_hvgs <- getTopHVGs(dec, prop = 0.1)
+
+```
+
+
+################################################################################
 ```{r 03_load_STx_counts}
 ## Load counts table
 inputD <- readRDS(file = "./data/hsLivSteat_JBO019_inputD.rds")
