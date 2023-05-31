@@ -14,19 +14,24 @@ The following code carries out a geographically weighted PCA. In short, it runs 
 
 ## Load packages
 ```{r 04_loadPackages, , message=FALSE}
-library(spdep)
-library(sf)
-library(GWmodel)
-library(ggplot2)
+library(SpatialFeatureExperiment)
 library(tidyverse)
-library(cols4all)
-library(scuttle)
-library(scater)
 library(scran)
+library(scater)
+library(ggspavis)
+library(sf)
+library(spdep)
+library(GWmodel)
+library(future)
+library(doFuture)
+library(foreach)
+library(progressr)
+library(parallel)
+library(cols4all)
 
 ## to get this to work here...
 #List and source all scripts in the core folder.
-file.sources <- list.files(path = "/Users/Simon/Documents/GitHub/STExplorer/R/core", 
+file.sources <- list.files(path = "./data/R/core", 
                            pattern = "*.R$", 
                            all.files = TRUE, 
                            recursive = TRUE, 
@@ -36,6 +41,74 @@ sapply(file.sources, source, local = .GlobalEnv)
 ```
 
 ## Load Quality Controled and Normalised data
+```{r 04_gwpca}
+sfe
+
+vars = top_hvgs[1:500]
+bw = 6*sfe@metadata[["spotDiameter"]][["JBO019"]][["spot_diameter_fullres"]]
+k = 20
+kernel = "gaussian"
+p = 1
+adaptive = FALSE
+cv = TRUE
+scores = FALSE
+robust = FALSE
+
+my.cl <- parallel::makeCluster(availableCores() - 1, type = 'FORK')
+
+# >>> it returns an error when inside the markdown. Maybe run with verbose = FALSE
+pcagw_ste <- gwpca.ste(obj = sfe, 
+                       assay = "counts",
+                       vars = vars, 
+                       p = p, 
+                       k = k, 
+                       bw = bw, 
+                       kernel = kernel,
+                       adaptive = adaptive, 
+                       scores = scores, 
+                       robust = robust,
+                       cv = cv,
+                       future = FALSE,
+                       strategy = "cluster",
+                       workers = my.cl,
+                       verbose = TRUE)
+
+
+plotGWPCA_global(gwpca = pcagw_ste,
+                 comps = 1:10,
+                 type = "scree",
+                 point_args = list(size = 5, colour = "red"),
+                 line_args = list(linewidth = 2, colour = "dodgerblue"))
+
+pcagw_ste <- gwpca_LeadingGene(gwpca = pcagw_ste, 
+                               sfe = sfe, 
+                               pc_nos = 1:4, 
+                               type = "single", 
+                               names = "gene_names")
+
+pcagw_ste <- gwpca_LeadingGene(gwpca = pcagw_ste, 
+                               sfe = sfe, 
+                               pc_nos = 1:4, 
+                               genes_n = 4, 
+                               type = "multi", 
+                               method = "membership", 
+                               names = "gene_names")
+
+
+plotGWPCA_leadingG(gwpca = pcagw_ste,
+                   comps = 1:4,
+                   type = "single",
+                   arrange = TRUE)
+
+plotGWPCA_leadingG(gwpca = pcagw_ste,
+                   comps = 1:4,
+                   type = "multi",
+                   arrange = TRUE)
+
+```
+
+
+################################################################################
 ```{r QC_Norm_LiverData, echo=FALSE, message=FALSE, warning=FALSE, results='hide', eval=FALSE}
 ## Keep on-tissue spots
 colDATA <- inputMD %>%
