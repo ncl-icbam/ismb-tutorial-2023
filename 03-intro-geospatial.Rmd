@@ -239,12 +239,20 @@ sfe <- read10xVisiumSFE(samples = sampleDir,
                         zero.policy = TRUE)
 
 ground_truth <- read_table("./data/spotzonationGroup.txt")
+
 ```
 
 ```{r 03_QC_sfe}
 is_mito <- grepl("(^MT-)|(^mt-)", rowData(sfe)$symbol)
 sfe <- addPerLocQC(sfe, gTruth = ground_truth, assay = "counts", 2, subsets = list(mito = is_mito))
 sfe <- addGeometries(sfe, samples = sampleDir, sample_id = sampleNames, res = "fullres")
+
+ggplot() + 
+  geom_sf(aes(geometry = colGeometries(sfe)$spotHex$geometry, fill = colData(sfe)$annotation)) + 
+  theme_void() + 
+  theme(legend.position = "right") + 
+  labs(fill = "Annotation")
+
 sfe <- addPerGeneQC(sfe, assay = "counts", version = 92)
 sfe <- get.spatialNeighGraphs(sfe, sampleNames, type = "knearneigh", style = "W", distMod = "raw", k = 6)
 

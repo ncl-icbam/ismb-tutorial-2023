@@ -54,7 +54,10 @@ cv = TRUE
 scores = FALSE
 robust = FALSE
 
+# cc <- availableCores() - 1
 my.cl <- parallel::makeCluster(availableCores() - 1, type = 'FORK')
+
+
 
 # >>> it returns an error when inside the markdown. Maybe run with verbose = FALSE
 pcagw_ste <- gwpca.ste(obj = sfe, 
@@ -71,7 +74,7 @@ pcagw_ste <- gwpca.ste(obj = sfe,
                        future = FALSE,
                        strategy = "cluster",
                        workers = my.cl,
-                       verbose = TRUE)
+                       verbose = FALSE)
 
 
 plotGWPCA_global(gwpca = pcagw_ste,
