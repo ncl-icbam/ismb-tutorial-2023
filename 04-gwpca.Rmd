@@ -54,7 +54,10 @@ cv = TRUE
 scores = FALSE
 robust = FALSE
 
+# cc <- availableCores() - 1
 my.cl <- parallel::makeCluster(availableCores() - 1, type = 'FORK')
+
+
 
 # >>> it returns an error when inside the markdown. Maybe run with verbose = FALSE
 pcagw_ste <- gwpca.ste(obj = sfe, 
@@ -71,7 +74,7 @@ pcagw_ste <- gwpca.ste(obj = sfe,
                        future = FALSE,
                        strategy = "cluster",
                        workers = my.cl,
-                       verbose = TRUE)
+                       verbose = FALSE)
 
 
 plotGWPCA_global(gwpca = pcagw_ste,
@@ -122,7 +125,7 @@ colDATA <- colDATA %>%
 ## Get mitochondrial gene names
 #biomartHumanGRCh37 <- create_biomart("human", version = "GRCh37")
 biomartHumanGRCh37 <- readRDS(file = "./data/biomartHumanGRCh37.rds")
-#rowDATA <- annotate_vector(rownames(inputD), biomartHumanGRCh37)
+# rowDATA <- annotate_vector(rownames(inputD), biomartHumanGRCh37)
 rowDATA <- readRDS(file = "./data/rowDATA.rds")
 is_mito <- grepl("(^MT-)|(^mt-)", rowDATA$gene_name)
 
@@ -241,7 +244,7 @@ k <- 20
 kernel = "gaussian"
 
 ## Set a bandwidth -in pixels- for neighbourhood 
-dist.Mat <- gw.dist(dp.locat = st_coordinates(colDATA$geom_cntd), p = 2)
+dist.Mat <- gw.dist(dp.locat = st_coordinates(colDATA$geom_cntd), p = 1)
 ```
 
 The bandwidth is essentially the radius around each spot where every other spot that falls inside it is considered a neighbour. We can set bandwidth as a fixed value or we can select the bandwidth automatically. Without going into detail here, this is achieved by a form of cross validation, where each observation is omitted, and it is attempted to reconstruct the values on the basis of principal components, derived from the other observations. The bandwidth achieving the optimal results is the one selected. For a complete explanation, see @Harris2011Oct. The function `bw.gwpca` computes this:
@@ -281,19 +284,19 @@ pcaGW <- gwpca(inputPCAgw,
 end_pca <- Sys.time()
 time_pca <- difftime(end_pca, begin_pca)
 print(time_pca)
+# saveRDS(pcaGW, file = "./data/pcaGW.rds")
 ```
 
 Because GWPCA can take some time to run, we ran it for you and below you can load the output:
 ```{r 04_run_gwpca2}
-# pcaGW <- readRDS(file = 
-#                    )
+# pcaGW <- readRDS(file = "./data/pcaGW.rds")
 ```
 
 ## Plot global PCA results
 In the next steps we will be looking inside the output from `gwpca` function and we are going to extract some basic information. Since GWPCA is multiple local PCAs, it is good to know how many PCs makes sense to look at. We can do so by running a global PCA and plotting a scree plot:
 ```{r 04_scree_plot}
 ## Prepare data for scree plot
-pvar <- pcaGW$pca$sdev^2/sum(pcaGW$pca$sdev^2)
+pvar <- pcaGW.noncentred$pca$sdev^2/sum(pcaGW.noncentred$pca$sdev^2)*100
 pvar <- data.frame(var = pvar,
                    PCs = sprintf("PC%02d", seq(1, length(pvar))))
 
@@ -304,7 +307,7 @@ ggplot(pvar[1:10,], aes(x = PCs, y = var, group = 1)) +
     xlab("Principal Component") +
     ylab("% Variance Explained") +
     ggtitle("Scree Plot") +
-    ylim(0, 1) + 
+    ylim(0, 5) + 
     theme_classic()
 ```
 
@@ -317,7 +320,7 @@ In a Principal Component Analysis (PCA), the first three principal components ma
 biomartHumanGRCh37 <- readRDS(file = "./data/biomartHumanGRCh37.rds")
 
 ## Extract leading genes
-lead.item <- gwpca.Leading.G.single(pcaGW, 
+lead.item <- gwpca.Leading.G.single(pcaGW.noncentred, 
                                     pc.no = 1, 
                                     sf.geom = colDATA$geom_pol,
                                     gene.names = TRUE,
