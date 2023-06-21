@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>References | Spatial transcriptomics data analysis: theory and practice</title>
   <meta name="description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
-  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
   <meta property="og:title" content="References | Spatial transcriptomics data analysis: theory and practice" />
   <meta property="og:type" content="book" />
@@ -23,14 +23,14 @@
 <meta name="author" content="Eleftherios Zormpas, Dr Simon J. Cockell" />
 
 
-<meta name="date" content="2023-04-10" />
+<meta name="date" content="2023-06-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="sharing-your-book.html"/>
+<link rel="prev" href="practical-session-4.html"/>
 
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -120,6 +120,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
@@ -155,7 +159,7 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">Spatial transcriptomics data analysis: theory and practice</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
@@ -178,7 +182,6 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2" data-path="practical-session-2.html"><a href="practical-session-2.html"><i class="fa fa-check"></i><b>2</b> Practical session 2</a>
 <ul>
-<li class="chapter" data-level="" data-path="practical-session-2.html"><a href="practical-session-2.html#load-packages"><i class="fa fa-check"></i>Load packages</a></li>
 <li class="chapter" data-level="2.1" data-path="practical-session-2.html"><a href="practical-session-2.html#spot-level-quality-control"><i class="fa fa-check"></i><b>2.1</b> Spot-level Quality Control</a>
 <ul>
 <li class="chapter" data-level="2.1.1" data-path="practical-session-2.html"><a href="practical-session-2.html#plot-tissue-map"><i class="fa fa-check"></i><b>2.1.1</b> Plot tissue map</a></li>
@@ -207,37 +210,52 @@ div.csl-indent {
 <li class="chapter" data-level="2.4.2" data-path="practical-session-2.html"><a href="practical-session-2.html#pca-principal-component-analysis"><i class="fa fa-check"></i><b>2.4.2</b> PCA: Principal component analysis</a></li>
 <li class="chapter" data-level="2.4.3" data-path="practical-session-2.html"><a href="practical-session-2.html#umap-uniform-manifold-approximation-and-projection"><i class="fa fa-check"></i><b>2.4.3</b> UMAP: Uniform Manifold Approximation and Projection</a></li>
 <li class="chapter" data-level="2.4.4" data-path="practical-session-2.html"><a href="practical-session-2.html#umap-visualisations"><i class="fa fa-check"></i><b>2.4.4</b> UMAP visualisations</a></li>
-<li class="chapter" data-level="2.4.5" data-path="practical-session-2.html"><a href="practical-session-2.html#clustering-on-hvgs"><i class="fa fa-check"></i><b>2.4.5</b> Clustering on HVGs</a></li>
-<li class="chapter" data-level="2.4.6" data-path="practical-session-2.html"><a href="practical-session-2.html#hvgs-clustering-visualisations"><i class="fa fa-check"></i><b>2.4.6</b> HVGs clustering visualisations</a></li>
-<li class="chapter" data-level="2.4.7" data-path="practical-session-2.html"><a href="practical-session-2.html#spatially-aware-clustering"><i class="fa fa-check"></i><b>2.4.7</b> Spatially-aware clustering</a></li>
 </ul></li>
-<li class="chapter" data-level="2.5" data-path="practical-session-2.html"><a href="practical-session-2.html#inter-cluster-differentially-expressed-genes-dges"><i class="fa fa-check"></i><b>2.5</b> Inter-cluster differentially expressed genes (DGEs)</a>
+<li class="chapter" data-level="2.5" data-path="practical-session-2.html"><a href="practical-session-2.html#clustering"><i class="fa fa-check"></i><b>2.5</b> Clustering</a>
 <ul>
 <li class="chapter" data-level="2.5.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background-3"><i class="fa fa-check"></i><b>2.5.1</b> Background</a></li>
-<li class="chapter" data-level="2.5.2" data-path="practical-session-2.html"><a href="practical-session-2.html#dges-identification"><i class="fa fa-check"></i><b>2.5.2</b> DGEs identification</a></li>
-<li class="chapter" data-level="2.5.3" data-path="practical-session-2.html"><a href="practical-session-2.html#dges-visualisation"><i class="fa fa-check"></i><b>2.5.3</b> DGEs visualisation</a></li>
+<li class="chapter" data-level="2.5.2" data-path="practical-session-2.html"><a href="practical-session-2.html#clustering-on-hvgs"><i class="fa fa-check"></i><b>2.5.2</b> Clustering on HVGs</a></li>
+<li class="chapter" data-level="2.5.3" data-path="practical-session-2.html"><a href="practical-session-2.html#hvgs-clustering-visualisations"><i class="fa fa-check"></i><b>2.5.3</b> HVGs clustering visualisations</a></li>
+<li class="chapter" data-level="2.5.4" data-path="practical-session-2.html"><a href="practical-session-2.html#spatially-aware-clustering"><i class="fa fa-check"></i><b>2.5.4</b> Spatially-aware clustering</a></li>
 </ul></li>
-<li class="chapter" data-level="2.6" data-path="practical-session-2.html"><a href="practical-session-2.html#other-visualisations"><i class="fa fa-check"></i><b>2.6</b> Other visualisations</a></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html"><i class="fa fa-check"></i><b>3</b> Practical session 2</a>
+<li class="chapter" data-level="2.6" data-path="practical-session-2.html"><a href="practical-session-2.html#inter-cluster-differentially-expressed-genes-dges"><i class="fa fa-check"></i><b>2.6</b> Inter-cluster differentially expressed genes (DGEs)</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="practical-session-2-1.html"><a href="practical-session-2-1.html#section"><i class="fa fa-check"></i><b>3.1</b> </a></li>
+<li class="chapter" data-level="2.6.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background-4"><i class="fa fa-check"></i><b>2.6.1</b> Background</a></li>
+<li class="chapter" data-level="2.6.2" data-path="practical-session-2.html"><a href="practical-session-2.html#dges-identification"><i class="fa fa-check"></i><b>2.6.2</b> DGEs identification</a></li>
+<li class="chapter" data-level="2.6.3" data-path="practical-session-2.html"><a href="practical-session-2.html#dges-visualisation"><i class="fa fa-check"></i><b>2.6.3</b> DGEs visualisation</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="practical-session-2-2.html"><a href="practical-session-2-2.html"><i class="fa fa-check"></i><b>4</b> Practical session 2</a>
-<ul>
-<li class="chapter" data-level="4.1" data-path="practical-session-2-2.html"><a href="practical-session-2-2.html#section-1"><i class="fa fa-check"></i><b>4.1</b> </a></li>
+<li class="chapter" data-level="2.7" data-path="practical-session-2.html"><a href="practical-session-2.html#other-visualisations"><i class="fa fa-check"></i><b>2.7</b> Other visualisations</a></li>
+<li class="chapter" data-level="2.8" data-path="practical-session-2.html"><a href="practical-session-2.html#putting-it-all-together"><i class="fa fa-check"></i><b>2.8</b> Putting it all together</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>5</b> Blocks</a>
+<li class="chapter" data-level="3" data-path="practical-session-3.html"><a href="practical-session-3.html"><i class="fa fa-check"></i><b>3</b> Practical session 3</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="blocks.html"><a href="blocks.html#equations"><i class="fa fa-check"></i><b>5.1</b> Equations</a></li>
-<li class="chapter" data-level="5.2" data-path="blocks.html"><a href="blocks.html#theorems-and-proofs"><i class="fa fa-check"></i><b>5.2</b> Theorems and proofs</a></li>
-<li class="chapter" data-level="5.3" data-path="blocks.html"><a href="blocks.html#callout-blocks"><i class="fa fa-check"></i><b>5.3</b> Callout blocks</a></li>
+<li class="chapter" data-level="3.1" data-path="practical-session-3.html"><a href="practical-session-3.html#background-5"><i class="fa fa-check"></i><b>3.1</b> Background</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="practical-session-3.html"><a href="practical-session-3.html#main-geocomputatinal-data-structures"><i class="fa fa-check"></i><b>3.1.1</b> Main geocomputatinal data structures</a></li>
+<li class="chapter" data-level="3.1.2" data-path="practical-session-3.html"><a href="practical-session-3.html#the-sf-objects"><i class="fa fa-check"></i><b>3.1.2</b> The <code>sf</code> objects</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>6</b> Sharing your book</a>
+<li class="chapter" data-level="3.2" data-path="practical-session-3.html"><a href="practical-session-3.html#data-structures-preparation"><i class="fa fa-check"></i><b>3.2</b> Data structures preparation</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing"><i class="fa fa-check"></i><b>6.1</b> Publishing</a></li>
-<li class="chapter" data-level="6.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages"><i class="fa fa-check"></i><b>6.2</b> 404 pages</a></li>
-<li class="chapter" data-level="6.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing"><i class="fa fa-check"></i><b>6.3</b> Metadata for sharing</a></li>
+<li class="chapter" data-level="3.2.1" data-path="practical-session-3.html"><a href="practical-session-3.html#load-new-dataset"><i class="fa fa-check"></i><b>3.2.1</b> Load new dataset</a></li>
+<li class="chapter" data-level="3.2.2" data-path="practical-session-3.html"><a href="practical-session-3.html#create-point-geometries"><i class="fa fa-check"></i><b>3.2.2</b> Create point geometries</a></li>
+<li class="chapter" data-level="3.2.3" data-path="practical-session-3.html"><a href="practical-session-3.html#tesselate-space"><i class="fa fa-check"></i><b>3.2.3</b> Tesselate space</a></li>
+<li class="chapter" data-level="3.2.4" data-path="practical-session-3.html"><a href="practical-session-3.html#polygonise-the-tessellation"><i class="fa fa-check"></i><b>3.2.4</b> Polygonise the tessellation</a></li>
+<li class="chapter" data-level="3.2.5" data-path="practical-session-3.html"><a href="practical-session-3.html#identify-neighbours"><i class="fa fa-check"></i><b>3.2.5</b> Identify neighbours</a></li>
+<li class="chapter" data-level="3.2.6" data-path="practical-session-3.html"><a href="practical-session-3.html#generate-distance-matrices"><i class="fa fa-check"></i><b>3.2.6</b> Generate distance matrices</a></li>
+<li class="chapter" data-level="3.2.7" data-path="practical-session-3.html"><a href="practical-session-3.html#putting-it-all-together-1"><i class="fa fa-check"></i><b>3.2.7</b> Putting it all together</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="practical-session-4.html"><a href="practical-session-4.html"><i class="fa fa-check"></i><b>4</b> Practical session 4</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="practical-session-4.html"><a href="practical-session-4.html#geographically-weighted-principal-components-analysis-gwpca"><i class="fa fa-check"></i><b>4.1</b> Geographically Weighted Principal Components Analysis (GWPCA)</a></li>
+<li class="chapter" data-level="4.2" data-path="practical-session-4.html"><a href="practical-session-4.html#load-packages"><i class="fa fa-check"></i><b>4.2</b> Load packages</a></li>
+<li class="chapter" data-level="4.3" data-path="practical-session-4.html"><a href="practical-session-4.html#load-quality-controled-and-normalised-data"><i class="fa fa-check"></i><b>4.3</b> Load Quality Controled and Normalised data</a></li>
+<li class="chapter" data-level="4.4" data-path="practical-session-4.html"><a href="practical-session-4.html#data-prearation-and-single-gwpca-run"><i class="fa fa-check"></i><b>4.4</b> Data prearation and single GWPCA run</a></li>
+<li class="chapter" data-level="4.5" data-path="practical-session-4.html"><a href="practical-session-4.html#run-gwpca"><i class="fa fa-check"></i><b>4.5</b> Run GWPCA</a></li>
+<li class="chapter" data-level="4.6" data-path="practical-session-4.html"><a href="practical-session-4.html#plot-global-pca-results"><i class="fa fa-check"></i><b>4.6</b> Plot global PCA results</a></li>
+<li class="chapter" data-level="4.7" data-path="practical-session-4.html"><a href="practical-session-4.html#identify-the-leading-genes-in-each-location"><i class="fa fa-check"></i><b>4.7</b> Identify the leading genes in each location</a></li>
+<li class="chapter" data-level="4.8" data-path="practical-session-4.html"><a href="practical-session-4.html#percentage-of-total-variation-ptv"><i class="fa fa-check"></i><b>4.8</b> Percentage of Total Variation (PTV)</a></li>
+<li class="chapter" data-level="4.9" data-path="practical-session-4.html"><a href="practical-session-4.html#identify-discrepancies"><i class="fa fa-check"></i><b>4.9</b> Identify discrepancies</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -268,7 +286,19 @@ div.csl-indent {
 Amezquita, Robert A., Aaron T. L. Lun, Etienne Becht, Vince J. Carey, Lindsay N. Carpp, Ludwig Geistlinger, Federico Marini, et al. 2020. <span>“<span class="nocase">Orchestrating single-cell analysis with Bioconductor</span>.”</span> <em>Nat Methods</em> 17 (February): 137–45. <a href="https://doi.org/10.1038/s41592-019-0654-x">https://doi.org/10.1038/s41592-019-0654-x</a>.
 </div>
 <div class="csl-entry">
+Avis, David, and Joe Horton. 1985. <span>“REMARKS ON THE SPHERE OF INFLUENCE GRAPH.”</span> <em>Annals of the New York Academy of Sciences</em> 440 (1): 323–27. https://doi.org/<a href="https://doi.org/10.1111/j.1749-6632.1985.tb14563.x">https://doi.org/10.1111/j.1749-6632.1985.tb14563.x</a>.
+</div>
+<div class="csl-entry">
+Gollini, Isabella, Binbin Lu, Martin Charlton, Christopher Brunsdon, and Paul Harris. 2015. <span>“<span class="nocase">GWmodel: An R Package for Exploring Spatial Heterogeneity Using Geographically Weighted Models</span>.”</span> <em>J Stat Soft</em> 63 (February): 1–50. <a href="https://doi.org/10.18637/jss.v063.i17">https://doi.org/10.18637/jss.v063.i17</a>.
+</div>
+<div class="csl-entry">
+Guilliams, Martin, Johnny Bonnardel, Birthe Haest, Bart Vanderborght, Camille Wagner, Anneleen Remmerie, Anna Bujko, et al. 2022. <span>“Spatial Proteogenomics Reveals Distinct and Evolutionarily Conserved Hepatic Macrophage Niches.”</span> <em>Cell</em> 185 (2): 379–396.e38. https://doi.org/<a href="https://doi.org/10.1016/j.cell.2021.12.018">https://doi.org/10.1016/j.cell.2021.12.018</a>.
+</div>
+<div class="csl-entry">
 Hao, Yuhan, Stephanie Hao, Erica Andersen-Nissen, William M. Mauck, Shiwei Zheng, Andrew Butler, Maddie J. Lee, et al. 2021. <span>“<span class="nocase">Integrated analysis of multimodal single-cell data</span>.”</span> <em>Cell</em> 184 (13): 3573–3587.e29. <a href="https://doi.org/10.1016/j.cell.2021.04.048">https://doi.org/10.1016/j.cell.2021.04.048</a>.
+</div>
+<div class="csl-entry">
+Harris, Paul, Chris Brunsdon, and Martin Charlton. 2011. <span>“<span class="nocase">Geographically weighted principal components analysis</span>.”</span> <em>International Journal of Geographical Information Science</em> 25 (10): 1717–36. <a href="https://doi.org/10.1080/13658816.2011.554838">https://doi.org/10.1080/13658816.2011.554838</a>.
 </div>
 <div class="csl-entry">
 Keogh, Eamonn, and Abdullah Mueen. 2017. <span>“<span class="nocase">Curse of Dimensionality</span>.”</span> In <em><span class="nocase">Encyclopedia of Machine Learning and Data Mining</span></em>, 314–15. Boston, MA, USA: Springer, Boston, MA. <a href="https://doi.org/10.1007/978-1-4899-7687-1_192">https://doi.org/10.1007/978-1-4899-7687-1_192</a>.
@@ -278,6 +308,9 @@ Li, Yijun, Stefan Stanojevic, Bing He, Zheng Jing, Qianhui Huang, Jian Kang, and
 </div>
 <div class="csl-entry">
 Lun, Aaron T. L., Davis J. McCarthy, and John C. Marioni. 2016. <span>“<span class="nocase">A step-by-step workflow for low-level analysis of single-cell RNA-seq data with Bioconductor</span>.”</span> <em>F1000Research</em> 5 (2122): 2122. <a href="https://doi.org/10.12688/f1000research.9501.2">https://doi.org/10.12688/f1000research.9501.2</a>.
+</div>
+<div class="csl-entry">
+Matula, David W., and Robert R. Sokal. 1980. <span>“<span class="nocase">Properties of Gabriel Graphs Relevant to Geographic Variation Research and the Clustering of Points in the Plane</span>.”</span> <em>Geog Anal</em> 12 (3): 205–22. <a href="https://doi.org/10.1111/j.1538-4632.1980.tb00031.x">https://doi.org/10.1111/j.1538-4632.1980.tb00031.x</a>.
 </div>
 <div class="csl-entry">
 Maynard, Kristen R., Leonardo Collado-Torres, Lukas M. Weber, Cedric Uytingco, Brianna K. Barry, Stephen R. Williams, Joseph L. Catallini, et al. 2021. <span>“<span class="nocase">Transcriptome-scale spatial gene expression in the human dorsolateral prefrontal cortex</span>.”</span> <em>Nat Neurosci</em> 24 (March): 425–36. <a href="https://doi.org/10.1038/s41593-020-00787-0">https://doi.org/10.1038/s41593-020-00787-0</a>.
@@ -304,6 +337,9 @@ Svensson, Valentine, Sarah A. Teichmann, and Oliver Stegle. 2018. <span>“<span
 <span>“<span class="nocase">The Contiguity Ratio and Statistical Mapping on JSTOR</span>.”</span> 1954. <em>Incorporated Statistician</em>. <a href="https://www.jstor.org/stable/2986645">https://www.jstor.org/stable/2986645</a>.
 </div>
 <div class="csl-entry">
+Toussaint, Godfried T. 1980. <span>“<span class="nocase">The relative neighbourhood graph of a finite planar set</span>.”</span> <em>Pattern Recognit</em> 12 (4): 261–68. <a href="https://doi.org/10.1016/0031-3203(80)90066-7">https://doi.org/10.1016/0031-3203(80)90066-7</a>.
+</div>
+<div class="csl-entry">
 Weber, Lukas M., and Helena L. Crowell. 2022. <em>Ggspavis: Visualization Functions for Spatially Resolved Transcriptomics Data</em>. <a href="https://github.com/lmweber/ggspavis">https://github.com/lmweber/ggspavis</a>.
 </div>
 <div class="csl-entry">
@@ -316,7 +352,7 @@ Zhu, Jiaqiang, Shiquan Sun, and Xiang Zhou. 2021. <span>“<span class="nocase">
           </div>
         </div>
       </div>
-<a href="sharing-your-book.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="practical-session-4.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
     </div>
   </div>
@@ -348,7 +384,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/07-references.Rmd",
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/05-references.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -371,20 +407,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

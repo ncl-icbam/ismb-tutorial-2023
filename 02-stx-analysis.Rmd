@@ -1,12 +1,11 @@
 # Practical session 2
-In this session we will demonstrate the implementation of the methods discussed earlier and will particularly focus on the most common analysis routines in STx: QC, data visualisation and clustering analysis always inside the interoperable Bioconductor environment.
 
-```{r time_start2, cache=FALSE, echo=FALSE, message=FALSE}
-begin <- Sys.time()
-```
+Having previously introduced some of the Bioconductor ecosystem for storing and manipulating STx data, in this second session we will focus on some of the most common STx analysis tasks - particularly quality control assessment and associated spot- and gene- level filtering. We will finish the session with some global methods of dimensionality reduction. All of the methods demonstrated here continue to focus on interoperable packages available via Bioconductor. 
 
-```{r 02_loadPackages, , message=FALSE}
+```{r 02_loadPackages, message=FALSE}
 ## Load packages {-}
+library(SpatialExperiment)
+library(STexampleData)
 library(ggspavis)
 library(ggplot2)
 library(scater)
@@ -19,6 +18,11 @@ library(pheatmap)
 
 - [`scater`](https://bioconductor.org/packages/release/bioc/html/scater.html) is also a Bioconductor package that is a selection of tools for doing various analyses of scRNA-seq gene expression data, with a focus on quality control and visualization which has extended applications to STx data too. It is based on the `SingleCellExperiment` and `SpatialExperiment` classes and thus is interoperable with many other Bioconductor packages such as [`scran`](https://bioconductor.org/packages/3.16/scran), [`scuttle`](https://bioconductor.org/packages/3.16/scuttle) and [`iSEE`](https://bioconductor.org/packages/3.16/iSEE).
 
+
+```{r 02_reloadData}
+## Reload the example dataset
+spe <- Visium_humanDLPFC()
+```
 
 ## Spot-level Quality Control
 Spot-level quality control (sQC) procedures are employed to eliminate low-quality spots before conducting further analyses. Low-quality spots may result from issues during library preparation or other experimental procedures, such as a high percentage of dead cells due to cell damage during library preparation, or low mRNA capture efficiency caused by ineffective reverse transcription or PCR amplification. Keeping these spots usually leads to creating problems during downstream analyses.
@@ -647,7 +651,7 @@ plotExpression(spe, x = "label", features = top_genes)
 ## Other visualisations
 
 ## Putting it all together
-```{r all_together}
+```{r all_together, eval=FALSE}
 # # clear workspace from previous chapters
 # rm(list = ls(all = TRUE))
 # 
@@ -717,11 +721,4 @@ plotExpression(spe, x = "label", features = top_genes)
 # # test for marker genes
 # rownames(spe) <- rowData(spe)$gene_name
 # markers <- findMarkers(spe, test = "binom", direction = "up")
-```
-
-```{r time_end2, cache=FALSE}
-end <- Sys.time()
-time_taken <- difftime(end, begin)
-print(time_taken)
-# Time difference of 1.920817 mins
 ```

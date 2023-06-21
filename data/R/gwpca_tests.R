@@ -212,7 +212,9 @@ file.sources <- list.files(path = "../STExplorer/R/core",
                            ignore.case = TRUE)
 sapply(file.sources, source, local = .GlobalEnv)
 
-sampleDir <- "/Users/b9047753/Documents/Projects_1D/Visium_Liver/data/spaceranger_outs/Human_Liver_Steatotic/Human_Liver_Steatotic_JBO019_Results"
+# sampleDir <- "/Users/b9047753/Documents/Projects_1D/Visium_Liver/data/spaceranger_outs/Human_Liver_Steatotic/Human_Liver_Steatotic_JBO019_Results"
+# sampleNames <- "JBO019"
+sampleDir <- "./data/spaceranger_outs/Human_Liver_Steatotic/JBO019_Results"
 sampleNames <- "JBO019"
 sfe <- read10xVisiumSFE(samples = sampleDir, 
                         sample_id = sampleNames, 
@@ -289,13 +291,13 @@ rowData(sfe)$discard <- discard_gs
 # remove mitochondrial genes
 sfe <- sfe[!rowData(sfe)$discard, ]
 # fit mean-variance relationship
-dec <- modelGeneVar(sfe,
-                    assay.type = "logcounts")
+dec_MGV <- modelGeneVar(sfe)#,
+                    #assay.type = "logcounts")
 dec_CV2 <- modelGeneCV2(sfe, 
                         size.factors = colData(sfe)$sizeFactor, 
                         assay.type = "logcounts")
 # select top HVGs
-top_hvgs <- getTopHVGs(dec, 
+top_hvgs <- getTopHVGs(dec_MGV, 
                        var.field = "bio", 
                        prop = 0.1,
                        var.threshold = 0,
@@ -306,6 +308,12 @@ top_hvgs_CV2 <- getTopHVGs(dec_CV2,
                            prop = 0.1,
                            var.threshold = 0.5,
                            fdr.threshold = 0.05)
+
+trendMGV <- fitTrendVar(dec_MGV$mean, dec_MGV$total)
+plot(dec_MGV$mean, dec_MGV$total, pch=16, cex=0.5, xlab="Mean", ylab="Variance", col=as.numeric(rownames(dec_MGV) %in% top_hvgs)+1)
+curve(trendMGV$trend(x), add=TRUE, col="dodgerblue", lwd=3)
+
+
 
 sfe
 

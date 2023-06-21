@@ -1,13 +1,7 @@
 # Practical session 3
 This practical session will demonstrate the application of the most commonly used spatial analysis tools to STx data, and how we work with coordinate data alongside expression data. 
-
-```{r time_start3, cache=FALSE, echo=FALSE, message=FALSE}
-begin <- Sys.time()
-```
-
-
 ## Load packages
-```{r 03_loadPackages, message=FALSE}
+```{r 03_loadPackages, message=FALSE, echo=FALSE, results='hide'}
 library(SpatialFeatureExperiment)
 library(tidyverse)
 library(scran)
@@ -242,8 +236,7 @@ ground_truth <- read_table("./data/spotzonationGroup.txt")
 
 ```
 
-```{r 03_QC_sfe}
-is_mito <- grepl("(^MT-)|(^mt-)", rowData(sfe)$symbol)
+```{r 03_QC_sfe, message=FALSE, warning=FALSE}
 sfe <- addPerLocQC(sfe, gTruth = ground_truth, assay = "counts", 2, subsets = list(mito = is_mito))
 sfe <- addGeometries(sfe, samples = sampleDir, sample_id = sampleNames, res = "fullres")
 
@@ -444,6 +437,7 @@ As we can see here we have two geometry columns; one named `geom_pol` and one na
 ### Identify neighbours
 #### By contiguity
 We can contiguity-based neighbours for each spot using the `poly2nb` function from `spdep`. The function is using heuristics to identify polygons sharing boundary points as neighbours. It also has a `snap =` argument, to allow the shared boundary points to be a short distance from one another. Here we select `snap = 0` because the tessellation generated polygons with shared borders. Finally, the `queen =` argument is set to `TRUE`. This means that the function will look for a chess queen-style of contiguities.
+
 ```{r get_adjacent_neighbours_a, message=FALSE, collapse=TRUE}
 ## Get contiguity neighbours
 nb_adjc <- poly2nb(pl = polygons,
@@ -569,6 +563,7 @@ length(nb_gbn)
 head(nb_gbn)
 nb_gbn_n <- card(nb_gbn)
 ```
+
 ```{r get_graph_neighbours3b, message=FALSE, fig.show = 'hold', out.width="50%", fig.height=4, fig.width=5}
 ggplot() + 
   geom_histogram(aes(x = nb_gbn_n, y = after_stat(density)), 
@@ -603,6 +598,7 @@ length(nb_rn)
 head(nb_rn)
 nb_rn_n <- card(nb_rn)
 ```
+
 ```{r get_graph_neighbours4b, message=FALSE, fig.show = 'hold', out.width="50%", fig.height=4, fig.width=5}
 ggplot() + 
   geom_histogram(aes(x = nb_rn_n, y = after_stat(density)), 
@@ -781,11 +777,11 @@ A distance matrix is a mirrored matrix that contains the distance between a spot
 
 There are 6 different kernels that can be used to weight the distances between spots. The next two figures are from the `GWmodel`'s publication [@Gollini2015Feb] and provide a bit more description on that.
 
-```{r GWmodel_fig1, echo=FALSE, out.width = "100%", fig.align="center", fig.cap="The math equations that define the kernels."}
+```{r GWmodelFig1, echo=FALSE, out.width = "100%", fig.align="center", fig.cap="The math equations that define the kernels."}
 knitr::include_graphics("images/gwmodel_kernel_math.png")
 ```
 
-```{r GWmodel_fig2, echo=FALSE, out.width = "100%", fig.align="center", fig.cap="Examples from using each kernel."}
+```{r GWmodelFig2, echo=FALSE, out.width = "100%", fig.align="center", fig.cap="Examples from using each kernel."}
 knitr::include_graphics("images/gwmodel_kernel_graphs.png")
 ```
 
@@ -881,9 +877,3 @@ ggplot() +
   theme_void()
 ```
 
-```{r time_end3, cache=FALSE}
-end <- Sys.time()
-time_taken <- difftime(end, begin)
-print(time_taken)
-# Time difference of 1.920817 mins
-```

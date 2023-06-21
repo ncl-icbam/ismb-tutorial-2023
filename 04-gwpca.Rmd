@@ -1,10 +1,6 @@
 # Practical session 4
 In this session we will have a hands-on exploration of GW-PCA and its application to STx data. What can we learn from this novel technique?
 
-```{r time_start4, cache=FALSE, echo=FALSE, message=FALSE}
-begin <- Sys.time()
-```
-
 ## Geographically Weighted Principal Components Analysis (GWPCA)
 A standard PCA can pick out the key multivariate modes of variability in the data. Looking at outlying values of the principal components of these data gives us an idea of unusual sites (in terms of combinations of gene expression profiles -and to a certain extend of combinations of cell types in each spot). Next, Geographically weighted PCA can be used to find spatial multivariate outliers. Sounds complicated, but really all this means is it identifies sites that have an unusual multi-way combination of gene expression in relation to their immediate geographical neighbours. It might be that the values observed at these sites as a combination is not uncommon in the tissue as a whole - but is very unusual in its locality.
 
@@ -13,7 +9,7 @@ To find such outliers the procedure is relatively simple - instead of doing a PC
 The following code carries out a geographically weighted PCA. In short, it runs a ‘windowed’ PCA around each of the spots.
 
 ## Load packages
-```{r 04_loadPackages, , message=FALSE}
+```{r 04_loadPackages, echo=FALSE, message=FALSE, results='hide'}
 library(SpatialFeatureExperiment)
 library(tidyverse)
 library(scran)
@@ -42,7 +38,6 @@ sapply(file.sources, source, local = .GlobalEnv)
 
 ## Load Quality Controled and Normalised data
 ```{r 04_gwpca}
-sfe
 
 vars = top_hvgs[1:500]
 bw = 6*sfe@metadata[["spotDiameter"]][["JBO019"]][["spot_diameter_fullres"]]
@@ -214,7 +209,7 @@ We imported 3 tables:
 Because gwpca uses princomp to run the PCAs and this does not accept the number of variables (genes) being more than the number of samples (spots).
 
 ## Data prearation and single GWPCA run
-```{r 04_prepare_gwpca}
+```{r 04_prepare_gwpca, eval=FALSE}
 ## Prepare for Geographically Weighted PCA (GWPCA)
 countsNormCenter <- countsNormCenter %>%
   as.data.frame() %>%
@@ -233,7 +228,7 @@ inputPCAgw <- SpatialPointsDataFrame(coords,
                                      match.ID = TRUE)
 ```
 
-```{r 04_set_parameters}
+```{r 04_set_parameters, eval=FALSE}
 ## Get the gene names that are going to be evaluated
 vars <- colnames(inputPCAgw@data)
 
@@ -263,7 +258,7 @@ The bandwidth is essentially the radius around each spot where every other spot 
 
 Since this command computes several GWPCA estimates at different bandwidths in order to find an optimum, it will take noticeably longer than the version of the function with a prescribed bandwidth. Once run, `gwpca` is re-run with the bandwidth set to `bw.choice.` Below load the `bw.choice` object we already calculated for you:
 
-```{r 04_bw_choice_load}
+```{r 04_bw_choice_load, eval=FALSE}
 bw.choice <- readRDS(file = "./data/bw.choice.rds")
 ```
 
@@ -288,13 +283,13 @@ print(time_pca)
 ```
 
 Because GWPCA can take some time to run, we ran it for you and below you can load the output:
-```{r 04_run_gwpca2}
+```{r 04_run_gwpca2, eval=FALSE}
 # pcaGW <- readRDS(file = "./data/pcaGW.rds")
 ```
 
 ## Plot global PCA results
 In the next steps we will be looking inside the output from `gwpca` function and we are going to extract some basic information. Since GWPCA is multiple local PCAs, it is good to know how many PCs makes sense to look at. We can do so by running a global PCA and plotting a scree plot:
-```{r 04_scree_plot}
+```{r 04_scree_plot, eval=FALSE}
 ## Prepare data for scree plot
 pvar <- pcaGW.noncentred$pca$sdev^2/sum(pcaGW.noncentred$pca$sdev^2)*100
 pvar <- data.frame(var = pvar,
@@ -315,7 +310,7 @@ In a Principal Component Analysis (PCA), the first three principal components ma
 
 ## Identify the leading genes in each location
 
-```{r leading_genes}
+```{r leading_genes, eval=FALSE}
 ## Load biomart
 biomartHumanGRCh37 <- readRDS(file = "./data/biomartHumanGRCh37.rds")
 
@@ -347,7 +342,7 @@ ggplot() +
 
 Another useful diagnostic for PCA is the percentage of variability in the data explained by each of the components. This can be achieved by looking at the `var` component of `pcaGW`; this is written as `pcaGW$var`. This is an XXXX by XX matrix - where XXXX is the number of observations and XX is the number of components. For each location, the XX columns correspond to the variance of each of the principal components. Looking at the proportion of each component in the sum of all of the variances shows how much of the variability in the data each component contributes. If, say, the first two components contributed 90% of the total variance, then it is reasonable to assume that much of the variability in the data can be seen by just looking at these two components. Because this is geographically weighted PCA, however, this quantity varies across the map.
 
-```{r 04_ptv}
+```{r 04_ptv, eval=FALSE}
 ## Calculate the PTV for multiple Components
 props <- gwpca.prop.var(gwpca.obj = pcaGW,
                         n.comp = c(5, 10, 20, 30, 40, 50),
@@ -373,7 +368,7 @@ for (i in c(5, 10, 20, 30)) {
 ## Identify discrepancies
 Global PCA can be used to identify multivariate outliers. Extending this, it is also possible to use local PCA (i.e., GWPCA) to identify local outliers. One way of doing this links back to the cross-validation idea used earlier to select a bandwidth. Recall that this is based on a score of how well each observation can be reconstructed on the basis of local PCs. The score measures the total discrepancies of true data values from the reconstructed ones - and the bandwidth chosen is the one minimising this. However, the total discrepancy score is the sum of the individual discrepancies. A very large individual discrepancy associated with an observation suggests it is very different - in a multidimensional way, to the observations near to it. These discrepancies can be calculated with the `gwpca.cv.contrib` function.
 
-```{r 04_discrep1}
+```{r 04_discrep1, eval=FALSE}
 ## Calculate the discrepancies
 data.mat <- as.matrix(inputPCAgw@data)
 discrepancy <- gwpca.cv.contrib(data.mat, 
@@ -384,7 +379,7 @@ discrepancy <- gwpca.cv.contrib(data.mat,
 discrepancy_df <- data.frame(disc = discrepancy)
 ```
 
-```{r 04_discrep2}
+```{r 04_discrep2, eval=FALSE}
 ## Plot as boxplot
 ggplot(pivot_longer(discrepancy_df, col = "disc"),
        aes(x = name, y = value)) + 
@@ -404,7 +399,7 @@ ggplot(pivot_longer(discrepancy_df, col = "disc"),
 
 Comment on the discrepancies and the Liver histopathology
 
-```{r 04_discrep3}
+```{r 04_discrep3, eval=FALSE}
 ## Plot map
 dt <- inputPCAgw@data %>%
     mutate(disc = discrepancy,
@@ -424,7 +419,7 @@ ggplot() +
 
 Another possibility to understand the nature of the outlier is a parallel coordinates heatmap. Here, each observation neighbouring the location that has been found to be an outlier is shown as a column with the genes in rows. Since here we are investigating local outliers, one particular observation is highlighted in red -the outlier-, and the remaining ones in grey, but with the intensity of the grey fading according to their distance from the red observation. This enables you to see what characteristic the red observation has that means it as outlying from its neighbours. The plot can be created using `gw.pcplot`:
 
-```{r 04_discrep4}
+```{r 04_discrep4, eval=FALSE}
 # Get the highest-scoring outliers
 outliers <- which(discrepancy_df > 1.8e+05)
 
@@ -441,11 +436,4 @@ gwpca.plot.outlier(countsNormCenter,
                    check.names = FALSE,
                    scale = "row",
                    color = rev(colorRampPalette(brewer.pal(11, "RdBu"))(1000)))
-```
-
-```{r time_end4, cache=FALSE}
-end <- Sys.time()
-time_taken <- difftime(end, begin)
-print(time_taken)
-# Time difference of 1.920817 mins
 ```
