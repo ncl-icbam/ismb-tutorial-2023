@@ -113,7 +113,7 @@
 #' @param MARGIN 1 = Features, 2 = Locations. Indicates for which aspect the 
 #' sparsity will be calculated; for features (genes) or locations.
 #' 
-#' @param sampleNo used to call the sparsity also over aall datasets when 
+#' @param sampleNo used to call the sparsity also over all datasets when 
 #' multiple samples exist.Used only when the function is called by 
 #' \code{addPerGeneQC}.
 #' 

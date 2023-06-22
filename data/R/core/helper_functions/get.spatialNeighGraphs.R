@@ -115,7 +115,7 @@ get.spatialNeighGraphs <- function(obj,
   }
   
   ## Make the simple graph a weighted list of neighbours 
-  ## Check that a distance modeling has been selected.
+  ## Check that a distance modelling has been selected.
   if (distMod == "raw") {
     nb_graph_w <- nb2listw(neighbours = nb_graph, glist = glist, 
                            style = style, zero.policy = zero.policy)

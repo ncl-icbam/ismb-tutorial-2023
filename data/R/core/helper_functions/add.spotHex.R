@@ -27,6 +27,7 @@
 # then take their new coordinates and add them back to spatialCoordinates 
 # (problems with colData and SFE? Maybe export spatialCoordiantes work and then 
 # add to SFE ONLY the hexagons.)
+
 add.spotHex <- function(obj,
                         samples,
                         sample_id,
@@ -49,6 +50,7 @@ add.spotHex <- function(obj,
         ## Get min/max values for the first/last capture area rows/columns. It 
         ## is not fixed because Visium can have 6.5mm or 11mm capture areas.
         int_list_minMax <- .int_spotHex_minMax(data)
+        
         
         ## Fetch data and coordinates for the required locations
         int_list_subset <- .int_spotHex_subset(int_list_minMax, cData, data)

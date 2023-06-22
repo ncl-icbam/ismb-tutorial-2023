@@ -9,7 +9,7 @@ To find such outliers the procedure is relatively simple - instead of doing a PC
 The following code carries out a geographically weighted PCA. In short, it runs a ‘windowed’ PCA around each of the spots.
 
 ## Load packages
-```{r 04_loadPackages, echo=FALSE, message=FALSE, results='hide'}
+```{r 04_loadPackages, include=FALSE}
 library(SpatialFeatureExperiment)
 library(tidyverse)
 library(scran)
@@ -24,6 +24,8 @@ library(foreach)
 library(progressr)
 library(parallel)
 library(cols4all)
+library(pheatmap)
+library(RColorBrewer)
 
 ## to get this to work here...
 #List and source all scripts in the core folder.
@@ -37,230 +39,37 @@ sapply(file.sources, source, local = .GlobalEnv)
 ```
 
 ## Load Quality Controled and Normalised data
-```{r 04_gwpca}
-
-vars = top_hvgs[1:500]
-bw = 6*sfe@metadata[["spotDiameter"]][["JBO019"]][["spot_diameter_fullres"]]
-k = 20
-kernel = "gaussian"
-p = 1
-adaptive = FALSE
-cv = TRUE
-scores = FALSE
-robust = FALSE
-
-# cc <- availableCores() - 1
-my.cl <- parallel::makeCluster(availableCores() - 1, type = 'FORK')
-
-
-
-# >>> it returns an error when inside the markdown. Maybe run with verbose = FALSE
-pcagw_ste <- gwpca.ste(obj = sfe, 
-                       assay = "counts",
-                       vars = vars, 
-                       p = p, 
-                       k = k, 
-                       bw = bw, 
-                       kernel = kernel,
-                       adaptive = adaptive, 
-                       scores = scores, 
-                       robust = robust,
-                       cv = cv,
-                       future = FALSE,
-                       strategy = "cluster",
-                       workers = my.cl,
-                       verbose = FALSE)
-
-
-plotGWPCA_global(gwpca = pcagw_ste,
-                 comps = 1:10,
-                 type = "scree",
-                 point_args = list(size = 5, colour = "red"),
-                 line_args = list(linewidth = 2, colour = "dodgerblue"))
-
-pcagw_ste <- gwpca_LeadingGene(gwpca = pcagw_ste, 
-                               sfe = sfe, 
-                               pc_nos = 1:4, 
-                               type = "single", 
-                               names = "gene_names")
-
-pcagw_ste <- gwpca_LeadingGene(gwpca = pcagw_ste, 
-                               sfe = sfe, 
-                               pc_nos = 1:4, 
-                               genes_n = 4, 
-                               type = "multi", 
-                               method = "membership", 
-                               names = "gene_names")
-
-
-plotGWPCA_leadingG(gwpca = pcagw_ste,
-                   comps = 1:4,
-                   type = "single",
-                   arrange = TRUE)
-
-plotGWPCA_leadingG(gwpca = pcagw_ste,
-                   comps = 1:4,
-                   type = "multi",
-                   arrange = TRUE)
-
-```
-
-
-################################################################################
-```{r QC_Norm_LiverData, echo=FALSE, message=FALSE, warning=FALSE, results='hide', eval=FALSE}
-## Keep on-tissue spots
-colDATA <- inputMD %>%
-  dplyr::filter(Section == 1)
-
-## Ground truth from dataset authors
-groundTruth <- read.table("./data/spotzonationGroup.txt", header = TRUE)
-colDATA <- colDATA %>%
-  left_join(groundTruth)
-
-## Get mitochondrial gene names
-#biomartHumanGRCh37 <- create_biomart("human", version = "GRCh37")
-biomartHumanGRCh37 <- readRDS(file = "./data/biomartHumanGRCh37.rds")
-# rowDATA <- annotate_vector(rownames(inputD), biomartHumanGRCh37)
-rowDATA <- readRDS(file = "./data/rowDATA.rds")
-is_mito <- grepl("(^MT-)|(^mt-)", rowDATA$gene_name)
-
-## Calculate per-spot QC metrics and store in colData
-perCellQC <- perCellQCMetrics(inputD, subsets = list(mito = is_mito)) %>% 
-  as.data.frame() %>%
-  rownames_to_column(var = "Barcode")
-colDATA <- colDATA %>% 
-  left_join(perCellQC)
-
-## Add geometries to colData
-colDATA <- colDATA %>% 
-  left_join(polygons)
-
-## Select library size threshold
-qc_lib_size <- colDATA$sum < 700
-colDATA$qc_lib_size <- qc_lib_size
-## Select expressed genes threshold
-qc_detected <- colDATA$detected < 500
-colDATA$qc_detected <- qc_detected
-## Select expressed genes threshold
-qc_mito <- colDATA$subsets_mito_percent > 24
-colDATA$qc_mito <- qc_mito
-## Check the number of discarded spots for each metric
-apply(cbind(qc_lib_size, qc_detected, qc_mito), 2, sum)
-## Combine together the set of discarded spots
-discard <- qc_lib_size | qc_detected | qc_mito
-## Store the set in the object
-colDATA$discard <- discard
-## Vector to remove spots from counts table too
-discard_c <- colnames(inputD) %in% colDATA[!colDATA$discard,"Barcode"]
-
-## Remove spots that fail to pass the QC
-colDATA <- colDATA[!colDATA$discard,]
-counts <- inputD[,discard_c]
-identical(colDATA$Barcode, colnames(counts))
-
-## Calculate size factors
-sizeFactor <- librarySizeFactors(counts)
-
-## Normalise counts
-counts_norm <- normalizeCounts(counts, size.factors = sizeFactor)
-
-## Remove mitochondrial genes
-counts_norm <- counts_norm[!is_mito, ]
-rowDATA <- rowDATA[!is_mito, ]
-
-## Fit mean-variance relationship
-dec <- modelGeneVar(counts_norm)
-
-## Select top HVGs
-top_hvgs <- getTopHVGs(dec, prop = 0.1)
-rowDATA$topHVGs <- rowDATA$id %in% top_hvgs
-
-## Scale normalised counts 
-counts_topHVGs <- counts_norm[rowDATA$topHVGs,] %>% 
-  t()
-countsNormCenter <- scale(counts_topHVGs, center = TRUE, scale = TRUE)
-
-## Add size factors in colData
-sizeFactor <- sizeFactor %>% 
-  as.data.frame() %>%
-  dplyr::rename("sizeFactor" = ".") %>%
-  rownames_to_column(var = "Barcode")
-colDATA <- colDATA %>% 
-  left_join(sizeFactor)
-
-## Save
-# saveRDS(countsNormCenter, file = "./data/countsNormScaled.rds")
-# saveRDS(rowDATA, file = "./data/rowDATA.rds")
-# saveRDS(colDATA, file = "./data/colDATA.rds")
-```
-
 ```{r 04_load_data}
-# countsNormCenter <- readRDS(file = "./data/countsNormScaled.rds")
-# rowDATA <- readRDS(file = "./data/rowDATA.rds")
-# colDATA <- readRDS(file = "./data/colDATA.rds")
+sfe <- readRDS(file = "./data/to_load/practical03_sfe.rds")
+top_hvgs <- readRDS(file = "./data/to_load/practical03_topHVGs.rds")
 ```
 
-We imported 3 tables:
-
-1. `countsNormCenter`: normalised and centred and scaled counts for the top HVGs without mitochondrial genes. We followed the preprocessing steps from practical session 2.
-2. `rowDATA`: Gene annotations (containing, amongst others, ENSG IDs and gene names).
-3. `colDATA`: Metadata for the spots that passed the QC as in practical session 2.
-
+## Parameter prearation for GWPCA
 Because gwpca uses princomp to run the PCAs and this does not accept the number of variables (genes) being more than the number of samples (spots).
-
-## Data prearation and single GWPCA run
-```{r 04_prepare_gwpca, eval=FALSE}
-## Prepare for Geographically Weighted PCA (GWPCA)
-countsNormCenter <- countsNormCenter %>%
-  as.data.frame() %>%
-  rownames_to_column(var = "rowname") %>%
-  arrange("rowname") %>%
-  column_to_rownames("rowname")
-
-## Get the coordinates
-coords <- colDATA[, c("Barcode", "pixel_x", "pixel_y")] %>%
-  arrange(Barcode) %>%
-  column_to_rownames(var = "Barcode")
-
-## Get the data into a SpatialPointsDataFrame object
-inputPCAgw <- SpatialPointsDataFrame(coords, 
-                                     countsNormCenter, 
-                                     match.ID = TRUE)
-```
-
 ```{r 04_set_parameters, eval=FALSE}
 ## Get the gene names that are going to be evaluated
-vars <- colnames(inputPCAgw@data)
-
+vars = top_hvgs
+## Set a fixed bandwidth
+bw = 6*sfe@metadata[["spotDiameter"]][["JBO019"]][["spot_diameter_fullres"]]
 ## Set the number of components to be retained
-k <- 20
-
+k = 20
 ## Set the kernel to be used
 kernel = "gaussian"
-
-## Set a bandwidth -in pixels- for neighbourhood 
-dist.Mat <- gw.dist(dp.locat = st_coordinates(colDATA$geom_cntd), p = 1)
+## Set the Minkowski distance power: p = 2 --> Euclidean
+p = 2
+## Is the bandwidth adaptive?: No because spots are fixed
+adaptive = FALSE
+## Cross-Validate GWPCA?
+cv = TRUE
+## Calculate PCA scores?
+scores = FALSE
+## Run a robust GWPCA?
+robust = FALSE
+## Make a cluster for parallel computing (otherwise GWPCA is slow!)
+my.cl <- parallel::makeCluster(availableCores() - 1, type = 'FORK')
 ```
 
 The bandwidth is essentially the radius around each spot where every other spot that falls inside it is considered a neighbour. We can set bandwidth as a fixed value or we can select the bandwidth automatically. Without going into detail here, this is achieved by a form of cross validation, where each observation is omitted, and it is attempted to reconstruct the values on the basis of principal components, derived from the other observations. The bandwidth achieving the optimal results is the one selected. For a complete explanation, see @Harris2011Oct. The function `bw.gwpca` computes this:
-
-```{r 04_bw_choice, eval=FALSE}
-# bw.choice <- bw.gwpca(inputPCAgw, 
-#                       vars = vars, 
-#                       k = k,
-#                       kernel = kernel,
-#                       dMat = dist.Mat, 
-#                       adaptive = TRUE)
-# 
-# ## Save 
-# saveRDS(bw.choice, file = "./data/bw.choice.rds")
-```
-
-Since this command computes several GWPCA estimates at different bandwidths in order to find an optimum, it will take noticeably longer than the version of the function with a prescribed bandwidth. Once run, `gwpca` is re-run with the bandwidth set to `bw.choice.` Below load the `bw.choice` object we already calculated for you:
-
-```{r 04_bw_choice_load, eval=FALSE}
-bw.choice <- readRDS(file = "./data/bw.choice.rds")
-```
 
 - **NOTE**: Larger bandwidths imply bigger moving spatial windows, which in turn imply smoother spatially varying outputs.
 
@@ -268,172 +77,147 @@ bw.choice <- readRDS(file = "./data/bw.choice.rds")
 Run the optimised GWPCA with the automatically estimated bandwidth:
 
 ```{r 04_run_gwpca1, eval=FALSE}
-begin_pca <- Sys.time()
-pcaGW <- gwpca(inputPCAgw,
-               vars = vars,
-               bw = bw.choice,
-               k = k,
-               dMat = dist.Mat,
-               adaptive = TRUE,
-               kernel = kernel)
-end_pca <- Sys.time()
-time_pca <- difftime(end_pca, begin_pca)
-print(time_pca)
-# saveRDS(pcaGW, file = "./data/pcaGW.rds")
+# DO NOT RUN THIS CHUNK
+# >>> it returns an error when inside the markdown. Maybe run with verbose = FALSE
+pcagw <- gwpcaSTE(obj = sfe, 
+                  assay = "logcounts",
+                  vars = vars, 
+                  p = p, 
+                  k = k, 
+                  bw = bw, 
+                  kernel = kernel,
+                  adaptive = adaptive, 
+                  scores = scores, 
+                  robust = robust,
+                  cv = cv,
+                  future = FALSE,
+                  strategy = "cluster",
+                  workers = my.cl,
+                  verbose = FALSE)
+saveRDS(pcagw, file = "./data/to_load/practical04_pcagw.rds")
 ```
 
 Because GWPCA can take some time to run, we ran it for you and below you can load the output:
-```{r 04_run_gwpca2, eval=FALSE}
-# pcaGW <- readRDS(file = "./data/pcaGW.rds")
+```{r 04_run_gwpca2, eval=TRUE}
+pcagw <- readRDS(file = "./data/to_load/practical04_pcagw.rds")
 ```
 
 ## Plot global PCA results
 In the next steps we will be looking inside the output from `gwpca` function and we are going to extract some basic information. Since GWPCA is multiple local PCAs, it is good to know how many PCs makes sense to look at. We can do so by running a global PCA and plotting a scree plot:
-```{r 04_scree_plot, eval=FALSE}
-## Prepare data for scree plot
-pvar <- pcaGW.noncentred$pca$sdev^2/sum(pcaGW.noncentred$pca$sdev^2)*100
-pvar <- data.frame(var = pvar,
-                   PCs = sprintf("PC%02d", seq(1, length(pvar))))
-
-## Plot scree plot
-ggplot(pvar[1:10,], aes(x = PCs, y = var, group = 1)) + 
-    geom_point(size = 3) +
-    geom_line() +
-    xlab("Principal Component") +
-    ylab("% Variance Explained") +
-    ggtitle("Scree Plot") +
-    ylim(0, 5) + 
-    theme_classic()
+```{r 04_scree_plot, eval=TRUE, fig.height=3, fig.width=8}
+plotGWPCA_global(gwpca = pcagw,
+                 comps = 1:10,
+                 type = "scree",
+                 point_args = list(size = 3, colour = "red"),
+                 line_args = list(linewidth = 1, colour = "dodgerblue"))
 ```
 
-In a Principal Component Analysis (PCA), the first three principal components may explain less than 15% of the variance in the data if the data is highly dispersed or if there is a large amount of noise in the data. This means that the first three principal components are not capturing a significant portion of the variability in the data. This could be due to a lack of clear structure in the data or a lack of meaningful patterns that can be captured by the PCA. Alternatively, it could be due to the presence of many irrelevant features or variables in the data that are not contributing to the overall variance.
+In a Principal Component Analysis (PCA), the first three principal components may explain less than 15% of the variance in the data if the data is highly dispersed or if there is a large amount of noise in the data. This means that the first three principal components are not capturing a significant portion of the variability in the data. This could be due to a lack of clear structure in the data or a lack of meaningful patterns that can be captured by the PCA. Alternatively, it could be due to the presence of many irrelevant features or variables in the data that are not contributing to the overall variance. This is one more of the reasons why GWPCA is more appropriate for STx data. Because, it may be true that the global PCs are not strong but locally this can change.
 
 ## Identify the leading genes in each location
 
-```{r leading_genes, eval=FALSE}
-## Load biomart
-biomartHumanGRCh37 <- readRDS(file = "./data/biomartHumanGRCh37.rds")
-
+```{r leading_genes1, eval=TRUE}
 ## Extract leading genes
-lead.item <- gwpca.Leading.G.single(pcaGW.noncentred, 
-                                    pc.no = 1, 
-                                    sf.geom = colDATA$geom_pol,
-                                    gene.names = TRUE,
-                                    biomart = biomartHumanGRCh37,
-                                    check.names = FALSE)
+pcagw <- gwpca_LeadingGene(gwpca = pcagw, 
+                           sfe = sfe, 
+                           pc_nos = 1:4, 
+                           type = "single", 
+                           names = "gene_names")
 
-pc.No = 1
-col.No <- length(unique(lead.item[,1]))
-colour.values <- get.colours(col.No)
-    
-ggplot() + 
-  geom_sf(data = lead.item$geometry, 
-          aes(fill = lead.item[,1])) +
-  scale_fill_manual(values = colour.values) + 
-  xlab("X coordinates (pixels)") +
-  ylab("Y coordinates (pixels)") +
-  labs(title = paste0("Leading Genes on PC", pc.No),
-       fill = "Leading Genes") +
-  theme_void() + 
-  theme(legend.position = "none")
+pcagw <- gwpca_LeadingGene(gwpca = pcagw, 
+                           sfe = sfe, 
+                           pc_nos = 1:4, 
+                           genes_n = 4, 
+                           type = "multi", 
+                           method = "membership", 
+                           names = "gene_names")
+```
+
+```{r leading_genes2, eval=TRUE, , fig.show = 'hold', out.width="33%", fig.height=6, fig.width=8}
+## Plot leading genes
+plotGWPCA_leadingG(gwpca = pcagw,
+                   comps = 1:2,
+                   type = "single",
+                   arrange = FALSE)
+
+plotGWPCA_leadingG(gwpca = pcagw,
+                   comps = 1,
+                   type = "multi",
+                   arrange = FALSE)
 ```
 
 ## Percentage of Total Variation (PTV)
+Another useful diagnostic for PCA is the percentage of variability in the data explained by each of the components. This can be achieved by looking at the `var` component of `pcagw`; this is written as `pcagw$var`. This is an XXXX by XX matrix - where XXXX is the number of observations and XX is the number of components. For each location, the XX columns correspond to the variance of each of the principal components. Looking at the proportion of each component in the sum of all of the variances shows how much of the variability in the data each component contributes. If, say, the first two components contributed 90% of the total variance, then it is reasonable to assume that much of the variability in the data can be seen by just looking at these two components. Because this is geographically weighted PCA, however, this quantity varies across the map.
 
-Another useful diagnostic for PCA is the percentage of variability in the data explained by each of the components. This can be achieved by looking at the `var` component of `pcaGW`; this is written as `pcaGW$var`. This is an XXXX by XX matrix - where XXXX is the number of observations and XX is the number of components. For each location, the XX columns correspond to the variance of each of the principal components. Looking at the proportion of each component in the sum of all of the variances shows how much of the variability in the data each component contributes. If, say, the first two components contributed 90% of the total variance, then it is reasonable to assume that much of the variability in the data can be seen by just looking at these two components. Because this is geographically weighted PCA, however, this quantity varies across the map.
-
-```{r 04_ptv, eval=FALSE}
+```{r 04_ptv, eval=TRUE, fig.show='hold'}
 ## Calculate the PTV for multiple Components
-props <- gwpca.prop.var(gwpca.obj = pcaGW,
-                        n.comp = c(5, 10, 20, 30, 40, 50),
-                        polygons = colDATA$geom_pol)
+pcagw <- gwpca_PropVar(gwpca = pcagw, n_comp = 2:10, sfe = sfe)
+
+## Plot PTV
+plotGWPCA_ptv(gwpca = pcagw,
+              comps = 1:10,
+              type = "violin")
 
 ## Map PTV
-for (i in c(5, 10, 20, 30)) {
-    comps <- sprintf("Comps_%02d", i)
-    ptv.map <- dplyr::select(props, all_of(c(comps, "geometry")))
-    
-    (ggplot() + 
-      geom_sf(data = ptv.map$geometry,
-              aes(fill = ptv.map[,1])) +
-      scale_fill_viridis_c(option = "inferno", limits = c(0, 100)) +
-      labs(title = "Percantage of Total Variation\n(PTV)",
-           fill = paste0("PTV of ", i, "\n components")) +
-      theme_void() +
-      theme(legend.position = "right")) %>% 
-      print()
-}
+plotGWPCA_ptv(gwpca = pcagw,
+              comps = 1:6,
+              type = "map")
 ```
 
 ## Identify discrepancies
 Global PCA can be used to identify multivariate outliers. Extending this, it is also possible to use local PCA (i.e., GWPCA) to identify local outliers. One way of doing this links back to the cross-validation idea used earlier to select a bandwidth. Recall that this is based on a score of how well each observation can be reconstructed on the basis of local PCs. The score measures the total discrepancies of true data values from the reconstructed ones - and the bandwidth chosen is the one minimising this. However, the total discrepancy score is the sum of the individual discrepancies. A very large individual discrepancy associated with an observation suggests it is very different - in a multidimensional way, to the observations near to it. These discrepancies can be calculated with the `gwpca.cv.contrib` function.
 
-```{r 04_discrep1, eval=FALSE}
-## Calculate the discrepancies
-data.mat <- as.matrix(inputPCAgw@data)
-discrepancy <- gwpca.cv.contrib(data.mat, 
-                                coordinates(inputPCAgw),
-                                bw = bw.choice,
-                                adaptive = TRUE, 
-                                dMat = dist.Mat)
-discrepancy_df <- data.frame(disc = discrepancy)
+```{r 04_discrep1, eval=TRUE, fig.height=3, fig.width=8}
+## Plot the discrepancies as boxplot
+plotGWPCA_discr(pcagw, type = "box")
 ```
 
-```{r 04_discrep2, eval=FALSE}
-## Plot as boxplot
-ggplot(pivot_longer(discrepancy_df, col = "disc"),
-       aes(x = name, y = value)) + 
-    geom_boxplot(fill = "#D1E5F0", colour = "#2166AC", 
-                 outlier.colour = "red", outlier.size = 2) + 
-    geom_jitter(col = "#EF8A62", size = 2, width = 0.3, alpha = 0.8) +
-    # add horizontal line
-    geom_hline(yintercept = c(2e+04, 1.8e+05), linetype = "dashed", color = "royalblue") +
-    # customise axes
-    scale_x_discrete(labels = "Locations") +
-    coord_flip() +
-    xlab(NULL) +
-    ylab("Local PC Discrepancy") +
-    theme_classic() + 
-    theme(axis.text.y = element_text(angle = 90, hjust = 0.5))
+```{r 04_discrep2, eval=TRUE}
+## Plot the discrepancies map
+plotGWPCA_discr(pcagw, type = "map")
 ```
 
 Comment on the discrepancies and the Liver histopathology
 
-```{r 04_discrep3, eval=FALSE}
-## Plot map
-dt <- inputPCAgw@data %>%
-    mutate(disc = discrepancy,
-           geometry = colDATA$geom_pol)
-
-disc.map <- dplyr::select(dt, all_of(c("disc", "geometry")))
-
-ggplot() + 
-  geom_sf(data = disc.map$geometry, 
-          aes(fill = disc.map$disc)) + 
-  scale_fill_viridis_c(option = "inferno") +
-  labs(title = "Local PC Discrepancy",
-         fill = "Discrepancy\nscore") +
-  theme_void() + 
-  theme(legend.position = "right")
+```{r 04_discrep3, eval=TRUE}
+## Get location data for the discrepancies
+discrepancy_loc_dt <- getDiscrepancyLocData(sfe = sfe, 
+                                            gwpca = pcagw, 
+                                            sample_id = "JBO019")
 ```
 
 Another possibility to understand the nature of the outlier is a parallel coordinates heatmap. Here, each observation neighbouring the location that has been found to be an outlier is shown as a column with the genes in rows. Since here we are investigating local outliers, one particular observation is highlighted in red -the outlier-, and the remaining ones in grey, but with the intensity of the grey fading according to their distance from the red observation. This enables you to see what characteristic the red observation has that means it as outlying from its neighbours. The plot can be created using `gw.pcplot`:
 
-```{r 04_discrep4, eval=FALSE}
-# Get the highest-scoring outliers
-outliers <- which(discrepancy_df > 1.8e+05)
+```{r 04_discrep4, eval=TRUE, message=FALSE, fig.show='hold', fig.height=15, fig.width=9}
+head(discrepancy_loc_dt)
+focus <- discrepancy_loc_dt$barcodes[1:2]
+bw = 3*sfe@metadata[["spotDiameter"]][["JBO019"]][["spot_diameter_fullres"]]
 
 # Plot the heatmap to visualise the genes that make this location an outlier
-gwpca.plot.outlier(countsNormCenter,
-                   bw = bw.choice,
-                   focus = outliers[1],
-                   dMat = dist.Mat,
-                   show.vars = "top",
-                   mean.diff = 1,
-                   gene.names = TRUE,
-                   biomart = biomartHumanGRCh37,
-                   show.data = FALSE,
-                   check.names = FALSE,
-                   scale = "row",
-                   color = rev(colorRampPalette(brewer.pal(11, "RdBu"))(1000)))
+plotGWPCA_discrHeatmap(sfe = sfe,
+                       assay = "logcounts",
+                       vars = NULL,
+                       focus = focus,
+                       dMetric = "euclidean", 
+                       sample_id = "JBO019",
+                       bw = bw, 
+                       mean.diff = 1, 
+                       show.vars = "top", 
+                       scale = "row", 
+                       gene.names = TRUE,
+                       color = rev(colorRampPalette(brewer.pal(11, "RdBu"))(1000)))
+```
+
+```{r 04_discrep5, message=FALSE}
+discrepancy_gene_dt <- getDiscrepancyGeneData(sfe = sfe,
+                                              assay = "logcounts",
+                                              vars = NULL,
+                                              focus = focus[2],
+                                              dMetric = "euclidean", 
+                                              sample_id = "JBO019",
+                                              bw = bw, 
+                                              mean.diff = 1, 
+                                              show.vars = "top",
+                                              exportExpression = TRUE)
+head(discrepancy_gene_dt)
 ```

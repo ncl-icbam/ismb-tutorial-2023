@@ -18,6 +18,11 @@
 #' advised to use the annotation version that was used to create the .bam files.
 #' If you don't want to add annotation to the genes leave it as NULL.
 #' 
+#' @param mirror Specify an Ensembl mirror to connect to. The valid options here
+#' are 'www', 'uswest', 'useast', 'asia'. If no mirror is specified the primary 
+#' site at www.ensembl.org will be used. Mirrors are not available for the 
+#' Ensembl Genomes databases.
+#' 
 #' @param ... further arguments passed to \code{addPerFeatureQCMetrics}, to pass
 #'  to \code{perFeatureQCMetrics}.
 #' 
@@ -25,12 +30,18 @@
 
 addPerGeneQC <- function(obj,
                         assay = "counts",
+                        organism = "human",
                         version = NULL,
+                        mirror = "www",
                         ...) {
   ## Add Biomart annotations
-  if (!is.null(version)) {
-    mart <- create_biomart("human", version = version)
-    rowData(obj) <- annotate_data.frame(rowData(obj), biomart = mart)
+  if (is.null(version)) {
+      colnames(rowData(obj)) <- "gene_name"
+  } else {
+    mart <- try(create_biomart(organism = organism, 
+                           version = version, 
+                           mirror = mirror))
+    rowData(obj) <- try(annotate_data.frame(rowData(obj), biomart = mart))
   }
   
   ## Add gene QC metrics from scatter package
