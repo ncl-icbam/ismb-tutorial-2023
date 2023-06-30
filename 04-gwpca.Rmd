@@ -10,6 +10,7 @@ The following code carries out a geographically weighted PCA. In short, it runs 
 
 ## Load packages
 ```{r 04_loadPackages, include=FALSE}
+library(STExplorerDev)
 library(SpatialFeatureExperiment)
 library(tidyverse)
 library(scran)
@@ -26,16 +27,6 @@ library(parallel)
 library(cols4all)
 library(pheatmap)
 library(RColorBrewer)
-
-## to get this to work here...
-#List and source all scripts in the core folder.
-file.sources <- list.files(path = "./data/R/core", 
-                           pattern = "*.R$", 
-                           all.files = TRUE, 
-                           recursive = TRUE, 
-                           full.names = TRUE, 
-                           ignore.case = TRUE)
-sapply(file.sources, source, local = .GlobalEnv)
 ```
 
 ## Load Quality Controled and Normalised data
@@ -66,7 +57,7 @@ scores = FALSE
 ## Run a robust GWPCA?
 robust = FALSE
 ## Make a cluster for parallel computing (otherwise GWPCA is slow!)
-my.cl <- parallel::makeCluster(availableCores() - 1, type = 'FORK')
+my.cl <- parallel::makeCluster(parallelly::availableCores() - 1, type = 'FORK')
 ```
 
 The bandwidth is essentially the radius around each spot where every other spot that falls inside it is considered a neighbour. We can set bandwidth as a fixed value or we can select the bandwidth automatically. Without going into detail here, this is achieved by a form of cross validation, where each observation is omitted, and it is attempted to reconstruct the values on the basis of principal components, derived from the other observations. The bandwidth achieving the optimal results is the one selected. For a complete explanation, see @Harris2011Oct. The function `bw.gwpca` computes this:
@@ -79,7 +70,7 @@ Run the optimised GWPCA with the automatically estimated bandwidth:
 ```{r 04_run_gwpca1, eval=FALSE}
 # DO NOT RUN THIS CHUNK
 # >>> it returns an error when inside the markdown. Maybe run with verbose = FALSE
-pcagw <- gwpcaSTE(obj = sfe, 
+pcagw <- gwpcaSTE(sfe = sfe, 
                   assay = "logcounts",
                   vars = vars, 
                   p = p, 

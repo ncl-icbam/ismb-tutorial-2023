@@ -549,7 +549,7 @@ knitr::include_graphics("images/gwmodel_kernel_graphs.png")
 
 ```{r 03_spatial_weights_to_sfe}
 ## add a neighbour graph using a weighted distance matrix
-sfe <- get.spatialNeighGraphs(sfe, "JBO019", type = "knearneigh", style = "W", distMod = "raw", k = 6)
+sfe <- addSpatialNeighGraphs(sfe, "JBO019", type = "knearneigh", style = "W", distMod = "raw", k = 6)
 
 colGraphs(sfe)
 
@@ -627,7 +627,7 @@ top_hvgs <- getTopHVGs(dec,
 # ----------------------------------------------- #
 ## ADD GEOGRAPHY
 ## Add a neighbour graph using a weighted distance matrix
-sfe <- get.spatialNeighGraphs(sfe, "JBO019", type = "knearneigh", style = "W", distMod = "raw", k = 6)
+sfe <- addSpatialNeighGraphs(sfe, "JBO019", type = "knearneigh", style = "W", distMod = "raw", k = 6)
 ## Calculate a simple distance matrix
 sfe <- addDistMat(sfe, p = 2)
 ```
