@@ -3,6 +3,8 @@
 This practical session will demonstrate the application of the most commonly used spatial analysis tools to STx data, and how we work with coordinate data alongside expression data. \## Load packages
 
 ```{r 03_loadPackages, include=FALSE, eval=TRUE}
+devtools::install_github("https://github.com/LefterisZ/STExplorerDev.git", force = TRUE)
+library(STExplorerDev)
 library(SpatialFeatureExperiment)
 library(tidyverse)
 library(scran)
@@ -11,16 +13,6 @@ library(ggspavis)
 library(sf)
 library(spdep)
 library(GWmodel)
-
-## to get this to work here...
-#List and source all scripts in the core folder.
-file.sources <- list.files(path = "./data/R/core", 
-                           pattern = "*.R$", 
-                           all.files = TRUE, 
-                           recursive = TRUE, 
-                           full.names = TRUE, 
-                           ignore.case = TRUE)
-sapply(file.sources, source, local = .GlobalEnv)
 ```
 
 -   [`spdep`](https://cran.r-project.org/web/packages/spdep/index.html) is a collection of functions to create spatial weights matrix objects from polygon *'contiguities'*, from point patterns by distance and tessellations, for summarizing these objects, and for permitting their use in spatial data analysis like regional aggregation and tests for spatial *'autocorrelation'*.
@@ -238,7 +230,7 @@ sfe <- read10xVisiumSFE(samples = sampleDir,
                         style = "W", 
                         zero.policy = TRUE)
 
-ground_truth <- read_table("./data/spotzonationGroup.txt")
+ground_truth <- read_table("./data/to_load/spotzonationGroup.txt")
 
 ```
 
