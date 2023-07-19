@@ -3,7 +3,6 @@
 This practical session will demonstrate the application of the most commonly used spatial analysis tools to STx data, and how we work with coordinate data alongside expression data. \## Load packages
 
 ```{r 03_loadPackages, include=FALSE, eval=TRUE}
-devtools::install_github("https://github.com/LefterisZ/STExplorerDev.git", force = TRUE)
 library(STExplorerDev)
 library(SpatialFeatureExperiment)
 library(tidyverse)
