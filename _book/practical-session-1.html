@@ -23,7 +23,7 @@
 <meta name="author" content="Eleftherios Zormpas, Dr Simon J. Cockell" />
 
 
-<meta name="date" content="2023-07-19" />
+<meta name="date" content="2023-07-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -511,7 +511,7 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 <span id="cb22-2"><a href="practical-session-1.html#cb22-2" aria-hidden="true" tabindex="-1"></a>spi <span class="ot">&lt;-</span> <span class="fu">getImg</span>(spe)</span>
 <span id="cb22-3"><a href="practical-session-1.html#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="do">## &quot;plot&quot; the image</span></span>
 <span id="cb22-4"><a href="practical-session-1.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">imgRaster</span>(spi))</span></code></pre></div>
-<p><img src="_main_files/figure-html/01_plot-image-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/01_plot-image-1.png" width="768" /></p>
 <p>We can also use the scaling factors in the <code>imgData</code> to plot the locations of the Visium spots over the image. The position of a point in an image does not map directly to the spot location in cartesian coordinates, as it is the top-left of an image that is (0,0), not the bottom-left. In order to manage this, we need to transform the y-axis coordinates.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="practical-session-1.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## &quot;Plot&quot; the image</span></span>
 <span id="cb23-2"><a href="practical-session-1.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">imgRaster</span>(spi))</span>
@@ -527,14 +527,14 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="practical-session-1.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## flip the Y axis</span></span>
 <span id="cb25-2"><a href="practical-session-1.html#cb25-2" aria-hidden="true" tabindex="-1"></a>spot_coords<span class="sc">$</span>y_axis <span class="ot">&lt;-</span> <span class="fu">abs</span>(spot_coords<span class="sc">$</span>y_axis <span class="sc">-</span> (<span class="fu">ncol</span>(<span class="fu">imgRaster</span>(spi)) <span class="sc">+</span> <span class="dv">1</span>))</span>
 <span id="cb25-3"><a href="practical-session-1.html#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="at">x=</span>spot_coords<span class="sc">$</span>x_axis, <span class="at">y=</span>spot_coords<span class="sc">$</span>y_axis)</span></code></pre></div>
-<p><img src="_main_files/figure-html/01_plot-spots-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/01_plot-spots-1.png" width="768" /></p>
 <p>An equivalent plot, using <code>ggplot2</code> as the plotting library:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="practical-session-1.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">600</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">600</span>)) <span class="sc">+</span></span>
 <span id="cb26-2"><a href="practical-session-1.html#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotation_raster</span>(<span class="fu">imgRaster</span>(spi), <span class="at">xmin =</span> <span class="dv">1</span>, <span class="at">xmax =</span> <span class="dv">600</span>, <span class="at">ymin =</span> <span class="dv">1</span>, <span class="at">ymax =</span> <span class="dv">600</span>) <span class="sc">+</span></span>
 <span id="cb26-3"><a href="practical-session-1.html#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>spot_coords, <span class="fu">aes</span>(<span class="at">x=</span>x_axis, <span class="at">y=</span>y_axis), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">xlim</span>(<span class="dv">1</span>, <span class="dv">600</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">1</span>, <span class="dv">600</span>) <span class="sc">+</span></span>
 <span id="cb26-4"><a href="practical-session-1.html#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span> </span>
 <span id="cb26-5"><a href="practical-session-1.html#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/01_ggplot-spots-1.png" width="672" />
+<p><img src="_main_files/figure-html/01_ggplot-spots-1.png" width="768" />
 We can also extract additional metadata to make these plots more informative - for instance, the annotation from <code>colData</code> that flags whether a spot is “on tissue” or not can be used to colour the spots like so:</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="practical-session-1.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Add the annotation to the coordinate data frame</span></span>
 <span id="cb27-2"><a href="practical-session-1.html#cb27-2" aria-hidden="true" tabindex="-1"></a>spot_coords<span class="sc">$</span>on_tissue <span class="ot">&lt;-</span> <span class="fu">as.logical</span>(<span class="fu">colData</span>(spe)<span class="sc">$</span>in_tissue)</span>
@@ -544,10 +544,10 @@ We can also extract additional metadata to make these plots more informative - f
 <span id="cb27-6"><a href="practical-session-1.html#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>spot_coords, <span class="fu">aes</span>(<span class="at">x=</span>x_axis, <span class="at">y=</span>y_axis, <span class="at">colour=</span>on_tissue), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">xlim</span>(<span class="dv">1</span>, <span class="dv">600</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">1</span>, <span class="dv">600</span>) <span class="sc">+</span></span>
 <span id="cb27-7"><a href="practical-session-1.html#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span> </span>
 <span id="cb27-8"><a href="practical-session-1.html#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
-<p><img src="_main_files/figure-html/01_ggplot_ontissue-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/01_ggplot_ontissue-1.png" width="768" /></p>
 <p>Having to manually extract the relevant information from the <code>SpatialExperiment</code> object to generate plots like this does not generally make sense, and defies the point of using a data class that can encapsulate this information. We can instead use a package like <code>ggspavis</code>, which is explicitly built for generating visualisations of STx data directly from the <code>SpatialExperiment</code> object. We will make extensive use of this package during the next tutorial as we work through quality control processes for STx data. The pre-built nature of these plots is convenient, though it prevents users from achieving tasks like adding the tissue image to the plot. For many users the convenience will outweigh any issues this presents, though it is worth being aware of how to build visualisations from the ground up.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="practical-session-1.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotSpots</span>(spe, <span class="at">in_tissue =</span> <span class="cn">NULL</span>, <span class="at">annotate=</span><span class="st">&#39;in_tissue&#39;</span>, <span class="at">size=</span><span class="fl">0.5</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/01_ggspavis-ontissue-1.png" width="672" /></p>
+<p><img src="_main_files/figure-html/01_ggspavis-ontissue-1.png" width="768" /></p>
 </div>
 </div>
 <div id="conclusion" class="section level2 hasAnchor" number="1.5">

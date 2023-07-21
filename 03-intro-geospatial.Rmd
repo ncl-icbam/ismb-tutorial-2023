@@ -6,8 +6,6 @@ This practical session will demonstrate the application of the most commonly use
 ## Load packages
 
 ```{r 03_loadPackages, include=FALSE, eval=TRUE}
-# STExplorer is our own, under-development package for STx analysis
-library(STExplorerDev)
 library(SpatialFeatureExperiment)
 library(tidyverse)
 library(scran)
@@ -17,9 +15,11 @@ library(sf)
 library(spdep)
 library(GWmodel)
 library(tidyterra)
+# STExplorer is our own, under-development package for STx analysis
+library(STExplorerDev)
 ```
 
--   [`spdep`](https://cran.r-project.org/web/packages/spdep/index.html) is a collection of functions to create spatial weights matrix objects from polygon *'contiguities'*, from point patterns by distance and tessellations. It is used for summarizing these objects, and for permitting their use in spatial data analysis like regional aggregation and tests for spatial *'autocorrelation'*.
+-   [`spdep`](https://cran.r-project.org/web/packages/spdep/index.html) is a collection of functions to create spatial weights matrix objects from polygon *contiguities*, from point patterns by distance and tessellations. It is used for summarizing these objects, and for permitting their use in spatial data analysis like regional aggregation and tests for spatial *autocorrelation*.
 
 -   [`sf`](https://cran.r-project.org/web/packages/sf/index.html) (*Simple Features for R*) is a package that offers support for simple features, a standardized way to encode spatial vector data.
 
@@ -481,20 +481,27 @@ fit_df <- data.frame(mean = fit$mean,
                      var = fit$var,
                      trend = fit$trend(fit$mean))
 
-ggplot(data = fit_df, 
-       aes(x = mean, y = var)) + 
-    geom_point() + 
-    geom_line(aes(y = trend), colour = "dodgerblue", linewidth = 1.5) + 
-    labs(x = "mean of log-expression",
-         y = "variance of log-expression") + 
-    theme_classic()
-
 ## Select top HVGs
 top_hvgs <- getTopHVGs(dec, 
                        var.field = "bio", 
                        prop = 0.5,
                        var.threshold = 0,
                        fdr.threshold = 0.1)
+
+fit_df <- fit_df %>%
+    tibble::rownames_to_column(var = "row.names") %>%
+    dplyr::mutate(topHVGs = ifelse(row.names %in% top_hvgs, TRUE, FALSE)) %>%
+    tibble::column_to_rownames("row.names")
+
+ggplot(data = fit_df,
+       aes(x = mean, y = var, colour = topHVGs)) + 
+    geom_point() +
+    geom_line(aes(y = trend), colour = "dodgerblue", linewidth = 1.5) + 
+    scale_colour_manual(values = c("black", "red")) + 
+    labs(x = "Mean of log-expression",
+         y = "Variance of log-expression",
+         colour = "Top HVGs") + 
+    theme_classic()
 
 ```
 

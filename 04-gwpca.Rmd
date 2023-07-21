@@ -12,7 +12,6 @@ The procedure we will follow in this practical carries out a geographically weig
 
 ## Load packages
 ```{r 04_loadPackages, include=FALSE}
-library(STExplorerDev)
 library(SpatialFeatureExperiment)
 library(tidyverse)
 library(scran)
@@ -28,6 +27,7 @@ library(parallel)
 library(cols4all)
 library(pheatmap)
 library(RColorBrewer)
+library(STExplorerDev)
 ```
 
 ## Load Quality Controled and Normalised data
@@ -142,7 +142,7 @@ pcagw <- gwpca_LeadingGene(gwpca = pcagw,
 
 We can also plot these leading genes on the spot map - as each location by definition has (potentially) a different leading gene.
 
-```{r leading_genes2, eval=TRUE, , fig.show = 'hold', out.width="33%", fig.height=6, fig.width=8}
+```{r leading_genes2, eval=TRUE, fig.show = 'hold', out.width='.49\\linewidth', fig.asp=1, fig.ncol = 1}
 ## Plot leading genes
 plotGWPCA_leadingG(gwpca = pcagw,
                    comps = 1:2,
@@ -156,7 +156,7 @@ plotGWPCA_leadingG(gwpca = pcagw,
 ```
 The "multi" plot here is problematic, because there are too many groups of genes to be able to print a legible legend. The alternative below is provided to highlight gene groups that are found in at least 12 spots.
 
-```{r leading_genes3, eval=TRUE, , fig.show = 'hold', out.width="33%", fig.height=6, fig.width=8}
+```{r leading_genes3, eval=TRUE, fig.show = 'hold', out.width='.49\\linewidth', fig.asp=1, fig.ncol = 1}
 ### Plot multi type (alternative)
 ## The data
 leadingGsMulti <- pcagw$leadingGeneMulti
@@ -194,7 +194,8 @@ ggplot() +
     labs(title = NULL,
          fill = "Group of\nLeading\nGenes") + 
     theme_void() +
-    theme(legend.position = "right")
+    theme(legend.position = "bottom", legend.text = element_text(size=6)) +
+    guides(fill = guide_legend(ncol = 3, byrow = TRUE))
 ```
 
 ## Percentage of Total Variation (PTV)

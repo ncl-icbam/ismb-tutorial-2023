@@ -157,7 +157,7 @@ plotQC(spe, type = "spots",
 
 As an optional exercise, try to illustrate what happens if we set the threshold too high (i.e., 2000 UMI counts).
 
-**NOTE:** For reference, remember the ground truth layers in this dataset that we plotted (\@ref(fig:02_plot-maps-gTruth)) at the beginning of this session.
+**NOTE:** For reference, remember the ground truth layers in this dataset [that we plotted](#plot-tissue-map) at the beginning of this session.
 
 ```{r 02_exercise01, fig.height=4, eval=FALSE}
 ## Select library size threshold
@@ -223,7 +223,7 @@ plotQC(spe, type = "spots",
 
 Again, an optional exercise is provided to see the effects of an over-enthusiastic filter - to illustrate what happens if we set the threshold too high (i.e., 1000 expressed genes).  
 
-**NOTE:** For reference, remember the ground truth layers in this dataset that we plotted (\@ref(fig:02_plot-maps-gTruth)) at the beginning of this session.
+**NOTE:** For reference, remember the ground truth layers in this dataset [that we plotted](#plot-tissue-map) at the beginning of this session.
 
 ```{r 02_exercise02, fig.height=4, eval=FALSE}
 ## Select library size threshold
@@ -289,7 +289,7 @@ plotQC(spe, type = "spots",
 
 Again, try to illustrate what happens if we set the threshold too low (i.e., 20 0r 25%).  
 
-**NOTE:** For reference, remember the ground truth layers in this dataset that we plotted (\@ref(fig:02_plot-maps-gTruth)) at the beginning of this session.
+**NOTE:** For reference, remember the ground truth layers in this dataset [that we plotted](#plot-tissue-map) at the beginning of this session.
 
 ```{r 02_exercise03, fig.height=4, eval=FALSE}
 ## Select library size threshold
@@ -377,7 +377,7 @@ plotQC(spe, type = "spots",
        discard = "discard")
 ```
 
-Since this dataset has also manual annotation (remember \@ref(fig:02_plot-maps-gTruth)) we see that there are locations that are not annotated (marked with `NA`). We could further remove those locations to reduce potential noise and further increase the quality of the dataset.
+Since this dataset has also manual annotation ([remember](#plot-tissue-map))) we see that there are locations that are not annotated (marked with `NA`). We could further remove those locations to reduce potential noise and further increase the quality of the dataset.
 
 ```{r 02_notAnnotSpots, fig.height=4}
 ## Select locations without annotation
@@ -491,6 +491,7 @@ ggplot(data = fit_df,
   labs(x = "mean of log-expression",
        y = "variance of log-expression") + 
   theme_classic()
+
 ```
 
 The `trend` function that we used above is returned from the `modelGeneVar` function and returns the fitted value of the trend at any value of the mean. The "biological" variance of a gene is what remains when the fitted variance for a gene of that expression value is subtracted from the total variance (so genes above the blue trend line have a positive biological variance).
@@ -503,6 +504,22 @@ top_hvgs <- getTopHVGs(dec, prop = 0.1)
 
 ## How many HVGs?
 length(top_hvgs)
+
+## Plot the HVGs on the mean:variance trend
+fit_df <- fit_df %>%
+    tibble::rownames_to_column(var = "row.names") %>%
+    dplyr::mutate(topHVGs = ifelse(row.names %in% top_hvgs, TRUE, FALSE)) %>%
+    tibble::column_to_rownames("row.names")
+
+ggplot(data = fit_df,
+       aes(x = mean, y = var, colour = topHVGs)) + 
+    geom_point() +
+    geom_line(aes(y = trend), colour = "dodgerblue", linewidth = 1.5) + 
+    scale_colour_manual(values = c("black", "red")) + 
+    labs(x = "Mean of log-expression",
+         y = "Variance of log-expression",
+         colour = "Top HVGs") + 
+    theme_classic()
 ```
 
 **NOTE** - we will return to feature selection in the next practical, as it is a complicated process with significant impacts on the chosen downstream analysis. 
@@ -535,7 +552,7 @@ Dimensionality reduction prior to clustering has two main advantages, firstly it
 
 Here we will use an efficient implementation of PCA provided in the `scater` package [@McCarthy2017Apr] and retain the top 50 PCs for further downstream analyses. The random seed is required for reproducibility reasons because this implementation uses randomisation.
 
-```{r 02_dimRedct_PCA}
+```{r 02_dimRedct_PCA, message=FALSE, warning=FALSE}
 ## Set seed
 set.seed(987)
 ## Compute PCA
@@ -629,11 +646,12 @@ colLabels(spe) <- factor(clus)
 
 ### HVGs clustering visualisations
 
-We can visualise the clusters in two ways:  
+We can visualise the clusters in two ways:
+
 1. plotting in spatial coordinates on the tissue map
 2. plotting in the UMAP/PCA embeddings.
 
-We can use plotting functions either from the [ggspavis](https://bioconductor.org/packages/ggspavis)package.
+We can use plotting functions either from the [ggspavis](https://bioconductor.org/packages/ggspavis) package.
 
 For reference, we will also display the ground truth (manually annotated) labels available for this dataset.
 

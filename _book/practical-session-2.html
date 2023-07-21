@@ -23,7 +23,7 @@
 <meta name="author" content="Eleftherios Zormpas, Dr Simon J. Cockell" />
 
 
-<meta name="date" content="2023-07-19" />
+<meta name="date" content="2023-07-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -458,7 +458,7 @@ div.csl-indent {
 <span id="cb47-6"><a href="practical-session-2.html#cb47-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">discard =</span> <span class="st">&quot;qc_lib_size&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/02_libSize-thresh-1.png" width="672" /></p>
 <p>As an optional exercise, try to illustrate what happens if we set the threshold too high (i.e., 2000 UMI counts).</p>
-<p><strong>NOTE:</strong> For reference, remember the ground truth layers in this dataset that we plotted (@ref(fig:02_plot-maps-gTruth)) at the beginning of this session.</p>
+<p><strong>NOTE:</strong> For reference, remember the ground truth layers in this dataset <a href="practical-session-2.html#plot-tissue-map">that we plotted</a> at the beginning of this session.</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="practical-session-2.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Select library size threshold</span></span>
 <span id="cb48-2"><a href="practical-session-2.html#cb48-2" aria-hidden="true" tabindex="-1"></a>code...</span>
 <span id="cb48-3"><a href="practical-session-2.html#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Check how many spots are filtered out</span></span>
@@ -513,7 +513,7 @@ div.csl-indent {
 <span id="cb53-6"><a href="practical-session-2.html#cb53-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">discard =</span> <span class="st">&quot;qc_detected&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/02_genesInSpot-thresh-1.png" width="672" /></p>
 <p>Again, an optional exercise is provided to see the effects of an over-enthusiastic filter - to illustrate what happens if we set the threshold too high (i.e., 1000 expressed genes).</p>
-<p><strong>NOTE:</strong> For reference, remember the ground truth layers in this dataset that we plotted (@ref(fig:02_plot-maps-gTruth)) at the beginning of this session.</p>
+<p><strong>NOTE:</strong> For reference, remember the ground truth layers in this dataset <a href="practical-session-2.html#plot-tissue-map">that we plotted</a> at the beginning of this session.</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="practical-session-2.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Select library size threshold</span></span>
 <span id="cb54-2"><a href="practical-session-2.html#cb54-2" aria-hidden="true" tabindex="-1"></a>code...</span>
 <span id="cb54-3"><a href="practical-session-2.html#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Check how many spots are filtered out</span></span>
@@ -568,7 +568,7 @@ div.csl-indent {
 <span id="cb59-6"><a href="practical-session-2.html#cb59-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">discard =</span> <span class="st">&quot;qc_mito&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/02_mitoPercent-thresh-1.png" width="672" /></p>
 <p>Again, try to illustrate what happens if we set the threshold too low (i.e., 20 0r 25%).</p>
-<p><strong>NOTE:</strong> For reference, remember the ground truth layers in this dataset that we plotted (@ref(fig:02_plot-maps-gTruth)) at the beginning of this session.</p>
+<p><strong>NOTE:</strong> For reference, remember the ground truth layers in this dataset <a href="practical-session-2.html#plot-tissue-map">that we plotted</a> at the beginning of this session.</p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="practical-session-2.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Select library size threshold</span></span>
 <span id="cb60-2"><a href="practical-session-2.html#cb60-2" aria-hidden="true" tabindex="-1"></a>code...</span>
 <span id="cb60-3"><a href="practical-session-2.html#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Check how many spots are filtered out</span></span>
@@ -649,7 +649,7 @@ div.csl-indent {
 <span id="cb70-7"><a href="practical-session-2.html#cb70-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plotQC</span>(spe, <span class="at">type =</span> <span class="st">&quot;spots&quot;</span>, </span>
 <span id="cb70-8"><a href="practical-session-2.html#cb70-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">discard =</span> <span class="st">&quot;discard&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/02_checkQC-thresh-1.png" width="672" /></p>
-<p>Since this dataset has also manual annotation (remember @ref(fig:02_plot-maps-gTruth)) we see that there are locations that are not annotated (marked with <code>NA</code>). We could further remove those locations to reduce potential noise and further increase the quality of the dataset.</p>
+<p>Since this dataset has also manual annotation (<a href="practical-session-2.html#plot-tissue-map">remember</a>)) we see that there are locations that are not annotated (marked with <code>NA</code>). We could further remove those locations to reduce potential noise and further increase the quality of the dataset.</p>
 <div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="practical-session-2.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Select locations without annotation</span></span>
 <span id="cb71-2"><a href="practical-session-2.html#cb71-2" aria-hidden="true" tabindex="-1"></a>qc_NA_spots <span class="ot">&lt;-</span> <span class="fu">is.na</span>(<span class="fu">colData</span>(spe)<span class="sc">$</span>ground_truth)</span>
 <span id="cb71-3"><a href="practical-session-2.html#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Combine together the set of discarded spots</span></span>
@@ -750,6 +750,22 @@ div.csl-indent {
 <span id="cb80-4"><a href="practical-session-2.html#cb80-4" aria-hidden="true" tabindex="-1"></a><span class="do">## How many HVGs?</span></span>
 <span id="cb80-5"><a href="practical-session-2.html#cb80-5" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(top_hvgs)</span></code></pre></div>
 <pre><code>## [1] 1429</code></pre>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="practical-session-2.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot the HVGs on the mean:variance trend</span></span>
+<span id="cb82-2"><a href="practical-session-2.html#cb82-2" aria-hidden="true" tabindex="-1"></a>fit_df <span class="ot">&lt;-</span> fit_df <span class="sc">%&gt;%</span></span>
+<span id="cb82-3"><a href="practical-session-2.html#cb82-3" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">&quot;row.names&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb82-4"><a href="practical-session-2.html#cb82-4" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">topHVGs =</span> <span class="fu">ifelse</span>(row.names <span class="sc">%in%</span> top_hvgs, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb82-5"><a href="practical-session-2.html#cb82-5" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">column_to_rownames</span>(<span class="st">&quot;row.names&quot;</span>)</span>
+<span id="cb82-6"><a href="practical-session-2.html#cb82-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-7"><a href="practical-session-2.html#cb82-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> fit_df,</span>
+<span id="cb82-8"><a href="practical-session-2.html#cb82-8" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> mean, <span class="at">y =</span> var, <span class="at">colour =</span> topHVGs)) <span class="sc">+</span> </span>
+<span id="cb82-9"><a href="practical-session-2.html#cb82-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb82-10"><a href="practical-session-2.html#cb82-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> trend), <span class="at">colour =</span> <span class="st">&quot;dodgerblue&quot;</span>, <span class="at">linewidth =</span> <span class="fl">1.5</span>) <span class="sc">+</span> </span>
+<span id="cb82-11"><a href="practical-session-2.html#cb82-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>)) <span class="sc">+</span> </span>
+<span id="cb82-12"><a href="practical-session-2.html#cb82-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Mean of log-expression&quot;</span>,</span>
+<span id="cb82-13"><a href="practical-session-2.html#cb82-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">y =</span> <span class="st">&quot;Variance of log-expression&quot;</span>,</span>
+<span id="cb82-14"><a href="practical-session-2.html#cb82-14" aria-hidden="true" tabindex="-1"></a>         <span class="at">colour =</span> <span class="st">&quot;Top HVGs&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb82-15"><a href="practical-session-2.html#cb82-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_classic</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/02_features_selectHVGs-1.png" width="672" /></p>
 <p><strong>NOTE</strong> - we will return to feature selection in the next practical, as it is a complicated process with significant impacts on the chosen downstream analysis.</p>
 </div>
 <div id="spatially-variable-genes-svgs" class="section level3 hasAnchor" number="2.3.3">
@@ -774,90 +790,61 @@ div.csl-indent {
 <div id="pca-principal-component-analysis" class="section level3 hasAnchor" number="2.4.2">
 <h3><span class="header-section-number">2.4.2</span> PCA: Principal component analysis<a href="practical-session-2.html#pca-principal-component-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here we will use an efficient implementation of PCA provided in the <code>scater</code> package <span class="citation">(<a href="#ref-McCarthy2017Apr" role="doc-biblioref">McCarthy et al. 2017</a>)</span> and retain the top 50 PCs for further downstream analyses. The random seed is required for reproducibility reasons because this implementation uses randomisation.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="practical-session-2.html#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set seed</span></span>
-<span id="cb82-2"><a href="practical-session-2.html#cb82-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
-<span id="cb82-3"><a href="practical-session-2.html#cb82-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute PCA</span></span>
-<span id="cb82-4"><a href="practical-session-2.html#cb82-4" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">runPCA</span>(spe, <span class="at">subset_row =</span> top_hvgs)</span></code></pre></div>
-<pre><code>## Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-## or useNames = TRUE.
-
-## Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-## or useNames = TRUE.
-
-## Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-## or useNames = TRUE.
-
-## Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-## or useNames = TRUE.
-
-## Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-## or useNames = TRUE.
-
-## Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-## or useNames = TRUE.
-
-## Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-## or useNames = TRUE.
-
-## Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-## or useNames = TRUE.
-
-## Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-## or useNames = TRUE.
-
-## Warning: useNames = NA is deprecated. Instead, specify either useNames = TRUE
-## or useNames = TRUE.</code></pre>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="practical-session-2.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check correctness - names</span></span>
-<span id="cb84-2"><a href="practical-session-2.html#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">reducedDimNames</span>(spe)</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="practical-session-2.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set seed</span></span>
+<span id="cb83-2"><a href="practical-session-2.html#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
+<span id="cb83-3"><a href="practical-session-2.html#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute PCA</span></span>
+<span id="cb83-4"><a href="practical-session-2.html#cb83-4" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">runPCA</span>(spe, <span class="at">subset_row =</span> top_hvgs)</span>
+<span id="cb83-5"><a href="practical-session-2.html#cb83-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Check correctness - names</span></span>
+<span id="cb83-6"><a href="practical-session-2.html#cb83-6" aria-hidden="true" tabindex="-1"></a><span class="fu">reducedDimNames</span>(spe)</span></code></pre></div>
 <pre><code>## [1] &quot;PCA&quot;</code></pre>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="practical-session-2.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check correctness - dimensions</span></span>
-<span id="cb86-2"><a href="practical-session-2.html#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(<span class="fu">reducedDim</span>(spe, <span class="st">&quot;PCA&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="practical-session-2.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check correctness - dimensions</span></span>
+<span id="cb85-2"><a href="practical-session-2.html#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(<span class="fu">reducedDim</span>(spe, <span class="st">&quot;PCA&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] 3511   50</code></pre>
 </div>
 <div id="umap-uniform-manifold-approximation-and-projection" class="section level3 hasAnchor" number="2.4.3">
 <h3><span class="header-section-number">2.4.3</span> UMAP: Uniform Manifold Approximation and Projection<a href="practical-session-2.html#umap-uniform-manifold-approximation-and-projection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here we will also run UMAP - using <code>scater</code>’s implementation - on the 50 PCs generated above and retain the top 2 UMAP components to visualise results.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="practical-session-2.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set seed</span></span>
-<span id="cb88-2"><a href="practical-session-2.html#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
-<span id="cb88-3"><a href="practical-session-2.html#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute UMAP on top 50 PCs</span></span>
-<span id="cb88-4"><a href="practical-session-2.html#cb88-4" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">runUMAP</span>(spe, <span class="at">dimred =</span> <span class="st">&quot;PCA&quot;</span>)</span>
-<span id="cb88-5"><a href="practical-session-2.html#cb88-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Check correctness - names</span></span>
-<span id="cb88-6"><a href="practical-session-2.html#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="fu">reducedDimNames</span>(spe)</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="practical-session-2.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set seed</span></span>
+<span id="cb87-2"><a href="practical-session-2.html#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
+<span id="cb87-3"><a href="practical-session-2.html#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Compute UMAP on top 50 PCs</span></span>
+<span id="cb87-4"><a href="practical-session-2.html#cb87-4" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">runUMAP</span>(spe, <span class="at">dimred =</span> <span class="st">&quot;PCA&quot;</span>)</span>
+<span id="cb87-5"><a href="practical-session-2.html#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Check correctness - names</span></span>
+<span id="cb87-6"><a href="practical-session-2.html#cb87-6" aria-hidden="true" tabindex="-1"></a><span class="fu">reducedDimNames</span>(spe)</span></code></pre></div>
 <pre><code>## [1] &quot;PCA&quot;  &quot;UMAP&quot;</code></pre>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="practical-session-2.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check correctness - dimensions</span></span>
-<span id="cb90-2"><a href="practical-session-2.html#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(<span class="fu">reducedDim</span>(spe, <span class="st">&quot;UMAP&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="practical-session-2.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check correctness - dimensions</span></span>
+<span id="cb89-2"><a href="practical-session-2.html#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(<span class="fu">reducedDim</span>(spe, <span class="st">&quot;UMAP&quot;</span>))</span></code></pre></div>
 <pre><code>## [1] 3511    2</code></pre>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="practical-session-2.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Update column names for easier plotting</span></span>
-<span id="cb92-2"><a href="practical-session-2.html#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">reducedDim</span>(spe, <span class="st">&quot;UMAP&quot;</span>)) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;UMAP&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="practical-session-2.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Update column names for easier plotting</span></span>
+<span id="cb91-2"><a href="practical-session-2.html#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">reducedDim</span>(spe, <span class="st">&quot;UMAP&quot;</span>)) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;UMAP&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span></code></pre></div>
 </div>
 <div id="umap-visualisations" class="section level3 hasAnchor" number="2.4.4">
 <h3><span class="header-section-number">2.4.4</span> UMAP visualisations<a href="practical-session-2.html#umap-visualisations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We can generate plots either using plotting functions from the <a href="https://bioconductor.org/packages/ggspavis">ggspavis</a> package or <a href="https://ggplot2.tidyverse.org/"><code>ggplot2</code></a> package. When clustering later, we will add cluster labels to these reduced dimension plots for an off-tissue visualisation.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="practical-session-2.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot top 2 PCA dimensions</span></span>
-<span id="cb93-2"><a href="practical-session-2.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plotDimRed(spe, type = &quot;PCA&quot;)</span></span>
-<span id="cb93-3"><a href="practical-session-2.html#cb93-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-4"><a href="practical-session-2.html#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(spe<span class="sc">@</span>int_colData<span class="sc">@</span>listData<span class="sc">$</span>reducedDims<span class="sc">$</span>PCA),</span>
-<span id="cb93-5"><a href="practical-session-2.html#cb93-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">colour =</span> spe<span class="sc">@</span>colData<span class="sc">$</span>ground_truth)) <span class="sc">+</span> </span>
-<span id="cb93-6"><a href="practical-session-2.html#cb93-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb93-7"><a href="practical-session-2.html#cb93-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type =</span> <span class="st">&quot;qual&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb93-8"><a href="practical-session-2.html#cb93-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Reduced dimensions: PCA&quot;</span>,</span>
-<span id="cb93-9"><a href="practical-session-2.html#cb93-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;PC1&quot;</span>,</span>
-<span id="cb93-10"><a href="practical-session-2.html#cb93-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;PC2&quot;</span>,</span>
-<span id="cb93-11"><a href="practical-session-2.html#cb93-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&quot;Layers&quot;</span>) <span class="sc">+</span></span>
-<span id="cb93-12"><a href="practical-session-2.html#cb93-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb93-13"><a href="practical-session-2.html#cb93-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-14"><a href="practical-session-2.html#cb93-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot top 2 UMAP dimensions</span></span>
-<span id="cb93-15"><a href="practical-session-2.html#cb93-15" aria-hidden="true" tabindex="-1"></a><span class="co"># plotDimRed(spe, type = &quot;UMAP&quot;)</span></span>
-<span id="cb93-16"><a href="practical-session-2.html#cb93-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-17"><a href="practical-session-2.html#cb93-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(spe<span class="sc">@</span>int_colData<span class="sc">@</span>listData<span class="sc">$</span>reducedDims<span class="sc">$</span>UMAP),</span>
-<span id="cb93-18"><a href="practical-session-2.html#cb93-18" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> UMAP1, <span class="at">y =</span> UMAP2, <span class="at">colour =</span> spe<span class="sc">@</span>colData<span class="sc">$</span>ground_truth)) <span class="sc">+</span> </span>
-<span id="cb93-19"><a href="practical-session-2.html#cb93-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb93-20"><a href="practical-session-2.html#cb93-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type =</span> <span class="st">&quot;qual&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb93-21"><a href="practical-session-2.html#cb93-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Reduced dimensions: UMAP&quot;</span>,</span>
-<span id="cb93-22"><a href="practical-session-2.html#cb93-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;UMAP1&quot;</span>,</span>
-<span id="cb93-23"><a href="practical-session-2.html#cb93-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;UMAP2&quot;</span>,</span>
-<span id="cb93-24"><a href="practical-session-2.html#cb93-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&quot;Layers&quot;</span>) <span class="sc">+</span></span>
-<span id="cb93-25"><a href="practical-session-2.html#cb93-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="practical-session-2.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot top 2 PCA dimensions</span></span>
+<span id="cb92-2"><a href="practical-session-2.html#cb92-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plotDimRed(spe, type = &quot;PCA&quot;)</span></span>
+<span id="cb92-3"><a href="practical-session-2.html#cb92-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-4"><a href="practical-session-2.html#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(spe<span class="sc">@</span>int_colData<span class="sc">@</span>listData<span class="sc">$</span>reducedDims<span class="sc">$</span>PCA),</span>
+<span id="cb92-5"><a href="practical-session-2.html#cb92-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">colour =</span> spe<span class="sc">@</span>colData<span class="sc">$</span>ground_truth)) <span class="sc">+</span> </span>
+<span id="cb92-6"><a href="practical-session-2.html#cb92-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb92-7"><a href="practical-session-2.html#cb92-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type =</span> <span class="st">&quot;qual&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb92-8"><a href="practical-session-2.html#cb92-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Reduced dimensions: PCA&quot;</span>,</span>
+<span id="cb92-9"><a href="practical-session-2.html#cb92-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;PC1&quot;</span>,</span>
+<span id="cb92-10"><a href="practical-session-2.html#cb92-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;PC2&quot;</span>,</span>
+<span id="cb92-11"><a href="practical-session-2.html#cb92-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&quot;Layers&quot;</span>) <span class="sc">+</span></span>
+<span id="cb92-12"><a href="practical-session-2.html#cb92-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb92-13"><a href="practical-session-2.html#cb92-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-14"><a href="practical-session-2.html#cb92-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot top 2 UMAP dimensions</span></span>
+<span id="cb92-15"><a href="practical-session-2.html#cb92-15" aria-hidden="true" tabindex="-1"></a><span class="co"># plotDimRed(spe, type = &quot;UMAP&quot;)</span></span>
+<span id="cb92-16"><a href="practical-session-2.html#cb92-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-17"><a href="practical-session-2.html#cb92-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">as.data.frame</span>(spe<span class="sc">@</span>int_colData<span class="sc">@</span>listData<span class="sc">$</span>reducedDims<span class="sc">$</span>UMAP),</span>
+<span id="cb92-18"><a href="practical-session-2.html#cb92-18" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> UMAP1, <span class="at">y =</span> UMAP2, <span class="at">colour =</span> spe<span class="sc">@</span>colData<span class="sc">$</span>ground_truth)) <span class="sc">+</span> </span>
+<span id="cb92-19"><a href="practical-session-2.html#cb92-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb92-20"><a href="practical-session-2.html#cb92-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_brewer</span>(<span class="at">type =</span> <span class="st">&quot;qual&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb92-21"><a href="practical-session-2.html#cb92-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Reduced dimensions: UMAP&quot;</span>,</span>
+<span id="cb92-22"><a href="practical-session-2.html#cb92-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;UMAP1&quot;</span>,</span>
+<span id="cb92-23"><a href="practical-session-2.html#cb92-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;UMAP2&quot;</span>,</span>
+<span id="cb92-24"><a href="practical-session-2.html#cb92-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">colour =</span> <span class="st">&quot;Layers&quot;</span>) <span class="sc">+</span></span>
+<span id="cb92-25"><a href="practical-session-2.html#cb92-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/02_dimRed_UMAP-vis-1.png" width="576" /><img src="_main_files/figure-html/02_dimRed_UMAP-vis-2.png" width="576" /></p>
 </div>
 </div>
@@ -872,46 +859,48 @@ div.csl-indent {
 <div id="clustering-on-hvgs" class="section level3 hasAnchor" number="2.5.2">
 <h3><span class="header-section-number">2.5.2</span> Clustering on HVGs<a href="practical-session-2.html#clustering-on-hvgs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here, we apply graph-based clustering to the top 50 PCs calculated on the set of selected HVGs, using the Walktrap method implemented in <code>scran</code> <span class="citation">(<a href="#ref-Lun2016Oct" role="doc-biblioref">Lun, McCarthy, and Marioni 2016</a>)</span>. To do so, we assume that (i) each spot is equal to a cell and (ii) we can detect from the gene expression the biologically informative spatial distribution patterns of cell types.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="practical-session-2.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set seed</span></span>
-<span id="cb94-2"><a href="practical-session-2.html#cb94-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
-<span id="cb94-3"><a href="practical-session-2.html#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Set number of Nearest-Neighbours (NNs)</span></span>
-<span id="cb94-4"><a href="practical-session-2.html#cb94-4" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb94-5"><a href="practical-session-2.html#cb94-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Build the k-NN graph</span></span>
-<span id="cb94-6"><a href="practical-session-2.html#cb94-6" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">buildSNNGraph</span>(spe, <span class="at">k =</span> k, <span class="at">use.dimred =</span> <span class="st">&quot;PCA&quot;</span>)</span>
-<span id="cb94-7"><a href="practical-session-2.html#cb94-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Run walktrap clustering</span></span>
-<span id="cb94-8"><a href="practical-session-2.html#cb94-8" aria-hidden="true" tabindex="-1"></a>g_walk <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">cluster_walktrap</span>(g)</span>
-<span id="cb94-9"><a href="practical-session-2.html#cb94-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Get the cluster labels</span></span>
-<span id="cb94-10"><a href="practical-session-2.html#cb94-10" aria-hidden="true" tabindex="-1"></a>clus <span class="ot">&lt;-</span> g_walk<span class="sc">$</span>membership</span>
-<span id="cb94-11"><a href="practical-session-2.html#cb94-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Check how many</span></span>
-<span id="cb94-12"><a href="practical-session-2.html#cb94-12" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(clus)</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="practical-session-2.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set seed</span></span>
+<span id="cb93-2"><a href="practical-session-2.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
+<span id="cb93-3"><a href="practical-session-2.html#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Set number of Nearest-Neighbours (NNs)</span></span>
+<span id="cb93-4"><a href="practical-session-2.html#cb93-4" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb93-5"><a href="practical-session-2.html#cb93-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Build the k-NN graph</span></span>
+<span id="cb93-6"><a href="practical-session-2.html#cb93-6" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">buildSNNGraph</span>(spe, <span class="at">k =</span> k, <span class="at">use.dimred =</span> <span class="st">&quot;PCA&quot;</span>)</span>
+<span id="cb93-7"><a href="practical-session-2.html#cb93-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Run walktrap clustering</span></span>
+<span id="cb93-8"><a href="practical-session-2.html#cb93-8" aria-hidden="true" tabindex="-1"></a>g_walk <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">cluster_walktrap</span>(g)</span>
+<span id="cb93-9"><a href="practical-session-2.html#cb93-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Get the cluster labels</span></span>
+<span id="cb93-10"><a href="practical-session-2.html#cb93-10" aria-hidden="true" tabindex="-1"></a>clus <span class="ot">&lt;-</span> g_walk<span class="sc">$</span>membership</span>
+<span id="cb93-11"><a href="practical-session-2.html#cb93-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Check how many</span></span>
+<span id="cb93-12"><a href="practical-session-2.html#cb93-12" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(clus)</span></code></pre></div>
 <pre><code>## clus
 ##   1   2   3   4   5   6 
 ## 350 354 661 895 366 885</code></pre>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="practical-session-2.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Store cluster labels in column &#39;label&#39; in colData</span></span>
-<span id="cb96-2"><a href="practical-session-2.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colLabels</span>(spe) <span class="ot">&lt;-</span> <span class="fu">factor</span>(clus)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="practical-session-2.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Store cluster labels in column &#39;label&#39; in colData</span></span>
+<span id="cb95-2"><a href="practical-session-2.html#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colLabels</span>(spe) <span class="ot">&lt;-</span> <span class="fu">factor</span>(clus)</span></code></pre></div>
 </div>
 <div id="hvgs-clustering-visualisations" class="section level3 hasAnchor" number="2.5.3">
 <h3><span class="header-section-number">2.5.3</span> HVGs clustering visualisations<a href="practical-session-2.html#hvgs-clustering-visualisations" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>We can visualise the clusters in two ways:<br />
-1. plotting in spatial coordinates on the tissue map
-2. plotting in the UMAP/PCA embeddings.</p>
-<p>We can use plotting functions either from the <a href="https://bioconductor.org/packages/ggspavis">ggspavis</a>package.</p>
+<p>We can visualise the clusters in two ways:</p>
+<ol style="list-style-type: decimal">
+<li>plotting in spatial coordinates on the tissue map</li>
+<li>plotting in the UMAP/PCA embeddings.</li>
+</ol>
+<p>We can use plotting functions either from the <a href="https://bioconductor.org/packages/ggspavis">ggspavis</a> package.</p>
 <p>For reference, we will also display the ground truth (manually annotated) labels available for this dataset.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="practical-session-2.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot in tissue map</span></span>
-<span id="cb97-2"><a href="practical-session-2.html#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotSpots</span>(spe, <span class="at">annotate =</span> <span class="st">&quot;label&quot;</span>, </span>
-<span id="cb97-3"><a href="practical-session-2.html#cb97-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">&quot;libd_layer_colors&quot;</span>)</span>
-<span id="cb97-4"><a href="practical-session-2.html#cb97-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb97-5"><a href="practical-session-2.html#cb97-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot ground truth in tissue map</span></span>
-<span id="cb97-6"><a href="practical-session-2.html#cb97-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plotSpots</span>(spe, <span class="at">annotate =</span> <span class="st">&quot;ground_truth&quot;</span>, </span>
-<span id="cb97-7"><a href="practical-session-2.html#cb97-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">&quot;libd_layer_colors&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="practical-session-2.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot in tissue map</span></span>
+<span id="cb96-2"><a href="practical-session-2.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotSpots</span>(spe, <span class="at">annotate =</span> <span class="st">&quot;label&quot;</span>, </span>
+<span id="cb96-3"><a href="practical-session-2.html#cb96-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">&quot;libd_layer_colors&quot;</span>)</span>
+<span id="cb96-4"><a href="practical-session-2.html#cb96-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb96-5"><a href="practical-session-2.html#cb96-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot ground truth in tissue map</span></span>
+<span id="cb96-6"><a href="practical-session-2.html#cb96-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plotSpots</span>(spe, <span class="at">annotate =</span> <span class="st">&quot;ground_truth&quot;</span>, </span>
+<span id="cb96-7"><a href="practical-session-2.html#cb96-7" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> <span class="st">&quot;libd_layer_colors&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/02_clust_vis-map-1.png" width="50%" /><img src="_main_files/figure-html/02_clust_vis-map-2.png" width="50%" /></p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="practical-session-2.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot clusters in PCA space</span></span>
-<span id="cb98-2"><a href="practical-session-2.html#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotDimRed</span>(spe, <span class="at">type =</span> <span class="st">&quot;PCA&quot;</span>, </span>
-<span id="cb98-3"><a href="practical-session-2.html#cb98-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">annotate =</span> <span class="st">&quot;label&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;libd_layer_colors&quot;</span>)</span>
-<span id="cb98-4"><a href="practical-session-2.html#cb98-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-5"><a href="practical-session-2.html#cb98-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot clusters in UMAP space</span></span>
-<span id="cb98-6"><a href="practical-session-2.html#cb98-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plotDimRed</span>(spe, <span class="at">type =</span> <span class="st">&quot;UMAP&quot;</span>, </span>
-<span id="cb98-7"><a href="practical-session-2.html#cb98-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">annotate =</span> <span class="st">&quot;label&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;libd_layer_colors&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="practical-session-2.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot clusters in PCA space</span></span>
+<span id="cb97-2"><a href="practical-session-2.html#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plotDimRed</span>(spe, <span class="at">type =</span> <span class="st">&quot;PCA&quot;</span>, </span>
+<span id="cb97-3"><a href="practical-session-2.html#cb97-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">annotate =</span> <span class="st">&quot;label&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;libd_layer_colors&quot;</span>)</span>
+<span id="cb97-4"><a href="practical-session-2.html#cb97-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-5"><a href="practical-session-2.html#cb97-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot clusters in UMAP space</span></span>
+<span id="cb97-6"><a href="practical-session-2.html#cb97-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plotDimRed</span>(spe, <span class="at">type =</span> <span class="st">&quot;UMAP&quot;</span>, </span>
+<span id="cb97-7"><a href="practical-session-2.html#cb97-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">annotate =</span> <span class="st">&quot;label&quot;</span>, <span class="at">palette =</span> <span class="st">&quot;libd_layer_colors&quot;</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/02_clust_vis-DimRed-1.png" width="50%" /><img src="_main_files/figure-html/02_clust_vis-DimRed-2.png" width="50%" /></p>
 <p>From the visualizations, we can see that the clustering reproduces, to an extent, the known biological structure of the tissue, but not perfectly. One reason for this could be the fact that each spot may be comprised of a number different cells whose gene expression profiles are diluted in the overall profile of the spot, thus leading to low-quality clustering.</p>
 </div>
@@ -930,12 +919,12 @@ div.csl-indent {
 </div>
 <div id="dges-identification" class="section level3 hasAnchor" number="2.6.2">
 <h3><span class="header-section-number">2.6.2</span> DGEs identification<a href="practical-session-2.html#dges-identification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="practical-session-2.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set gene names as row names ease of plotting</span></span>
-<span id="cb99-2"><a href="practical-session-2.html#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(spe) <span class="ot">&lt;-</span> <span class="fu">rowData</span>(spe)<span class="sc">$</span>gene_name</span>
-<span id="cb99-3"><a href="practical-session-2.html#cb99-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Test for DGEs</span></span>
-<span id="cb99-4"><a href="practical-session-2.html#cb99-4" aria-hidden="true" tabindex="-1"></a>markers <span class="ot">&lt;-</span> <span class="fu">findMarkers</span>(spe, <span class="at">test =</span> <span class="st">&quot;binom&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;up&quot;</span>)</span>
-<span id="cb99-5"><a href="practical-session-2.html#cb99-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Check output</span></span>
-<span id="cb99-6"><a href="practical-session-2.html#cb99-6" aria-hidden="true" tabindex="-1"></a>markers</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="practical-session-2.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Set gene names as row names ease of plotting</span></span>
+<span id="cb98-2"><a href="practical-session-2.html#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(spe) <span class="ot">&lt;-</span> <span class="fu">rowData</span>(spe)<span class="sc">$</span>gene_name</span>
+<span id="cb98-3"><a href="practical-session-2.html#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Test for DGEs</span></span>
+<span id="cb98-4"><a href="practical-session-2.html#cb98-4" aria-hidden="true" tabindex="-1"></a>markers <span class="ot">&lt;-</span> <span class="fu">findMarkers</span>(spe, <span class="at">test =</span> <span class="st">&quot;binom&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;up&quot;</span>)</span>
+<span id="cb98-5"><a href="practical-session-2.html#cb98-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Check output</span></span>
+<span id="cb98-6"><a href="practical-session-2.html#cb98-6" aria-hidden="true" tabindex="-1"></a>markers</span></code></pre></div>
 <pre><code>## List of length 6
 ## names(6): 1 2 3 4 5 6</code></pre>
 <p>The output from the <code>findMarkers</code> implementation is a list of length equal to the number of clusters. Each element of the list contains the Log-Fold-Change (LogFC) of each gene between one cluster and all others.</p>
@@ -943,94 +932,94 @@ div.csl-indent {
 <div id="dges-visualisation" class="section level3 hasAnchor" number="2.6.3">
 <h3><span class="header-section-number">2.6.3</span> DGEs visualisation<a href="practical-session-2.html#dges-visualisation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here we will plot LogFCs for cluster 1 against all other clusters</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="practical-session-2.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Select cluster 1 genes</span></span>
-<span id="cb101-2"><a href="practical-session-2.html#cb101-2" aria-hidden="true" tabindex="-1"></a>interesting <span class="ot">&lt;-</span> markers[[<span class="dv">1</span>]]</span>
-<span id="cb101-3"><a href="practical-session-2.html#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Get the top genes</span></span>
-<span id="cb101-4"><a href="practical-session-2.html#cb101-4" aria-hidden="true" tabindex="-1"></a>best_set <span class="ot">&lt;-</span> interesting[interesting<span class="sc">$</span>Top <span class="sc">&lt;=</span> <span class="dv">5</span>, ]</span>
-<span id="cb101-5"><a href="practical-session-2.html#cb101-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate the effect</span></span>
-<span id="cb101-6"><a href="practical-session-2.html#cb101-6" aria-hidden="true" tabindex="-1"></a>logFCs <span class="ot">&lt;-</span> <span class="fu">getMarkerEffects</span>(best_set)</span>
-<span id="cb101-7"><a href="practical-session-2.html#cb101-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot a heat map</span></span>
-<span id="cb101-8"><a href="practical-session-2.html#cb101-8" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(logFCs, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">101</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="practical-session-2.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Select cluster 1 genes</span></span>
+<span id="cb100-2"><a href="practical-session-2.html#cb100-2" aria-hidden="true" tabindex="-1"></a>interesting <span class="ot">&lt;-</span> markers[[<span class="dv">1</span>]]</span>
+<span id="cb100-3"><a href="practical-session-2.html#cb100-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Get the top genes</span></span>
+<span id="cb100-4"><a href="practical-session-2.html#cb100-4" aria-hidden="true" tabindex="-1"></a>best_set <span class="ot">&lt;-</span> interesting[interesting<span class="sc">$</span>Top <span class="sc">&lt;=</span> <span class="dv">5</span>, ]</span>
+<span id="cb100-5"><a href="practical-session-2.html#cb100-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate the effect</span></span>
+<span id="cb100-6"><a href="practical-session-2.html#cb100-6" aria-hidden="true" tabindex="-1"></a>logFCs <span class="ot">&lt;-</span> <span class="fu">getMarkerEffects</span>(best_set)</span>
+<span id="cb100-7"><a href="practical-session-2.html#cb100-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot a heat map</span></span>
+<span id="cb100-8"><a href="practical-session-2.html#cb100-8" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(logFCs, <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="at">length.out =</span> <span class="dv">101</span>))</span></code></pre></div>
 <p><img src="_main_files/figure-html/02_dges_vis-clst1-1.png" width="50%" /></p>
 <p>Below we will plot the log-transformed normalised expression of the top genes for one cluster alongside their expression in the other clusters.</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="practical-session-2.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Select genes</span></span>
-<span id="cb102-2"><a href="practical-session-2.html#cb102-2" aria-hidden="true" tabindex="-1"></a>top_genes <span class="ot">&lt;-</span> <span class="fu">head</span>(<span class="fu">rownames</span>(interesting))</span>
-<span id="cb102-3"><a href="practical-session-2.html#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot expression</span></span>
-<span id="cb102-4"><a href="practical-session-2.html#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plotExpression</span>(spe, <span class="at">x =</span> <span class="st">&quot;label&quot;</span>, <span class="at">features =</span> top_genes)</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="practical-session-2.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Select genes</span></span>
+<span id="cb101-2"><a href="practical-session-2.html#cb101-2" aria-hidden="true" tabindex="-1"></a>top_genes <span class="ot">&lt;-</span> <span class="fu">head</span>(<span class="fu">rownames</span>(interesting))</span>
+<span id="cb101-3"><a href="practical-session-2.html#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Plot expression</span></span>
+<span id="cb101-4"><a href="practical-session-2.html#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plotExpression</span>(spe, <span class="at">x =</span> <span class="st">&quot;label&quot;</span>, <span class="at">features =</span> top_genes)</span></code></pre></div>
 <p><img src="_main_files/figure-html/02_dges_vis-2-1.png" width="672" /></p>
 </div>
 </div>
 <div id="putting-it-all-together" class="section level2 hasAnchor" number="2.7">
 <h2><span class="header-section-number">2.7</span> Putting it all together<a href="practical-session-2.html#putting-it-all-together" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="practical-session-2.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clear workspace from previous chapters</span></span>
-<span id="cb103-2"><a href="practical-session-2.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>(<span class="at">all =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb103-3"><a href="practical-session-2.html#cb103-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-4"><a href="practical-session-2.html#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="co"># LOAD DATA</span></span>
-<span id="cb103-5"><a href="practical-session-2.html#cb103-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-6"><a href="practical-session-2.html#cb103-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SpatialExperiment)</span>
-<span id="cb103-7"><a href="practical-session-2.html#cb103-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(STexampleData)</span>
-<span id="cb103-8"><a href="practical-session-2.html#cb103-8" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">Visium_humanDLPFC</span>()</span>
-<span id="cb103-9"><a href="practical-session-2.html#cb103-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-10"><a href="practical-session-2.html#cb103-10" aria-hidden="true" tabindex="-1"></a><span class="co"># QUALITY CONTROL (QC)</span></span>
-<span id="cb103-11"><a href="practical-session-2.html#cb103-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-12"><a href="practical-session-2.html#cb103-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scater)</span>
-<span id="cb103-13"><a href="practical-session-2.html#cb103-13" aria-hidden="true" tabindex="-1"></a><span class="co"># subset to keep only spots over tissue</span></span>
-<span id="cb103-14"><a href="practical-session-2.html#cb103-14" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> spe[, <span class="fu">colData</span>(spe)<span class="sc">$</span>in_tissue <span class="sc">==</span> <span class="dv">1</span>]</span>
-<span id="cb103-15"><a href="practical-session-2.html#cb103-15" aria-hidden="true" tabindex="-1"></a><span class="co"># identify mitochondrial genes</span></span>
-<span id="cb103-16"><a href="practical-session-2.html#cb103-16" aria-hidden="true" tabindex="-1"></a>is_mito <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">&quot;(^MT-)|(^mt-)&quot;</span>, <span class="fu">rowData</span>(spe)<span class="sc">$</span>gene_name)</span>
-<span id="cb103-17"><a href="practical-session-2.html#cb103-17" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate per-spot QC metrics</span></span>
-<span id="cb103-18"><a href="practical-session-2.html#cb103-18" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">addPerCellQC</span>(spe, <span class="at">subsets =</span> <span class="fu">list</span>(<span class="at">mito =</span> is_mito))</span>
-<span id="cb103-19"><a href="practical-session-2.html#cb103-19" aria-hidden="true" tabindex="-1"></a><span class="co"># select QC thresholds</span></span>
-<span id="cb103-20"><a href="practical-session-2.html#cb103-20" aria-hidden="true" tabindex="-1"></a>qc_lib_size <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>sum <span class="sc">&lt;</span> <span class="dv">600</span></span>
-<span id="cb103-21"><a href="practical-session-2.html#cb103-21" aria-hidden="true" tabindex="-1"></a>qc_detected <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>detected <span class="sc">&lt;</span> <span class="dv">400</span></span>
-<span id="cb103-22"><a href="practical-session-2.html#cb103-22" aria-hidden="true" tabindex="-1"></a>qc_mito <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>subsets_mito_percent <span class="sc">&gt;</span> <span class="dv">28</span></span>
-<span id="cb103-23"><a href="practical-session-2.html#cb103-23" aria-hidden="true" tabindex="-1"></a>qc_cell_count <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>cell_count <span class="sc">&gt;</span> <span class="dv">10</span></span>
-<span id="cb103-24"><a href="practical-session-2.html#cb103-24" aria-hidden="true" tabindex="-1"></a><span class="co"># combined set of discarded spots</span></span>
-<span id="cb103-25"><a href="practical-session-2.html#cb103-25" aria-hidden="true" tabindex="-1"></a>discard <span class="ot">&lt;-</span> qc_lib_size <span class="sc">|</span> qc_detected <span class="sc">|</span> qc_mito <span class="sc">|</span> qc_cell_count</span>
-<span id="cb103-26"><a href="practical-session-2.html#cb103-26" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(spe)<span class="sc">$</span>discard <span class="ot">&lt;-</span> discard</span>
-<span id="cb103-27"><a href="practical-session-2.html#cb103-27" aria-hidden="true" tabindex="-1"></a><span class="co"># filter low-quality spots</span></span>
-<span id="cb103-28"><a href="practical-session-2.html#cb103-28" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> spe[, <span class="sc">!</span><span class="fu">colData</span>(spe)<span class="sc">$</span>discard]</span>
-<span id="cb103-29"><a href="practical-session-2.html#cb103-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-30"><a href="practical-session-2.html#cb103-30" aria-hidden="true" tabindex="-1"></a><span class="co"># NORMALIZATION</span></span>
-<span id="cb103-31"><a href="practical-session-2.html#cb103-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-32"><a href="practical-session-2.html#cb103-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scran)</span>
-<span id="cb103-33"><a href="practical-session-2.html#cb103-33" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate logcounts using library size factors</span></span>
-<span id="cb103-34"><a href="practical-session-2.html#cb103-34" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">logNormCounts</span>(spe)</span>
-<span id="cb103-35"><a href="practical-session-2.html#cb103-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-36"><a href="practical-session-2.html#cb103-36" aria-hidden="true" tabindex="-1"></a><span class="co"># FEATURE SELECTION</span></span>
-<span id="cb103-37"><a href="practical-session-2.html#cb103-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-38"><a href="practical-session-2.html#cb103-38" aria-hidden="true" tabindex="-1"></a><span class="co"># remove mitochondrial genes</span></span>
-<span id="cb103-39"><a href="practical-session-2.html#cb103-39" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> spe[<span class="sc">!</span>is_mito, ]</span>
-<span id="cb103-40"><a href="practical-session-2.html#cb103-40" aria-hidden="true" tabindex="-1"></a><span class="co"># fit mean-variance relationship</span></span>
-<span id="cb103-41"><a href="practical-session-2.html#cb103-41" aria-hidden="true" tabindex="-1"></a>dec <span class="ot">&lt;-</span> <span class="fu">modelGeneVar</span>(spe)</span>
-<span id="cb103-42"><a href="practical-session-2.html#cb103-42" aria-hidden="true" tabindex="-1"></a><span class="co"># select top HVGs</span></span>
-<span id="cb103-43"><a href="practical-session-2.html#cb103-43" aria-hidden="true" tabindex="-1"></a>top_hvgs <span class="ot">&lt;-</span> <span class="fu">getTopHVGs</span>(dec, <span class="at">prop =</span> <span class="fl">0.1</span>)</span>
-<span id="cb103-44"><a href="practical-session-2.html#cb103-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-45"><a href="practical-session-2.html#cb103-45" aria-hidden="true" tabindex="-1"></a><span class="co"># DIMENSIONALITY REDUCTION</span></span>
-<span id="cb103-46"><a href="practical-session-2.html#cb103-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-47"><a href="practical-session-2.html#cb103-47" aria-hidden="true" tabindex="-1"></a><span class="co"># compute PCA</span></span>
-<span id="cb103-48"><a href="practical-session-2.html#cb103-48" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb103-49"><a href="practical-session-2.html#cb103-49" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">runPCA</span>(spe, <span class="at">subset_row =</span> top_hvgs)</span>
-<span id="cb103-50"><a href="practical-session-2.html#cb103-50" aria-hidden="true" tabindex="-1"></a><span class="co"># compute UMAP on top 50 PCs</span></span>
-<span id="cb103-51"><a href="practical-session-2.html#cb103-51" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb103-52"><a href="practical-session-2.html#cb103-52" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">runUMAP</span>(spe, <span class="at">dimred =</span> <span class="st">&quot;PCA&quot;</span>)</span>
-<span id="cb103-53"><a href="practical-session-2.html#cb103-53" aria-hidden="true" tabindex="-1"></a><span class="co"># update column names</span></span>
-<span id="cb103-54"><a href="practical-session-2.html#cb103-54" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">reducedDim</span>(spe, <span class="st">&quot;UMAP&quot;</span>)) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;UMAP&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
-<span id="cb103-55"><a href="practical-session-2.html#cb103-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-56"><a href="practical-session-2.html#cb103-56" aria-hidden="true" tabindex="-1"></a><span class="co"># CLUSTERING</span></span>
-<span id="cb103-57"><a href="practical-session-2.html#cb103-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-58"><a href="practical-session-2.html#cb103-58" aria-hidden="true" tabindex="-1"></a><span class="co"># graph-based clustering</span></span>
-<span id="cb103-59"><a href="practical-session-2.html#cb103-59" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb103-60"><a href="practical-session-2.html#cb103-60" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb103-61"><a href="practical-session-2.html#cb103-61" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">buildSNNGraph</span>(spe, <span class="at">k =</span> k, <span class="at">use.dimred =</span> <span class="st">&quot;PCA&quot;</span>)</span>
-<span id="cb103-62"><a href="practical-session-2.html#cb103-62" aria-hidden="true" tabindex="-1"></a>g_walk <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">cluster_walktrap</span>(g)</span>
-<span id="cb103-63"><a href="practical-session-2.html#cb103-63" aria-hidden="true" tabindex="-1"></a>clus <span class="ot">&lt;-</span> g_walk<span class="sc">$</span>membership</span>
-<span id="cb103-64"><a href="practical-session-2.html#cb103-64" aria-hidden="true" tabindex="-1"></a><span class="fu">colLabels</span>(spe) <span class="ot">&lt;-</span> <span class="fu">factor</span>(clus)</span>
-<span id="cb103-65"><a href="practical-session-2.html#cb103-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-66"><a href="practical-session-2.html#cb103-66" aria-hidden="true" tabindex="-1"></a><span class="co"># MARKER GENES</span></span>
-<span id="cb103-67"><a href="practical-session-2.html#cb103-67" aria-hidden="true" tabindex="-1"></a><span class="co"># test for marker genes</span></span>
-<span id="cb103-68"><a href="practical-session-2.html#cb103-68" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(spe) <span class="ot">&lt;-</span> <span class="fu">rowData</span>(spe)<span class="sc">$</span>gene_name</span>
-<span id="cb103-69"><a href="practical-session-2.html#cb103-69" aria-hidden="true" tabindex="-1"></a>markers <span class="ot">&lt;-</span> <span class="fu">findMarkers</span>(spe, <span class="at">test =</span> <span class="st">&quot;binom&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;up&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="practical-session-2.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co"># clear workspace from previous chapters</span></span>
+<span id="cb102-2"><a href="practical-session-2.html#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>(<span class="at">all =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb102-3"><a href="practical-session-2.html#cb102-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-4"><a href="practical-session-2.html#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="co"># LOAD DATA</span></span>
+<span id="cb102-5"><a href="practical-session-2.html#cb102-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-6"><a href="practical-session-2.html#cb102-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SpatialExperiment)</span>
+<span id="cb102-7"><a href="practical-session-2.html#cb102-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(STexampleData)</span>
+<span id="cb102-8"><a href="practical-session-2.html#cb102-8" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">Visium_humanDLPFC</span>()</span>
+<span id="cb102-9"><a href="practical-session-2.html#cb102-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-10"><a href="practical-session-2.html#cb102-10" aria-hidden="true" tabindex="-1"></a><span class="co"># QUALITY CONTROL (QC)</span></span>
+<span id="cb102-11"><a href="practical-session-2.html#cb102-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-12"><a href="practical-session-2.html#cb102-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scater)</span>
+<span id="cb102-13"><a href="practical-session-2.html#cb102-13" aria-hidden="true" tabindex="-1"></a><span class="co"># subset to keep only spots over tissue</span></span>
+<span id="cb102-14"><a href="practical-session-2.html#cb102-14" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> spe[, <span class="fu">colData</span>(spe)<span class="sc">$</span>in_tissue <span class="sc">==</span> <span class="dv">1</span>]</span>
+<span id="cb102-15"><a href="practical-session-2.html#cb102-15" aria-hidden="true" tabindex="-1"></a><span class="co"># identify mitochondrial genes</span></span>
+<span id="cb102-16"><a href="practical-session-2.html#cb102-16" aria-hidden="true" tabindex="-1"></a>is_mito <span class="ot">&lt;-</span> <span class="fu">grepl</span>(<span class="st">&quot;(^MT-)|(^mt-)&quot;</span>, <span class="fu">rowData</span>(spe)<span class="sc">$</span>gene_name)</span>
+<span id="cb102-17"><a href="practical-session-2.html#cb102-17" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate per-spot QC metrics</span></span>
+<span id="cb102-18"><a href="practical-session-2.html#cb102-18" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">addPerCellQC</span>(spe, <span class="at">subsets =</span> <span class="fu">list</span>(<span class="at">mito =</span> is_mito))</span>
+<span id="cb102-19"><a href="practical-session-2.html#cb102-19" aria-hidden="true" tabindex="-1"></a><span class="co"># select QC thresholds</span></span>
+<span id="cb102-20"><a href="practical-session-2.html#cb102-20" aria-hidden="true" tabindex="-1"></a>qc_lib_size <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>sum <span class="sc">&lt;</span> <span class="dv">600</span></span>
+<span id="cb102-21"><a href="practical-session-2.html#cb102-21" aria-hidden="true" tabindex="-1"></a>qc_detected <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>detected <span class="sc">&lt;</span> <span class="dv">400</span></span>
+<span id="cb102-22"><a href="practical-session-2.html#cb102-22" aria-hidden="true" tabindex="-1"></a>qc_mito <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>subsets_mito_percent <span class="sc">&gt;</span> <span class="dv">28</span></span>
+<span id="cb102-23"><a href="practical-session-2.html#cb102-23" aria-hidden="true" tabindex="-1"></a>qc_cell_count <span class="ot">&lt;-</span> <span class="fu">colData</span>(spe)<span class="sc">$</span>cell_count <span class="sc">&gt;</span> <span class="dv">10</span></span>
+<span id="cb102-24"><a href="practical-session-2.html#cb102-24" aria-hidden="true" tabindex="-1"></a><span class="co"># combined set of discarded spots</span></span>
+<span id="cb102-25"><a href="practical-session-2.html#cb102-25" aria-hidden="true" tabindex="-1"></a>discard <span class="ot">&lt;-</span> qc_lib_size <span class="sc">|</span> qc_detected <span class="sc">|</span> qc_mito <span class="sc">|</span> qc_cell_count</span>
+<span id="cb102-26"><a href="practical-session-2.html#cb102-26" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(spe)<span class="sc">$</span>discard <span class="ot">&lt;-</span> discard</span>
+<span id="cb102-27"><a href="practical-session-2.html#cb102-27" aria-hidden="true" tabindex="-1"></a><span class="co"># filter low-quality spots</span></span>
+<span id="cb102-28"><a href="practical-session-2.html#cb102-28" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> spe[, <span class="sc">!</span><span class="fu">colData</span>(spe)<span class="sc">$</span>discard]</span>
+<span id="cb102-29"><a href="practical-session-2.html#cb102-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-30"><a href="practical-session-2.html#cb102-30" aria-hidden="true" tabindex="-1"></a><span class="co"># NORMALIZATION</span></span>
+<span id="cb102-31"><a href="practical-session-2.html#cb102-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-32"><a href="practical-session-2.html#cb102-32" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scran)</span>
+<span id="cb102-33"><a href="practical-session-2.html#cb102-33" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate logcounts using library size factors</span></span>
+<span id="cb102-34"><a href="practical-session-2.html#cb102-34" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">logNormCounts</span>(spe)</span>
+<span id="cb102-35"><a href="practical-session-2.html#cb102-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-36"><a href="practical-session-2.html#cb102-36" aria-hidden="true" tabindex="-1"></a><span class="co"># FEATURE SELECTION</span></span>
+<span id="cb102-37"><a href="practical-session-2.html#cb102-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-38"><a href="practical-session-2.html#cb102-38" aria-hidden="true" tabindex="-1"></a><span class="co"># remove mitochondrial genes</span></span>
+<span id="cb102-39"><a href="practical-session-2.html#cb102-39" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> spe[<span class="sc">!</span>is_mito, ]</span>
+<span id="cb102-40"><a href="practical-session-2.html#cb102-40" aria-hidden="true" tabindex="-1"></a><span class="co"># fit mean-variance relationship</span></span>
+<span id="cb102-41"><a href="practical-session-2.html#cb102-41" aria-hidden="true" tabindex="-1"></a>dec <span class="ot">&lt;-</span> <span class="fu">modelGeneVar</span>(spe)</span>
+<span id="cb102-42"><a href="practical-session-2.html#cb102-42" aria-hidden="true" tabindex="-1"></a><span class="co"># select top HVGs</span></span>
+<span id="cb102-43"><a href="practical-session-2.html#cb102-43" aria-hidden="true" tabindex="-1"></a>top_hvgs <span class="ot">&lt;-</span> <span class="fu">getTopHVGs</span>(dec, <span class="at">prop =</span> <span class="fl">0.1</span>)</span>
+<span id="cb102-44"><a href="practical-session-2.html#cb102-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-45"><a href="practical-session-2.html#cb102-45" aria-hidden="true" tabindex="-1"></a><span class="co"># DIMENSIONALITY REDUCTION</span></span>
+<span id="cb102-46"><a href="practical-session-2.html#cb102-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-47"><a href="practical-session-2.html#cb102-47" aria-hidden="true" tabindex="-1"></a><span class="co"># compute PCA</span></span>
+<span id="cb102-48"><a href="practical-session-2.html#cb102-48" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb102-49"><a href="practical-session-2.html#cb102-49" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">runPCA</span>(spe, <span class="at">subset_row =</span> top_hvgs)</span>
+<span id="cb102-50"><a href="practical-session-2.html#cb102-50" aria-hidden="true" tabindex="-1"></a><span class="co"># compute UMAP on top 50 PCs</span></span>
+<span id="cb102-51"><a href="practical-session-2.html#cb102-51" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb102-52"><a href="practical-session-2.html#cb102-52" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">runUMAP</span>(spe, <span class="at">dimred =</span> <span class="st">&quot;PCA&quot;</span>)</span>
+<span id="cb102-53"><a href="practical-session-2.html#cb102-53" aria-hidden="true" tabindex="-1"></a><span class="co"># update column names</span></span>
+<span id="cb102-54"><a href="practical-session-2.html#cb102-54" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">reducedDim</span>(spe, <span class="st">&quot;UMAP&quot;</span>)) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;UMAP&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
+<span id="cb102-55"><a href="practical-session-2.html#cb102-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-56"><a href="practical-session-2.html#cb102-56" aria-hidden="true" tabindex="-1"></a><span class="co"># CLUSTERING</span></span>
+<span id="cb102-57"><a href="practical-session-2.html#cb102-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-58"><a href="practical-session-2.html#cb102-58" aria-hidden="true" tabindex="-1"></a><span class="co"># graph-based clustering</span></span>
+<span id="cb102-59"><a href="practical-session-2.html#cb102-59" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb102-60"><a href="practical-session-2.html#cb102-60" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb102-61"><a href="practical-session-2.html#cb102-61" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">buildSNNGraph</span>(spe, <span class="at">k =</span> k, <span class="at">use.dimred =</span> <span class="st">&quot;PCA&quot;</span>)</span>
+<span id="cb102-62"><a href="practical-session-2.html#cb102-62" aria-hidden="true" tabindex="-1"></a>g_walk <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">cluster_walktrap</span>(g)</span>
+<span id="cb102-63"><a href="practical-session-2.html#cb102-63" aria-hidden="true" tabindex="-1"></a>clus <span class="ot">&lt;-</span> g_walk<span class="sc">$</span>membership</span>
+<span id="cb102-64"><a href="practical-session-2.html#cb102-64" aria-hidden="true" tabindex="-1"></a><span class="fu">colLabels</span>(spe) <span class="ot">&lt;-</span> <span class="fu">factor</span>(clus)</span>
+<span id="cb102-65"><a href="practical-session-2.html#cb102-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-66"><a href="practical-session-2.html#cb102-66" aria-hidden="true" tabindex="-1"></a><span class="co"># MARKER GENES</span></span>
+<span id="cb102-67"><a href="practical-session-2.html#cb102-67" aria-hidden="true" tabindex="-1"></a><span class="co"># test for marker genes</span></span>
+<span id="cb102-68"><a href="practical-session-2.html#cb102-68" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(spe) <span class="ot">&lt;-</span> <span class="fu">rowData</span>(spe)<span class="sc">$</span>gene_name</span>
+<span id="cb102-69"><a href="practical-session-2.html#cb102-69" aria-hidden="true" tabindex="-1"></a>markers <span class="ot">&lt;-</span> <span class="fu">findMarkers</span>(spe, <span class="at">test =</span> <span class="st">&quot;binom&quot;</span>, <span class="at">direction =</span> <span class="st">&quot;up&quot;</span>)</span></code></pre></div>
 
 </div>
 </div>
