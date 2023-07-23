@@ -5,7 +5,7 @@ This practical session will demonstrate the application of the most commonly use
 
 ## Load packages
 
-```{r 03_loadPackages, include=FALSE, eval=TRUE}
+```{r 03_loadPackages, eval=TRUE}
 library(SpatialFeatureExperiment)
 library(tidyverse)
 library(scran)
