@@ -1,7 +1,6 @@
 # Practical session 3
 
-This practical session will demonstrate the application of the most commonly used spatial analysis tools to STx data, and how we work with coordinate data alongside expression data. 
-
+This practical session will demonstrate the application of the most commonly used spatial analysis tools to STx data, and how we work with coordinate data alongside expression data.
 
 ## Load packages
 
@@ -221,7 +220,7 @@ For this practical we will be using a human steatotic kidney dataset from the [L
 
 ### Load new dataset
 
-**Note** - Between now and section [3.8](##Neighbour graph and distance matrix) nothing new is introduced (this is a repetition of the QC carried out in practical 2, but with this new liver dataset). Feel free to skip over this section and use the [code block](###Code for 3.3 to 3.7) just before section 3.8 to run this QC quickly for this data. 
+**Note** - Between now and section [3.8](##Neighbour%20graph%20and%20distance%20matrix) nothing new is introduced (this is a repetition of the QC carried out in practical 2, but with this new liver dataset). Feel free to skip over this section and use the [code block](###Code%20for%203.3%20to%203.7) just before section 3.8 to run this QC quickly for this data.
 
 First we generate the `SpatialFeaturesExperiment` object which is an extension of the `SpatialExperiment` (SPE) object that we used in the 2nd practical session. The difference is that the SFE object has incorporated the `sf` object structure and thus can accommodate the use of geocomputational tools.
 
@@ -244,7 +243,7 @@ ground_truth <- read_table("./data/to_load/spotzonationGroup.txt")
 
 ### Calculating QC metrics
 
-In this section we are effectively recapitlating the spot- and gene-level QC from practical 2 for this new dataset, in order that we can use it for the practical exercises in the next session. 
+In this section we are effectively recapitlating the spot- and gene-level QC from practical 2 for this new dataset, in order that we can use it for the practical exercises in the next session.
 
 ```{r 03_QC_sfe1, message=FALSE, warning=FALSE}
 is_mito <- grepl("(^MT-)|(^mt-)", rowData(sfe)$symbol)
@@ -448,10 +447,6 @@ sfe <- logNormCounts(sfe)
 ### Calculating extra QC metrics
 
 ```{r 03_GeneQC_sfe1}
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/main
 rowData(sfe)[["JBO019.s_logMean"]] <- rowSums(assay(sfe, "logcounts")) / rowData(sfe)[["JBO019.nLocations"]]
 
 ```
@@ -613,7 +608,7 @@ knitr::include_graphics("images/gwmodel_kernel_math.png")
 knitr::include_graphics("images/gwmodel_kernel_graphs.png")
 ```
 
-In the below we choose one of the many possible ways of building a neighbour graph for the steatotic liver data set. In this example we are using a k-nearest neighbours approach with row-standardised distance-based weights. 
+In the below we choose one of the many possible ways of building a neighbour graph for the steatotic liver data set. In this example we are using a k-nearest neighbours approach with row-standardised distance-based weights.
 
 ```{r 03_spatial_weights_to_sfe}
 ## add a neighbour graph using a weighted distance matrix
@@ -626,7 +621,7 @@ sfe <- addDistMat(sfe, p = 2)
 
 ```
 
-We can use a `geom` from the `tidyterra` package (commonly used for map visualisations) to plot the neighbour graph we generated in the previous step. 
+We can use a `geom` from the `tidyterra` package (commonly used for map visualisations) to plot the neighbour graph we generated in the previous step.
 
 ```{r 03_visualise_neighbours}
 ## Retrieve the tissue image
@@ -649,7 +644,6 @@ ggplot() +
 ```
 
 Now that we have a fully QC-ed dataset with spatial weights and a neighbour graph applied, we have prepared our data fully for the application of geospatial methods - specifically in practical 4, geogrpahically weighted principal components analysis (GWPCA).
-
 
 ## Putting it all together
 
