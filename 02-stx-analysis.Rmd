@@ -1,6 +1,6 @@
 # Practical session 2
 
-Having previously introduced some of the Bioconductor ecosystem for storing and manipulating STx data, in this second session we will focus on some of the most common STx analysis tasks - particularly quality control assessment and associated spot- and gene- level filtering. We will also consider some global methods of STx analysis, including dimensionality reduction and clustering. All of the methods demonstrated here continue to focus on interoperable packages available via Bioconductor. 
+Having previously introduced some of the Bioconductor ecosystem for storing and manipulating STx data, in this second session we will focus on some of the most common STx analysis tasks - particularly quality control assessment and associated spot- and gene- level filtering. We will also consider some global methods of STx analysis, including dimensionality reduction and clustering. All of the methods demonstrated here continue to focus on interoperable packages available via Bioconductor.
 
 ```{r 02_loadPackages, message=FALSE}
 ## Load packages {-}
@@ -12,12 +12,12 @@ library(scater)
 library(scran)
 library(igraph)
 library(pheatmap)
+library(ggExtra)
 ```
 
-- [`ggspavis`](https://bioconductor.org/packages/release/bioc/html/ggspavis.html) is a Bioconductor package that includes visualization functions for spatially resolved transcriptomics datasets stored in `SpatialExperiment` format from spot-based (e.g., 10x Genomics Visium) platforms (@ggspavis2023Apr).
+-   [`ggspavis`](https://bioconductor.org/packages/release/bioc/html/ggspavis.html) is a Bioconductor package that includes visualization functions for spatially resolved transcriptomics datasets stored in `SpatialExperiment` format from spot-based (e.g., 10x Genomics Visium) platforms (@ggspavis2023Apr).
 
-- [`scater`](https://bioconductor.org/packages/release/bioc/html/scater.html) is also a Bioconductor package that is a selection of tools for doing various analyses of scRNA-seq gene expression data, with a focus on quality control and visualization which has extended applications to STx data too. It is based on the `SingleCellExperiment` and `SpatialExperiment` classes and thus is interoperable with many other Bioconductor packages such as [`scran`](Spot-level quality control (sQC) procedures are employed to eliminate low-quality spots before conducting further analyses), [`scuttle`](https://bioconductor.org/packages/release/scuttle) and [`iSEE`](https://bioconductor.org/packages/release/iSEE).
-
+-   [`scater`](https://bioconductor.org/packages/release/bioc/html/scater.html) is also a Bioconductor package that is a selection of tools for doing various analyses of scRNA-seq gene expression data, with a focus on quality control and visualization which has extended applications to STx data too. It is based on the `SingleCellExperiment` and `SpatialExperiment` classes and thus is interoperable with many other Bioconductor packages such as [`scran`](Spot-level%20quality%20control%20(sQC)%20procedures%20are%20employed%20to%20eliminate%20low-quality%20spots%20before%20conducting%20further%20analyses), [`scuttle`](https://bioconductor.org/packages/release/scuttle) and [`iSEE`](https://bioconductor.org/packages/release/iSEE).
 
 ```{r 02_reloadData}
 ## Reload the example dataset
@@ -26,19 +26,19 @@ spe <- Visium_humanDLPFC()
 
 ## Spot-level Quality Control
 
-Considered quality control (QC) procedures are essential for analysing any high-throughput data in molecular biology. The removal of noise and low quality data from complex datasets can improve the reliability of downsrtream analyses. STx is no different in this regard, and QC can be undertaken in 2 main places - spot-level and gene-level. Here, we focus on spot-level QC.  
+Considered quality control (QC) procedures are essential for analysing any high-throughput data in molecular biology. The removal of noise and low quality data from complex datasets can improve the reliability of downsrtream analyses. STx is no different in this regard, and QC can be undertaken in 2 main places - spot-level and gene-level. Here, we focus on spot-level QC.
 
 Spot-level quality control (sQC) procedures are employed to eliminate low-quality spots before conducting further analyses. Low-quality spots may result from issues during library preparation or other experimental procedures, such as a high percentage of dead cells due to cell damage during library preparation, or low mRNA capture efficiency caused by ineffective reverse transcription or PCR amplification. Keeping these spots usually leads to creating problems during downstream analyses.
 
 We can identify low-quality spots using several characteristics that are also used in cell-level QC for scRNA-sq data, including:
 
-1. **library size** (total of UMI counts per spot will vary due to sequencing *-like different samples in a bulk RNA-seq-*, or due to number of cells in the spot)
-2. **number of expressed genes** (i.e. number of genes with non-zero UMI counts per spot)
-3. **proportion of reads mapping to mitochondrial genes** (a high proportion indicates putative cell damage)
+1.  **library size** (total of UMI counts per spot will vary due to sequencing *-like different samples in a bulk RNA-seq-*, or due to number of cells in the spot)
+2.  **number of expressed genes** (i.e. number of genes with non-zero UMI counts per spot)
+3.  **proportion of reads mapping to mitochondrial genes** (a high proportion indicates putative cell damage)
 
 Low library size or low number of expressed features can indicate poor mRNA capture rates, e.g. due to cell damage and missing mRNAs, or low reaction efficiency. A high proportion of mitochondrial reads indicates cell damage, e.g. partial cell lysis leading to leakage and missing cytoplasmic mRNAs, with the resulting reads therefore concentrated on the remaining mitochondrial mRNAs that are relatively protected inside the mitochondrial membrane. Unusually high numbers of cells per spot can indicate problems during cell segmentation.
 
-The idea of using scRNA-seq QC metrics in STx data comes from the fact that if we remove space and effectively treat each spot as a single cell, the two datasets share common features. We need to bear in mind, however, that the expected distributions for high-quality _spots_ are different (compared to high-quality _cells_ in scRNA-seq), since spots may contain zero, one, or multiple cells.
+The idea of using scRNA-seq QC metrics in STx data comes from the fact that if we remove space and effectively treat each spot as a single cell, the two datasets share common features. We need to bear in mind, however, that the expected distributions for high-quality *spots* are different (compared to high-quality *cells* in scRNA-seq), since spots may contain zero, one, or multiple cells.
 
 A few publications for further reading that can help you understand the quality controls: @McCarthy2017Apr and @Amezquita2020Feb.
 
@@ -117,7 +117,7 @@ As we can see there are no obvious issues with the library sizes. An example of 
 
 If the dataset we are analysing contains the number of cells that are present in each spot (this one does), then it makes sense to also plot the library sizes against the number of cells per spot. In that way we are making sure that we don't remove any spots that may have biological meaning. In many cases though the datasets do not have such information unless we can generate it using a nuclei segmentation tool to extract this information from the H&E images.
 
-The horizontal red line (argument `threshold` in the `plotQC` function) shows a first guess at a possible filtering threshold for library size based on the above histogram. 
+The horizontal red line (argument `threshold` in the `plotQC` function) shows a first guess at a possible filtering threshold for library size based on the above histogram.
 
 NOTE: The `ggspavis` plots for QC are convenient, but not very configurable. As can be seen from the "missing" bin in the top histogram here, the default configuration provided is not always the best. A ggplot2 alternative (using `ggExtra` to provide the marginal histograms) is also provided here.
 
@@ -166,7 +166,6 @@ code...
 plotQC(...)
 ```
 
-
 ### Number of expressed genes
 
 As we did with the library sizes, we can plot a histogram of the number of expressed genes across spots. A gene is "expressed" in a spot if it has at least one count in it. We can find this information in the `detected` column in the `colData`.
@@ -201,7 +200,7 @@ p = ggplot(as.data.frame(colData(spe)), aes(x=cell_count, y=detected)) +
 ggMarginal(p, type='histogram', margins = 'both')
 ```
 
-Finally, again as before, we apply the chosen threshold to flag spots with (in this case) fewer than 500 expressed genes. 
+Finally, again as before, we apply the chosen threshold to flag spots with (in this case) fewer than 500 expressed genes.
 
 ```{r 02_genesInSpot-thresh, fig.height=4}
 ## Select expressed genes threshold
@@ -216,7 +215,7 @@ plotQC(spe, type = "spots",
        discard = "qc_detected")
 ```
 
-Again, an optional exercise is provided to see the effects of an over-enthusiastic filter - to illustrate what happens if we set the threshold too high (i.e., 1000 expressed genes).  
+Again, an optional exercise is provided to see the effects of an over-enthusiastic filter - to illustrate what happens if we set the threshold too high (i.e., 1000 expressed genes).
 
 **NOTE:** For reference, remember the ground truth layers in this dataset that we plotted (\@ref(fig:02_plot-maps-gTruth)) at the beginning of this session.
 
@@ -282,7 +281,7 @@ plotQC(spe, type = "spots",
        discard = "qc_mito")
 ```
 
-Again, try to illustrate what happens if we set the threshold too low (i.e., 20 0r 25%).  
+Again, try to illustrate what happens if we set the threshold too low (i.e., 20 0r 25%).
 
 **NOTE:** For reference, remember the ground truth layers in this dataset that we plotted (\@ref(fig:02_plot-maps-gTruth)) at the beginning of this session.
 
@@ -387,7 +386,6 @@ plotQC(spe, type = "spots",
        discard = "discard")
 ```
 
-
 ```{r 02_applyFilter}
 ## remove combined set of low-quality spots
 spe <- spe[, !colData(spe)$discard]
@@ -397,14 +395,14 @@ spe <- spe[, !colData(spe)$discard]
 
 ### Background
 
-Normalisation is applied in STx data for the same reason as any other RNA-Seq technique - the differences observed in the count data can arise from a range of systematic factors, not just a physiologically-relevant change in expression. The primary systematic effect is that of library size (or in the case of STx, counts/UMIs per spot). `scater` corrects for library size by scaling the sizes across all spots such that the mean library size is 1. Normalized counts are then calculated as a ratio of observed count to library size factor. 
+Normalisation is applied in STx data for the same reason as any other RNA-Seq technique - the differences observed in the count data can arise from a range of systematic factors, not just a physiologically-relevant change in expression. The primary systematic effect is that of library size (or in the case of STx, counts/UMIs per spot). `scater` corrects for library size by scaling the sizes across all spots such that the mean library size is 1. Normalized counts are then calculated as a ratio of observed count to library size factor.
 
-Secondly, a log-transformation is applied to the scaled counts - this transformation is commonly applied as it stabilises the variance across the range of transcriptomics data (otherwise the variance is dominated by highly expressed genes) and it facilitates comparisons of expression by rendering positive and negative changes symmetrical and found by subtraction rather than division. Since $log2(0)$ is undefined, a _pseudocount_ is added to each observed count to avoid this error - a pseudocount of 1 is typically applied, as $log2(0+1) = 0$.
+Secondly, a log-transformation is applied to the scaled counts - this transformation is commonly applied as it stabilises the variance across the range of transcriptomics data (otherwise the variance is dominated by highly expressed genes) and it facilitates comparisons of expression by rendering positive and negative changes symmetrical and found by subtraction rather than division. Since $log2(0)$ is undefined, a *pseudocount* is added to each observed count to avoid this error - a pseudocount of 1 is typically applied, as $log2(0+1) = 0$.
 
 Here we will be using methods from the `scater` [@McCarthy2017Apr] and `scran` [@Lun2016Oct] packages that calculate logcounts using library size factors. The library size factors approach is arguably the simplest approach for STx data. Other approaches used in scRNA-seq are more difficult to justify their use in STx because of two main reasons:
 
-  1. Spots can contain multiple cells of different cell-types.
-  2. Datasets can include multiple tissue samples which will lead to different clusterings.
+1.  Spots can contain multiple cells of different cell-types.
+2.  Datasets can include multiple tissue samples which will lead to different clusterings.
 
 ### Log-tranformation of counts
 
@@ -414,8 +412,8 @@ spe <- computeLibraryFactors(spe)
 ## Have a look at the size factors
 summary(sizeFactors(spe))
 ```
-As described above, the mean size factor is 1.0.
 
+As described above, the mean size factor is 1.0.
 
 ```{r 02_plot-labfact-histo, fig.height=4, warning=FALSE, message=FALSE}
 ## Density and histogram of library sizes
@@ -434,7 +432,6 @@ ggplot(data = data.frame(sFact = sizeFactors(spe)),
   ylab("Density") + 
   theme_classic()
 ```
-
 
 The log-transformation that takes place is a log2-transformation and in order to avoid *- Infinity* values we add a pseudo value of 1. Both the log2- transformation and the pseudocount of 1 are defaults in this method.
 
@@ -465,8 +462,7 @@ In this dataset, the mitochondrial genes are too highly expressed and are not of
 spe <- spe[!is_mito, ]
 ```
 
-
-Then, we apply methods from `scran` that give a list of HVGs, which can be used for further downstream analyses. 
+Then, we apply methods from `scran` that give a list of HVGs, which can be used for further downstream analyses.
 
 First we model the variance of the log-expression profiles for each gene, decomposing it into technical and biological components based on a fitted mean-variance trend.
 
@@ -490,7 +486,7 @@ ggplot(data = fit_df,
 
 The `trend` function that we used above is returned from the `modelGeneVar` function and returns the fitted value of the trend at any value of the mean. The "biological" variance of a gene is what remains when the fitted variance for a gene of that expression value is subtracted from the total variance (so genes above the blue trend line above have a positive biological variance).
 
-We select the top 10% of genes based on their biological variability The parameter `prop` defines how many HVGs we want. For example `prop = 0.1` returns the top 10% of genes. `prop = 1.0` would return all genes with a positive biological variability. 
+We select the top 10% of genes based on their biological variability The parameter `prop` defines how many HVGs we want. For example `prop = 0.1` returns the top 10% of genes. `prop = 1.0` would return all genes with a positive biological variability.
 
 ```{r 02_features_selectHVGs}
 ## Select top HVGs
@@ -500,8 +496,7 @@ top_hvgs <- getTopHVGs(dec, prop = 0.1)
 length(top_hvgs)
 ```
 
-**NOTE** - we will return to feature selection in the next practical, as it is a complicated process with significant impacts on the chosen downstream analysis. 
-
+**NOTE** - we will return to feature selection in the next practical, as it is a complicated process with significant impacts on the chosen downstream analysis.
 
 ### Spatially variable genes (SVGs)
 
@@ -511,18 +506,17 @@ The field of geography has developed some statistical measures to calculate spat
 
 Several sophisticated new statistical methods to identify SVGs in STx data have also recently been developed. These include [SpatialDE](https://github.com/Teichlab/SpatialDE) [@Svensson2018May], [SPARK](https://xzhoulab.github.io/SPARK/) [@Sun2020Feb], and [SPARK-X](https://xzhoulab.github.io/SPARK/) [@Zhu2021Dec].
 
-
 ### Integration of HVGs and SVGs
 
 A recent benchmark paper [@Li2022Jan] showed that integrating HVGs and SVGs to generate a combined set of features can improve downstream clustering performance in STx data. This confirms that SVGs contain additional biologically relevant information that is not captured by HVGs in these datasets. For example, a simple way to combine these features is to concatenate columns of principal components (PCs) calculated on the set of HVGs and the set of SVGs (excluding overlapping HVGs), and then using the combined set of features for further downstream analyses [@Li2022Jan].
 
 ## Dimensionality reduction
 
-### Background  
+### Background
 
 Dimensionality reduction is an important step prior to any downstream clustering attempts. There are two main ways of reducing the dimensions of a dataset. The gold standard is Principal Components Analysis (PCA) and the other -a more recent one- Uniform manifold Approximation and Projection (UMAP) [@McInnes2018Feb]. The main difference between the two is that the distances between the data points in PCA space are interpretable and can be used to cluster the data points while the distances in a UMAP embedding are not interpretable and thus, cannot be used to cluster the data points. As a result, we will be using PCA to reduce the dimensions of our dataset to assist clustering and UMAP to further reduce the principal components (PCs) in a two-dimensional space and produce better visualisations for the PCA.
 
-Reducing the dimensions of the dataset is the output of a PCA. But, what are the main reasons we do so? One reason is to reduce the noise introduced by biologically uninteresting genes that their expression might show some random variation -and that is why they are in the HVGs list-. The other reason is to improve the computational efficiency of downstream analyses like clustering. In an STx experiment, like the one we are analysing here, we have more than 3000 spots and almost 1500 HVGs. As as result, each spot has 1500 attributes based on which the clustering will take place. This increase in the number of variables that differentiate or cluster together spots is leading to the *curse of dimensionality* [@Keogh2017Apr] which makes the data points (spots) look equidistant in attribute space resulting in poor clustering output. 
+Reducing the dimensions of the dataset is the output of a PCA. But, what are the main reasons we do so? One reason is to reduce the noise introduced by biologically uninteresting genes that their expression might show some random variation -and that is why they are in the HVGs list-. The other reason is to improve the computational efficiency of downstream analyses like clustering. In an STx experiment, like the one we are analysing here, we have more than 3000 spots and almost 1500 HVGs. As as result, each spot has 1500 attributes based on which the clustering will take place. This increase in the number of variables that differentiate or cluster together spots is leading to the *curse of dimensionality* [@Keogh2017Apr] which makes the data points (spots) look equidistant in attribute space resulting in poor clustering output.
 
 ### PCA: Principal component analysis
 
@@ -538,7 +532,6 @@ reducedDimNames(spe)
 ## Check correctness - dimensions
 dim(reducedDim(spe, "PCA"))
 ```
- 
 
 ### UMAP: Uniform Manifold Approximation and Projection
 
@@ -589,8 +582,8 @@ ggplot(data = as.data.frame(spe@int_colData@listData$reducedDims$UMAP),
   theme_classic()
 ```
 
-
 ## Clustering
+
 ### Background
 
 The clustering of observations into statistically similar groups is a well-established application in both bulk and single-cell RNA-Seq analysis. Clustering is a helpful tool because it structures and orders the data, allowing useful insights to be gained from complex, multivariate datasets and use those insights to classify the observed data or to generate hypotheses.
@@ -622,9 +615,8 @@ colLabels(spe) <- factor(clus)
 
 ### HVGs clustering visualisations
 
-We can visualise the clusters in two ways:  
-1. plotting in spatial coordinates on the tissue map
-2. plotting in the UMAP/PCA embeddings.
+We can visualise the clusters in two ways:\
+1. plotting in spatial coordinates on the tissue map 2. plotting in the UMAP/PCA embeddings.
 
 We can use plotting functions either from the [ggspavis](https://bioconductor.org/packages/ggspavis)package.
 
@@ -659,6 +651,7 @@ In STx data, we can also perform clustering that takes spatial information into 
 A simple strategy is to perform graph-based clustering on a set of features (columns) that includes both molecular features (gene expression) and spatial features (x-y coordinates). In this case, a crucial tuning parameter is the relative amount of scaling between the two data modalities -- if the scaling is chosen poorly, either the molecular or spatial features will dominate the clustering. Depending on data availability, further modalities could also be included. In this section, we will include some examples on this clustering approach.
 
 ## Inter-cluster differentially expressed genes (DGEs)
+
 ### Background
 
 Here, we will identify differentially expressed genes bewteen clusters.
@@ -705,6 +698,7 @@ plotExpression(spe, x = "label", features = top_genes)
 ## Other visualisations
 
 ## Putting it all together
+
 ```{r all_together, eval=FALSE}
 # # clear workspace from previous chapters
 # rm(list = ls(all = TRUE))

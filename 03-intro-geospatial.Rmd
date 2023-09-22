@@ -47,7 +47,7 @@ As attributes are typically stored in `data.frame` objects (or the very similar 
 The following seven simple feature types are the most common:
 
 | type                 | description                                                                                                                                                                                                               |
-|-------------|-----------------------------------------------------------|
+|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `POINT`              | zero-dimensional geometry containing a single point                                                                                                                                                                       |
 | `LINESTRING`         | sequence of points connected by straight, non-self intersecting line pieces; one-dimensional geometry                                                                                                                     |
 | `POLYGON`            | geometry with a positive area (two-dimensional); sequence of points form a closed, non-self intersecting ring; the first ring denotes the exterior ring, zero or more subsequent rings denote holes in this exterior ring |
@@ -458,13 +458,15 @@ sfe <- logNormCounts(sfe)
 
 ### Calculating extra QC metrics
 
-```{r 03_GeneQC_sfe}
+```{r 03_GeneQC_sfe1}
+
 rowData(sfe)[["JBO019.s_logMean"]] <- rowSums(assay(sfe, "logcounts")) / rowData(sfe)[["JBO019.nLocations"]]
+
 ```
 
 ### Set and apply filters
 
-```{r 03_GeneQC_sfe}
+```{r 03_GeneQC_sfe2}
 is_zero <- rowData(sfe)$total == 0
 is_logLow <- rowData(sfe)[["JBO019.s_logMean"]] <= 1
 discard_gs <- is_zero | is_mito | is_logLow

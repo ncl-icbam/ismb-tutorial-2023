@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Practical session 4 | Spatial transcriptomics data analysis: theory and practice</title>
+  <meta name="description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Practical session 4 | Spatial transcriptomics data analysis: theory and practice" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
+  <meta name="github-repo" content="https://github.com/ncl-icbam/ismb-tutorial-2023.git" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Practical session 4 | Spatial transcriptomics data analysis: theory and practice" />
+  
+  <meta name="twitter:description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
+  
+
+<meta name="author" content="Eleftherios Zormpas, Dr Simon J. Cockell" />
+
+
+<meta name="date" content="2023-07-19" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="practical-session-3.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Spatial transcriptomics data analysis: theory and practice</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#abstract"><i class="fa fa-check"></i>Abstract</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#learning-objectives"><i class="fa fa-check"></i>Learning objectives</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="practical-session-1.html"><a href="practical-session-1.html"><i class="fa fa-check"></i><b>1</b> Practical session 1</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="practical-session-1.html"><a href="practical-session-1.html#about-this-documentation"><i class="fa fa-check"></i><b>1.1</b> About this documentation</a></li>
+<li class="chapter" data-level="1.2" data-path="practical-session-1.html"><a href="practical-session-1.html#posit-cloud"><i class="fa fa-check"></i><b>1.2</b> Posit Cloud</a></li>
+<li class="chapter" data-level="1.3" data-path="practical-session-1.html"><a href="practical-session-1.html#import-10x-visium-data"><i class="fa fa-check"></i><b>1.3</b> Import 10X Visium data</a></li>
+<li class="chapter" data-level="1.4" data-path="practical-session-1.html"><a href="practical-session-1.html#explore-data-types"><i class="fa fa-check"></i><b>1.4</b> Explore data types</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="practical-session-1.html"><a href="practical-session-1.html#spatialexperiment-class"><i class="fa fa-check"></i><b>1.4.1</b> SpatialExperiment class</a></li>
+<li class="chapter" data-level="1.4.2" data-path="practical-session-1.html"><a href="practical-session-1.html#inspect-the-object"><i class="fa fa-check"></i><b>1.4.2</b> Inspect the object</a></li>
+<li class="chapter" data-level="1.4.3" data-path="practical-session-1.html"><a href="practical-session-1.html#counts-table-and-gene-metadata"><i class="fa fa-check"></i><b>1.4.3</b> Counts table and gene metadata</a></li>
+<li class="chapter" data-level="1.4.4" data-path="practical-session-1.html"><a href="practical-session-1.html#coordinates-table-and-spot-metadata"><i class="fa fa-check"></i><b>1.4.4</b> Coordinates table and spot metadata</a></li>
+<li class="chapter" data-level="1.4.5" data-path="practical-session-1.html"><a href="practical-session-1.html#image-metadata"><i class="fa fa-check"></i><b>1.4.5</b> Image metadata</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="practical-session-1.html"><a href="practical-session-1.html#conclusion"><i class="fa fa-check"></i><b>1.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="practical-session-2.html"><a href="practical-session-2.html"><i class="fa fa-check"></i><b>2</b> Practical session 2</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="practical-session-2.html"><a href="practical-session-2.html#spot-level-quality-control"><i class="fa fa-check"></i><b>2.1</b> Spot-level Quality Control</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="practical-session-2.html"><a href="practical-session-2.html#plot-tissue-map"><i class="fa fa-check"></i><b>2.1.1</b> Plot tissue map</a></li>
+<li class="chapter" data-level="2.1.2" data-path="practical-session-2.html"><a href="practical-session-2.html#calculating-qc-metrics"><i class="fa fa-check"></i><b>2.1.2</b> Calculating QC metrics</a></li>
+<li class="chapter" data-level="2.1.3" data-path="practical-session-2.html"><a href="practical-session-2.html#library-size-threshold-plot"><i class="fa fa-check"></i><b>2.1.3</b> Library size threshold plot</a></li>
+<li class="chapter" data-level="2.1.4" data-path="practical-session-2.html"><a href="practical-session-2.html#number-of-expressed-genes"><i class="fa fa-check"></i><b>2.1.4</b> Number of expressed genes</a></li>
+<li class="chapter" data-level="2.1.5" data-path="practical-session-2.html"><a href="practical-session-2.html#percentage-of-mitochondrial-expression"><i class="fa fa-check"></i><b>2.1.5</b> Percentage of mitochondrial expression</a></li>
+<li class="chapter" data-level="2.1.6" data-path="practical-session-2.html"><a href="practical-session-2.html#number-of-cells-per-spot"><i class="fa fa-check"></i><b>2.1.6</b> Number of cells per spot</a></li>
+<li class="chapter" data-level="2.1.7" data-path="practical-session-2.html"><a href="practical-session-2.html#remove-low-quality-spots"><i class="fa fa-check"></i><b>2.1.7</b> Remove low-quality spots</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="practical-session-2.html"><a href="practical-session-2.html#normalisation-of-counts"><i class="fa fa-check"></i><b>2.2</b> Normalisation of counts</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background"><i class="fa fa-check"></i><b>2.2.1</b> Background</a></li>
+<li class="chapter" data-level="2.2.2" data-path="practical-session-2.html"><a href="practical-session-2.html#log-tranformation-of-counts"><i class="fa fa-check"></i><b>2.2.2</b> Log-tranformation of counts</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="practical-session-2.html"><a href="practical-session-2.html#selecting-genes"><i class="fa fa-check"></i><b>2.3</b> Selecting genes</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background-1"><i class="fa fa-check"></i><b>2.3.1</b> Background</a></li>
+<li class="chapter" data-level="2.3.2" data-path="practical-session-2.html"><a href="practical-session-2.html#highly-variable-genes-hvgs"><i class="fa fa-check"></i><b>2.3.2</b> Highly Variable Genes (HVGs)</a></li>
+<li class="chapter" data-level="2.3.3" data-path="practical-session-2.html"><a href="practical-session-2.html#spatially-variable-genes-svgs"><i class="fa fa-check"></i><b>2.3.3</b> Spatially variable genes (SVGs)</a></li>
+<li class="chapter" data-level="2.3.4" data-path="practical-session-2.html"><a href="practical-session-2.html#integration-of-hvgs-and-svgs"><i class="fa fa-check"></i><b>2.3.4</b> Integration of HVGs and SVGs</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="practical-session-2.html"><a href="practical-session-2.html#dimensionality-reduction"><i class="fa fa-check"></i><b>2.4</b> Dimensionality reduction</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background-2"><i class="fa fa-check"></i><b>2.4.1</b> Background</a></li>
+<li class="chapter" data-level="2.4.2" data-path="practical-session-2.html"><a href="practical-session-2.html#pca-principal-component-analysis"><i class="fa fa-check"></i><b>2.4.2</b> PCA: Principal component analysis</a></li>
+<li class="chapter" data-level="2.4.3" data-path="practical-session-2.html"><a href="practical-session-2.html#umap-uniform-manifold-approximation-and-projection"><i class="fa fa-check"></i><b>2.4.3</b> UMAP: Uniform Manifold Approximation and Projection</a></li>
+<li class="chapter" data-level="2.4.4" data-path="practical-session-2.html"><a href="practical-session-2.html#umap-visualisations"><i class="fa fa-check"></i><b>2.4.4</b> UMAP visualisations</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="practical-session-2.html"><a href="practical-session-2.html#clustering"><i class="fa fa-check"></i><b>2.5</b> Clustering</a>
+<ul>
+<li class="chapter" data-level="2.5.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background-3"><i class="fa fa-check"></i><b>2.5.1</b> Background</a></li>
+<li class="chapter" data-level="2.5.2" data-path="practical-session-2.html"><a href="practical-session-2.html#clustering-on-hvgs"><i class="fa fa-check"></i><b>2.5.2</b> Clustering on HVGs</a></li>
+<li class="chapter" data-level="2.5.3" data-path="practical-session-2.html"><a href="practical-session-2.html#hvgs-clustering-visualisations"><i class="fa fa-check"></i><b>2.5.3</b> HVGs clustering visualisations</a></li>
+<li class="chapter" data-level="2.5.4" data-path="practical-session-2.html"><a href="practical-session-2.html#spatially-aware-clustering"><i class="fa fa-check"></i><b>2.5.4</b> Spatially-aware clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="practical-session-2.html"><a href="practical-session-2.html#inter-cluster-differentially-expressed-genes-dges"><i class="fa fa-check"></i><b>2.6</b> Inter-cluster differentially expressed genes (DGEs)</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="practical-session-2.html"><a href="practical-session-2.html#background-4"><i class="fa fa-check"></i><b>2.6.1</b> Background</a></li>
+<li class="chapter" data-level="2.6.2" data-path="practical-session-2.html"><a href="practical-session-2.html#dges-identification"><i class="fa fa-check"></i><b>2.6.2</b> DGEs identification</a></li>
+<li class="chapter" data-level="2.6.3" data-path="practical-session-2.html"><a href="practical-session-2.html#dges-visualisation"><i class="fa fa-check"></i><b>2.6.3</b> DGEs visualisation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="practical-session-2.html"><a href="practical-session-2.html#other-visualisations"><i class="fa fa-check"></i><b>2.7</b> Other visualisations</a></li>
+<li class="chapter" data-level="2.8" data-path="practical-session-2.html"><a href="practical-session-2.html#putting-it-all-together"><i class="fa fa-check"></i><b>2.8</b> Putting it all together</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="practical-session-3.html"><a href="practical-session-3.html"><i class="fa fa-check"></i><b>3</b> Practical session 3</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="practical-session-3.html"><a href="practical-session-3.html#background-5"><i class="fa fa-check"></i><b>3.1</b> Background</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="practical-session-3.html"><a href="practical-session-3.html#main-geocomputatinal-data-structures"><i class="fa fa-check"></i><b>3.1.1</b> Main geocomputatinal data structures</a></li>
+<li class="chapter" data-level="3.1.2" data-path="practical-session-3.html"><a href="practical-session-3.html#the-sf-objects"><i class="fa fa-check"></i><b>3.1.2</b> The <code>sf</code> objects</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="practical-session-3.html"><a href="practical-session-3.html#data-structures-preparation"><i class="fa fa-check"></i><b>3.2</b> Data structures preparation</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="practical-session-3.html"><a href="practical-session-3.html#load-new-dataset"><i class="fa fa-check"></i><b>3.2.1</b> Load new dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="practical-session-3.html"><a href="practical-session-3.html#spot-level-quality-control-1"><i class="fa fa-check"></i><b>3.3</b> Spot-level Quality Control</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="practical-session-3.html"><a href="practical-session-3.html#calculating-qc-metrics-1"><i class="fa fa-check"></i><b>3.3.1</b> Calculating QC metrics</a></li>
+<li class="chapter" data-level="3.3.2" data-path="practical-session-3.html"><a href="practical-session-3.html#plot-manual-annotation"><i class="fa fa-check"></i><b>3.3.2</b> Plot manual annotation</a></li>
+<li class="chapter" data-level="3.3.3" data-path="practical-session-3.html"><a href="practical-session-3.html#library-size-threshold"><i class="fa fa-check"></i><b>3.3.3</b> Library size threshold</a></li>
+<li class="chapter" data-level="3.3.4" data-path="practical-session-3.html"><a href="practical-session-3.html#number-of-expressed-genes-1"><i class="fa fa-check"></i><b>3.3.4</b> Number of expressed genes</a></li>
+<li class="chapter" data-level="3.3.5" data-path="practical-session-3.html"><a href="practical-session-3.html#percentage-of-mitochondrial-expression-1"><i class="fa fa-check"></i><b>3.3.5</b> Percentage of mitochondrial expression</a></li>
+<li class="chapter" data-level="3.3.6" data-path="practical-session-3.html"><a href="practical-session-3.html#remove-low-quality-spots-1"><i class="fa fa-check"></i><b>3.3.6</b> Remove low-quality spots</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="practical-session-3.html"><a href="practical-session-3.html#normalisation-of-counts-1"><i class="fa fa-check"></i><b>3.4</b> Normalisation of counts</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="practical-session-3.html"><a href="practical-session-3.html#log-tranformation-of-counts-1"><i class="fa fa-check"></i><b>3.4.1</b> Log-tranformation of counts</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="practical-session-3.html"><a href="practical-session-3.html#gene-level-quality-control"><i class="fa fa-check"></i><b>3.5</b> Gene-level Quality Control</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="practical-session-3.html"><a href="practical-session-3.html#calculating-extra-qc-metrics"><i class="fa fa-check"></i><b>3.5.1</b> Calculating extra QC metrics</a></li>
+<li class="chapter" data-level="3.5.2" data-path="practical-session-3.html"><a href="practical-session-3.html#set-and-apply-filters"><i class="fa fa-check"></i><b>3.5.2</b> Set and apply filters</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="practical-session-3.html"><a href="practical-session-3.html#selecting-genes-1"><i class="fa fa-check"></i><b>3.6</b> Selecting genes</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="practical-session-3.html"><a href="practical-session-3.html#highly-variable-genes-hvgs-1"><i class="fa fa-check"></i><b>3.6.1</b> Highly Variable Genes (HVGs)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="practical-session-3.html"><a href="practical-session-3.html#neighbour-graph-and-distance-matrix"><i class="fa fa-check"></i><b>3.7</b> Neighbour graph and distance matrix</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="practical-session-3.html"><a href="practical-session-3.html#adding-spatial-weights"><i class="fa fa-check"></i><b>3.7.1</b> Adding spatial weights</a></li>
+<li class="chapter" data-level="3.7.2" data-path="practical-session-3.html"><a href="practical-session-3.html#generate-distance-matrices"><i class="fa fa-check"></i><b>3.7.2</b> Generate distance matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="practical-session-3.html"><a href="practical-session-3.html#putting-it-all-together-1"><i class="fa fa-check"></i><b>3.8</b> Putting it all together</a></li>
+<li class="chapter" data-level="3.9" data-path="practical-session-3.html"><a href="practical-session-3.html#save-data"><i class="fa fa-check"></i><b>3.9</b> Save data</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="practical-session-4.html"><a href="practical-session-4.html"><i class="fa fa-check"></i><b>4</b> Practical session 4</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="practical-session-4.html"><a href="practical-session-4.html#geographically-weighted-principal-components-analysis-gwpca"><i class="fa fa-check"></i><b>4.1</b> Geographically Weighted Principal Components Analysis (GWPCA)</a></li>
+<li class="chapter" data-level="4.2" data-path="practical-session-4.html"><a href="practical-session-4.html#load-packages"><i class="fa fa-check"></i><b>4.2</b> Load packages</a></li>
+<li class="chapter" data-level="4.3" data-path="practical-session-4.html"><a href="practical-session-4.html#load-quality-controled-and-normalised-data"><i class="fa fa-check"></i><b>4.3</b> Load Quality Controled and Normalised data</a></li>
+<li class="chapter" data-level="4.4" data-path="practical-session-4.html"><a href="practical-session-4.html#parameter-prearation-for-gwpca"><i class="fa fa-check"></i><b>4.4</b> Parameter prearation for GWPCA</a></li>
+<li class="chapter" data-level="4.5" data-path="practical-session-4.html"><a href="practical-session-4.html#run-gwpca"><i class="fa fa-check"></i><b>4.5</b> Run GWPCA</a></li>
+<li class="chapter" data-level="4.6" data-path="practical-session-4.html"><a href="practical-session-4.html#plot-global-pca-results"><i class="fa fa-check"></i><b>4.6</b> Plot global PCA results</a></li>
+<li class="chapter" data-level="4.7" data-path="practical-session-4.html"><a href="practical-session-4.html#identify-the-leading-genes-in-each-location"><i class="fa fa-check"></i><b>4.7</b> Identify the leading genes in each location</a></li>
+<li class="chapter" data-level="4.8" data-path="practical-session-4.html"><a href="practical-session-4.html#percentage-of-total-variation-ptv"><i class="fa fa-check"></i><b>4.8</b> Percentage of Total Variation (PTV)</a></li>
+<li class="chapter" data-level="4.9" data-path="practical-session-4.html"><a href="practical-session-4.html#identify-discrepancies"><i class="fa fa-check"></i><b>4.9</b> Identify discrepancies</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Spatial transcriptomics data analysis: theory and practice</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="practical-session-4" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> Practical session 4<a href="practical-session-4.html#practical-session-4" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>In this session we will have a hands-on exploration of GW-PCA and its application to STx data. What can we learn from this novel technique?</p>
+<div id="geographically-weighted-principal-components-analysis-gwpca" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Geographically Weighted Principal Components Analysis (GWPCA)<a href="practical-session-4.html#geographically-weighted-principal-components-analysis-gwpca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A standard PCA can pick out the key multivariate modes of variability in the data. Looking at outlying values of the principal components of these data gives us an idea of unusual sites (in terms of combinations of gene expression profiles -and to a certain extend of combinations of cell types in each spot). Next, Geographically weighted PCA can be used to find spatial multivariate outliers. Sounds complicated, but really all this means is it identifies sites that have an unusual multi-way combination of gene expression in relation to their immediate geographical neighbours. It might be that the values observed at these sites as a combination is not uncommon in the tissue as a whole - but is very unusual in its locality.</p>
+<p>To find such outliers the procedure is relatively simple - instead of doing a PCA on the tissue as a whole, for each sample we do a PCA on data falling into a window centred on the location of that spot. In that way we can check whether the spot is like its neighbours or not, from a multivariate viewpoint.</p>
+<p>The following code carries out a geographically weighted PCA. In short, it runs a ‘windowed’ PCA around each of the spots.</p>
+</div>
+<div id="load-packages" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Load packages<a href="practical-session-4.html#load-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+</div>
+<div id="load-quality-controled-and-normalised-data" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Load Quality Controled and Normalised data<a href="practical-session-4.html#load-quality-controled-and-normalised-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="practical-session-4.html#cb171-1" tabindex="-1"></a>sfe <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;./data/to_load/practical03_sfe.rds&quot;</span>)</span>
+<span id="cb171-2"><a href="practical-session-4.html#cb171-2" tabindex="-1"></a>top_hvgs <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;./data/to_load/practical03_topHVGs.rds&quot;</span>)</span></code></pre></div>
+</div>
+<div id="parameter-prearation-for-gwpca" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Parameter prearation for GWPCA<a href="practical-session-4.html#parameter-prearation-for-gwpca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Because gwpca uses princomp to run the PCAs and this does not accept the number of variables (genes) being more than the number of samples (spots).</p>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="practical-session-4.html#cb172-1" tabindex="-1"></a><span class="do">## Get the gene names that are going to be evaluated</span></span>
+<span id="cb172-2"><a href="practical-session-4.html#cb172-2" tabindex="-1"></a>vars <span class="ot">=</span> top_hvgs</span>
+<span id="cb172-3"><a href="practical-session-4.html#cb172-3" tabindex="-1"></a><span class="do">## Set a fixed bandwidth</span></span>
+<span id="cb172-4"><a href="practical-session-4.html#cb172-4" tabindex="-1"></a>bw <span class="ot">=</span> <span class="dv">6</span><span class="sc">*</span>sfe<span class="sc">@</span>metadata[[<span class="st">&quot;spotDiameter&quot;</span>]][[<span class="st">&quot;JBO019&quot;</span>]][[<span class="st">&quot;spot_diameter_fullres&quot;</span>]]</span>
+<span id="cb172-5"><a href="practical-session-4.html#cb172-5" tabindex="-1"></a><span class="do">## Set the number of components to be retained</span></span>
+<span id="cb172-6"><a href="practical-session-4.html#cb172-6" tabindex="-1"></a>k <span class="ot">=</span> <span class="dv">20</span></span>
+<span id="cb172-7"><a href="practical-session-4.html#cb172-7" tabindex="-1"></a><span class="do">## Set the kernel to be used</span></span>
+<span id="cb172-8"><a href="practical-session-4.html#cb172-8" tabindex="-1"></a>kernel <span class="ot">=</span> <span class="st">&quot;gaussian&quot;</span></span>
+<span id="cb172-9"><a href="practical-session-4.html#cb172-9" tabindex="-1"></a><span class="do">## Set the Minkowski distance power: p = 2 --&gt; Euclidean</span></span>
+<span id="cb172-10"><a href="practical-session-4.html#cb172-10" tabindex="-1"></a>p <span class="ot">=</span> <span class="dv">2</span></span>
+<span id="cb172-11"><a href="practical-session-4.html#cb172-11" tabindex="-1"></a><span class="do">## Is the bandwidth adaptive?: No because spots are fixed</span></span>
+<span id="cb172-12"><a href="practical-session-4.html#cb172-12" tabindex="-1"></a>adaptive <span class="ot">=</span> <span class="cn">FALSE</span></span>
+<span id="cb172-13"><a href="practical-session-4.html#cb172-13" tabindex="-1"></a><span class="do">## Cross-Validate GWPCA?</span></span>
+<span id="cb172-14"><a href="practical-session-4.html#cb172-14" tabindex="-1"></a>cv <span class="ot">=</span> <span class="cn">TRUE</span></span>
+<span id="cb172-15"><a href="practical-session-4.html#cb172-15" tabindex="-1"></a><span class="do">## Calculate PCA scores?</span></span>
+<span id="cb172-16"><a href="practical-session-4.html#cb172-16" tabindex="-1"></a>scores <span class="ot">=</span> <span class="cn">FALSE</span></span>
+<span id="cb172-17"><a href="practical-session-4.html#cb172-17" tabindex="-1"></a><span class="do">## Run a robust GWPCA?</span></span>
+<span id="cb172-18"><a href="practical-session-4.html#cb172-18" tabindex="-1"></a>robust <span class="ot">=</span> <span class="cn">FALSE</span></span>
+<span id="cb172-19"><a href="practical-session-4.html#cb172-19" tabindex="-1"></a><span class="do">## Make a cluster for parallel computing (otherwise GWPCA is slow!)</span></span>
+<span id="cb172-20"><a href="practical-session-4.html#cb172-20" tabindex="-1"></a>my.cl <span class="ot">&lt;-</span> parallel<span class="sc">::</span><span class="fu">makeCluster</span>(parallelly<span class="sc">::</span><span class="fu">availableCores</span>() <span class="sc">-</span> <span class="dv">1</span>, <span class="at">type =</span> <span class="st">&#39;FORK&#39;</span>)</span></code></pre></div>
+<p>The bandwidth is essentially the radius around each spot where every other spot that falls inside it is considered a neighbour. We can set bandwidth as a fixed value or we can select the bandwidth automatically. Without going into detail here, this is achieved by a form of cross validation, where each observation is omitted, and it is attempted to reconstruct the values on the basis of principal components, derived from the other observations. The bandwidth achieving the optimal results is the one selected. For a complete explanation, see <span class="citation">Harris, Brunsdon, and Charlton (<a href="#ref-Harris2011Oct">2011</a>)</span>. The function <code>bw.gwpca</code> computes this:</p>
+<ul>
+<li><strong>NOTE</strong>: Larger bandwidths imply bigger moving spatial windows, which in turn imply smoother spatially varying outputs.</li>
+</ul>
+</div>
+<div id="run-gwpca" class="section level2 hasAnchor" number="4.5">
+<h2><span class="header-section-number">4.5</span> Run GWPCA<a href="practical-session-4.html#run-gwpca" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Run the optimised GWPCA with the automatically estimated bandwidth:</p>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="practical-session-4.html#cb173-1" tabindex="-1"></a><span class="co"># DO NOT RUN THIS CHUNK</span></span>
+<span id="cb173-2"><a href="practical-session-4.html#cb173-2" tabindex="-1"></a><span class="co"># &gt;&gt;&gt; it returns an error when inside the markdown. Maybe run with verbose = FALSE</span></span>
+<span id="cb173-3"><a href="practical-session-4.html#cb173-3" tabindex="-1"></a>pcagw <span class="ot">&lt;-</span> <span class="fu">gwpcaSTE</span>(<span class="at">sfe =</span> sfe, </span>
+<span id="cb173-4"><a href="practical-session-4.html#cb173-4" tabindex="-1"></a>                  <span class="at">assay =</span> <span class="st">&quot;logcounts&quot;</span>,</span>
+<span id="cb173-5"><a href="practical-session-4.html#cb173-5" tabindex="-1"></a>                  <span class="at">vars =</span> vars, </span>
+<span id="cb173-6"><a href="practical-session-4.html#cb173-6" tabindex="-1"></a>                  <span class="at">p =</span> p, </span>
+<span id="cb173-7"><a href="practical-session-4.html#cb173-7" tabindex="-1"></a>                  <span class="at">k =</span> k, </span>
+<span id="cb173-8"><a href="practical-session-4.html#cb173-8" tabindex="-1"></a>                  <span class="at">bw =</span> bw, </span>
+<span id="cb173-9"><a href="practical-session-4.html#cb173-9" tabindex="-1"></a>                  <span class="at">kernel =</span> kernel,</span>
+<span id="cb173-10"><a href="practical-session-4.html#cb173-10" tabindex="-1"></a>                  <span class="at">adaptive =</span> adaptive, </span>
+<span id="cb173-11"><a href="practical-session-4.html#cb173-11" tabindex="-1"></a>                  <span class="at">scores =</span> scores, </span>
+<span id="cb173-12"><a href="practical-session-4.html#cb173-12" tabindex="-1"></a>                  <span class="at">robust =</span> robust,</span>
+<span id="cb173-13"><a href="practical-session-4.html#cb173-13" tabindex="-1"></a>                  <span class="at">cv =</span> cv,</span>
+<span id="cb173-14"><a href="practical-session-4.html#cb173-14" tabindex="-1"></a>                  <span class="at">future =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb173-15"><a href="practical-session-4.html#cb173-15" tabindex="-1"></a>                  <span class="at">strategy =</span> <span class="st">&quot;cluster&quot;</span>,</span>
+<span id="cb173-16"><a href="practical-session-4.html#cb173-16" tabindex="-1"></a>                  <span class="at">workers =</span> my.cl,</span>
+<span id="cb173-17"><a href="practical-session-4.html#cb173-17" tabindex="-1"></a>                  <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb173-18"><a href="practical-session-4.html#cb173-18" tabindex="-1"></a><span class="fu">saveRDS</span>(pcagw, <span class="at">file =</span> <span class="st">&quot;./data/to_load/practical04_pcagw.rds&quot;</span>)</span></code></pre></div>
+<p>Because GWPCA can take some time to run, we ran it for you and below you can load the output:</p>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="practical-session-4.html#cb174-1" tabindex="-1"></a>pcagw <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="at">file =</span> <span class="st">&quot;./data/to_load/practical04_pcagw.rds&quot;</span>)</span></code></pre></div>
+</div>
+<div id="plot-global-pca-results" class="section level2 hasAnchor" number="4.6">
+<h2><span class="header-section-number">4.6</span> Plot global PCA results<a href="practical-session-4.html#plot-global-pca-results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the next steps we will be looking inside the output from <code>gwpca</code> function and we are going to extract some basic information. Since GWPCA is multiple local PCAs, it is good to know how many PCs makes sense to look at. We can do so by running a global PCA and plotting a scree plot:</p>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="practical-session-4.html#cb175-1" tabindex="-1"></a><span class="fu">plotGWPCA_global</span>(<span class="at">gwpca =</span> pcagw,</span>
+<span id="cb175-2"><a href="practical-session-4.html#cb175-2" tabindex="-1"></a>                 <span class="at">comps =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb175-3"><a href="practical-session-4.html#cb175-3" tabindex="-1"></a>                 <span class="at">type =</span> <span class="st">&quot;scree&quot;</span>,</span>
+<span id="cb175-4"><a href="practical-session-4.html#cb175-4" tabindex="-1"></a>                 <span class="at">point_args =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="at">colour =</span> <span class="st">&quot;red&quot;</span>),</span>
+<span id="cb175-5"><a href="practical-session-4.html#cb175-5" tabindex="-1"></a>                 <span class="at">line_args =</span> <span class="fu">list</span>(<span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">colour =</span> <span class="st">&quot;dodgerblue&quot;</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/04_scree_plot-1.png" width="768" /></p>
+<p>In a Principal Component Analysis (PCA), the first three principal components may explain less than 15% of the variance in the data if the data is highly dispersed or if there is a large amount of noise in the data. This means that the first three principal components are not capturing a significant portion of the variability in the data. This could be due to a lack of clear structure in the data or a lack of meaningful patterns that can be captured by the PCA. Alternatively, it could be due to the presence of many irrelevant features or variables in the data that are not contributing to the overall variance. This is one more of the reasons why GWPCA is more appropriate for STx data. Because, it may be true that the global PCs are not strong but locally this can change.</p>
+</div>
+<div id="identify-the-leading-genes-in-each-location" class="section level2 hasAnchor" number="4.7">
+<h2><span class="header-section-number">4.7</span> Identify the leading genes in each location<a href="practical-session-4.html#identify-the-leading-genes-in-each-location" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="practical-session-4.html#cb176-1" tabindex="-1"></a><span class="do">## Extract leading genes</span></span>
+<span id="cb176-2"><a href="practical-session-4.html#cb176-2" tabindex="-1"></a>pcagw <span class="ot">&lt;-</span> <span class="fu">gwpca_LeadingGene</span>(<span class="at">gwpca =</span> pcagw, </span>
+<span id="cb176-3"><a href="practical-session-4.html#cb176-3" tabindex="-1"></a>                           <span class="at">sfe =</span> sfe, </span>
+<span id="cb176-4"><a href="practical-session-4.html#cb176-4" tabindex="-1"></a>                           <span class="at">pc_nos =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, </span>
+<span id="cb176-5"><a href="practical-session-4.html#cb176-5" tabindex="-1"></a>                           <span class="at">type =</span> <span class="st">&quot;single&quot;</span>, </span>
+<span id="cb176-6"><a href="practical-session-4.html#cb176-6" tabindex="-1"></a>                           <span class="at">names =</span> <span class="st">&quot;gene_names&quot;</span>)</span></code></pre></div>
+<pre><code>## 16  leading genes found for  PC1
+## The leading genes in  PC1  are:
+##     ADH1A        C7       CRP    CYP3A4      GLUL     GSTA2      HAMP      HBA2 
+##         2        11         4       365         7         1        13        33 
+##     IGLL5    MALAT1 MTRNR2L12  MTRNR2L8      NNMT     PTGDS      SAA1       SDS 
+##        87        39       153       181        23        73        36       133 
+## 21  leading genes found for  PC2
+## The leading genes in  PC2  are:
+##        C7       CAT     CFHR1       CRP    CYP3A4      GLUL      HBA2       HBB 
+##         3         6        38        39       149        83         2        37 
+##    IGFBP3    IGFBP7       IGJ     IGLL5    MALAT1 MTRNR2L10 MTRNR2L12  MTRNR2L8 
+##        49        39        34       246        80        10        78       124 
+##      NNMT      SAA1       SDS     TAGLN    UGT2B7 
+##        42        12        69        20         1 
+## 24  leading genes found for  PC3
+## The leading genes in  PC3  are:
+##     AEBP1        C7       CAT     CFHR1       CRP    CYP3A4      GLUL      HBA2 
+##         2         2        27        20         5        20        17        27 
+##       HBB    IGFBP3    IGFBP7       IGJ     IGLL5    MALAT1 MTRNR2L10 MTRNR2L12 
+##       150        41        77         6       399       136         6        61 
+##  MTRNR2L8      MYL9      NNMT      SAA1   SCGB3A1       SDS     TAGLN    UGT2B7 
+##        25         9        24         6        56        15        26         4 
+## 25  leading genes found for  PC4
+## The leading genes in  PC4  are:
+##     AEBP1       CAT     CFHR1       CRP     FXYD2      GLUL     GSTA2      HBA2 
+##         1        53        15         7         7        33         3         2 
+##       HBB    IGFBP3    IGFBP7       IGJ     IGLL5    MALAT1 MTRNR2L10 MTRNR2L12 
+##       181       100        51        60       281       201         5        16 
+##  MTRNR2L8      MYL9      NNMT      ORM2      SAA1       SDS    SPINK1     TAGLN 
+##        16         5        55         6         6        37        12         4 
+##    UGT2B7 
+##         4</code></pre>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="practical-session-4.html#cb178-1" tabindex="-1"></a>pcagw <span class="ot">&lt;-</span> <span class="fu">gwpca_LeadingGene</span>(<span class="at">gwpca =</span> pcagw, </span>
+<span id="cb178-2"><a href="practical-session-4.html#cb178-2" tabindex="-1"></a>                           <span class="at">sfe =</span> sfe, </span>
+<span id="cb178-3"><a href="practical-session-4.html#cb178-3" tabindex="-1"></a>                           <span class="at">pc_nos =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, </span>
+<span id="cb178-4"><a href="practical-session-4.html#cb178-4" tabindex="-1"></a>                           <span class="at">genes_n =</span> <span class="dv">4</span>, </span>
+<span id="cb178-5"><a href="practical-session-4.html#cb178-5" tabindex="-1"></a>                           <span class="at">type =</span> <span class="st">&quot;multi&quot;</span>, </span>
+<span id="cb178-6"><a href="practical-session-4.html#cb178-6" tabindex="-1"></a>                           <span class="at">method =</span> <span class="st">&quot;membership&quot;</span>, </span>
+<span id="cb178-7"><a href="practical-session-4.html#cb178-7" tabindex="-1"></a>                           <span class="at">names =</span> <span class="st">&quot;gene_names&quot;</span>)</span></code></pre></div>
+<pre><code>## The number of individual leading genes groups found for PC1 is: 110 
+## These groups are: Too many to print them!
+## The number of individual leading genes groups found for PC2 is: 240 
+## These groups are: Too many to print them!
+## The number of individual leading genes groups found for PC3 is: 310 
+## These groups are: Too many to print them!
+## The number of individual leading genes groups found for PC4 is: 421 
+## These groups are: Too many to print them!</code></pre>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="practical-session-4.html#cb180-1" tabindex="-1"></a><span class="do">## Plot leading genes</span></span>
+<span id="cb180-2"><a href="practical-session-4.html#cb180-2" tabindex="-1"></a><span class="fu">plotGWPCA_leadingG</span>(<span class="at">gwpca =</span> pcagw,</span>
+<span id="cb180-3"><a href="practical-session-4.html#cb180-3" tabindex="-1"></a>                   <span class="at">comps =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,</span>
+<span id="cb180-4"><a href="practical-session-4.html#cb180-4" tabindex="-1"></a>                   <span class="at">type =</span> <span class="st">&quot;single&quot;</span>,</span>
+<span id="cb180-5"><a href="practical-session-4.html#cb180-5" tabindex="-1"></a>                   <span class="at">arrange =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb180-6"><a href="practical-session-4.html#cb180-6" tabindex="-1"></a></span>
+<span id="cb180-7"><a href="practical-session-4.html#cb180-7" tabindex="-1"></a><span class="fu">plotGWPCA_leadingG</span>(<span class="at">gwpca =</span> pcagw,</span>
+<span id="cb180-8"><a href="practical-session-4.html#cb180-8" tabindex="-1"></a>                   <span class="at">comps =</span> <span class="dv">1</span>,</span>
+<span id="cb180-9"><a href="practical-session-4.html#cb180-9" tabindex="-1"></a>                   <span class="at">type =</span> <span class="st">&quot;multi&quot;</span>,</span>
+<span id="cb180-10"><a href="practical-session-4.html#cb180-10" tabindex="-1"></a>                   <span class="at">arrange =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/leading_genes2-1.png" width="33%" /><img src="_main_files/figure-html/leading_genes2-2.png" width="33%" /><img src="_main_files/figure-html/leading_genes2-3.png" width="33%" /></p>
+</div>
+<div id="percentage-of-total-variation-ptv" class="section level2 hasAnchor" number="4.8">
+<h2><span class="header-section-number">4.8</span> Percentage of Total Variation (PTV)<a href="practical-session-4.html#percentage-of-total-variation-ptv" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Another useful diagnostic for PCA is the percentage of variability in the data explained by each of the components. This can be achieved by looking at the <code>var</code> component of <code>pcagw</code>; this is written as <code>pcagw$var</code>. This is an XXXX by XX matrix - where XXXX is the number of observations and XX is the number of components. For each location, the XX columns correspond to the variance of each of the principal components. Looking at the proportion of each component in the sum of all of the variances shows how much of the variability in the data each component contributes. If, say, the first two components contributed 90% of the total variance, then it is reasonable to assume that much of the variability in the data can be seen by just looking at these two components. Because this is geographically weighted PCA, however, this quantity varies across the map.</p>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="practical-session-4.html#cb181-1" tabindex="-1"></a><span class="do">## Calculate the PTV for multiple Components</span></span>
+<span id="cb181-2"><a href="practical-session-4.html#cb181-2" tabindex="-1"></a>pcagw <span class="ot">&lt;-</span> <span class="fu">gwpca_PropVar</span>(<span class="at">gwpca =</span> pcagw, <span class="at">n_comp =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">sfe =</span> sfe)</span></code></pre></div>
+<pre><code>##     Comps_01         Comps_02        Comps_03        Comps_04    
+##  Min.   : 6.279   Min.   :11.67   Min.   :16.43   Min.   :20.69  
+##  1st Qu.: 9.483   1st Qu.:16.13   1st Qu.:21.24   1st Qu.:25.69  
+##  Median :16.782   Median :25.54   Median :30.37   Median :34.46  
+##  Mean   :17.370   Mean   :25.92   Mean   :31.35   Mean   :35.49  
+##  3rd Qu.:22.534   3rd Qu.:32.87   3rd Qu.:39.42   3rd Qu.:43.81  
+##  Max.   :38.254   Max.   :46.50   Max.   :54.25   Max.   :57.51  
+##     Comps_05        Comps_06        Comps_07        Comps_08    
+##  Min.   :24.64   Min.   :28.28   Min.   :31.49   Min.   :34.26  
+##  1st Qu.:29.65   1st Qu.:33.13   1st Qu.:36.54   1st Qu.:39.53  
+##  Median :37.79   Median :40.86   Median :43.53   Median :46.17  
+##  Mean   :38.98   Mean   :42.07   Mean   :44.84   Mean   :47.38  
+##  3rd Qu.:47.17   3rd Qu.:49.78   3rd Qu.:52.16   3rd Qu.:54.19  
+##  Max.   :60.60   Max.   :62.97   Max.   :65.04   Max.   :67.03  
+##     Comps_09        Comps_10    
+##  Min.   :36.76   Min.   :39.15  
+##  1st Qu.:42.34   1st Qu.:45.05  
+##  Median :48.60   Median :50.96  
+##  Mean   :49.73   Mean   :51.91  
+##  3rd Qu.:56.07   3rd Qu.:57.77  
+##  Max.   :68.83   Max.   :70.39</code></pre>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="practical-session-4.html#cb183-1" tabindex="-1"></a><span class="do">## Plot PTV</span></span>
+<span id="cb183-2"><a href="practical-session-4.html#cb183-2" tabindex="-1"></a><span class="fu">plotGWPCA_ptv</span>(<span class="at">gwpca =</span> pcagw,</span>
+<span id="cb183-3"><a href="practical-session-4.html#cb183-3" tabindex="-1"></a>              <span class="at">comps =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
+<span id="cb183-4"><a href="practical-session-4.html#cb183-4" tabindex="-1"></a>              <span class="at">type =</span> <span class="st">&quot;violin&quot;</span>)</span>
+<span id="cb183-5"><a href="practical-session-4.html#cb183-5" tabindex="-1"></a></span>
+<span id="cb183-6"><a href="practical-session-4.html#cb183-6" tabindex="-1"></a><span class="do">## Map PTV</span></span>
+<span id="cb183-7"><a href="practical-session-4.html#cb183-7" tabindex="-1"></a><span class="fu">plotGWPCA_ptv</span>(<span class="at">gwpca =</span> pcagw,</span>
+<span id="cb183-8"><a href="practical-session-4.html#cb183-8" tabindex="-1"></a>              <span class="at">comps =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,</span>
+<span id="cb183-9"><a href="practical-session-4.html#cb183-9" tabindex="-1"></a>              <span class="at">type =</span> <span class="st">&quot;map&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/04_ptv-1.png" width="672" /><img src="_main_files/figure-html/04_ptv-2.png" width="672" /></p>
+</div>
+<div id="identify-discrepancies" class="section level2 hasAnchor" number="4.9">
+<h2><span class="header-section-number">4.9</span> Identify discrepancies<a href="practical-session-4.html#identify-discrepancies" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Global PCA can be used to identify multivariate outliers. Extending this, it is also possible to use local PCA (i.e., GWPCA) to identify local outliers. One way of doing this links back to the cross-validation idea used earlier to select a bandwidth. Recall that this is based on a score of how well each observation can be reconstructed on the basis of local PCs. The score measures the total discrepancies of true data values from the reconstructed ones - and the bandwidth chosen is the one minimising this. However, the total discrepancy score is the sum of the individual discrepancies. A very large individual discrepancy associated with an observation suggests it is very different - in a multidimensional way, to the observations near to it. These discrepancies can be calculated with the <code>gwpca.cv.contrib</code> function.</p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="practical-session-4.html#cb184-1" tabindex="-1"></a><span class="do">## Plot the discrepancies as boxplot</span></span>
+<span id="cb184-2"><a href="practical-session-4.html#cb184-2" tabindex="-1"></a><span class="fu">plotGWPCA_discr</span>(pcagw, <span class="at">type =</span> <span class="st">&quot;box&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/04_discrep1-1.png" width="768" /></p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="practical-session-4.html#cb185-1" tabindex="-1"></a><span class="do">## Plot the discrepancies map</span></span>
+<span id="cb185-2"><a href="practical-session-4.html#cb185-2" tabindex="-1"></a><span class="fu">plotGWPCA_discr</span>(pcagw, <span class="at">type =</span> <span class="st">&quot;map&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/04_discrep2-1.png" width="672" /></p>
+<p>Comment on the discrepancies and the Liver histopathology</p>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="practical-session-4.html#cb186-1" tabindex="-1"></a><span class="do">## Get location data for the discrepancies</span></span>
+<span id="cb186-2"><a href="practical-session-4.html#cb186-2" tabindex="-1"></a>discrepancy_loc_dt <span class="ot">&lt;-</span> <span class="fu">getDiscrepancyLocData</span>(<span class="at">sfe =</span> sfe, </span>
+<span id="cb186-3"><a href="practical-session-4.html#cb186-3" tabindex="-1"></a>                                            <span class="at">gwpca =</span> pcagw, </span>
+<span id="cb186-4"><a href="practical-session-4.html#cb186-4" tabindex="-1"></a>                                            <span class="at">sample_id =</span> <span class="st">&quot;JBO019&quot;</span>)</span></code></pre></div>
+<p>Another possibility to understand the nature of the outlier is a parallel coordinates heatmap. Here, each observation neighbouring the location that has been found to be an outlier is shown as a column with the genes in rows. Since here we are investigating local outliers, one particular observation is highlighted in red -the outlier-, and the remaining ones in grey, but with the intensity of the grey fading according to their distance from the red observation. This enables you to see what characteristic the red observation has that means it as outlying from its neighbours. The plot can be created using <code>gw.pcplot</code>:</p>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="practical-session-4.html#cb187-1" tabindex="-1"></a><span class="fu">head</span>(discrepancy_loc_dt)</span></code></pre></div>
+<pre><code>##                              barcodes coords.pxl_col_in_fullres
+## AAGTGCCTTGACTGTA-1 AAGTGCCTTGACTGTA-1                     11086
+## ACCCGGATGACGCATC-1 ACCCGGATGACGCATC-1                      9908
+## ACCTCCGTTATTCACC-1 ACCTCCGTTATTCACC-1                      9113
+## AGATGATGGAGTCTGG-1 AGATGATGGAGTCTGG-1                      9117
+## AGGTATAATTGATAGT-1 AGGTATAATTGATAGT-1                      9312
+## AGTGAACAAACTTCTC-1 AGTGAACAAACTTCTC-1                     11088
+##                    coords.pxl_row_in_fullres discScore
+## AAGTGCCTTGACTGTA-1                      5148  22793.56
+## ACCCGGATGACGCATC-1                      5607  24165.26
+## ACCTCCGTTATTCACC-1                      4255  27035.77
+## AGATGATGGAGTCTGG-1                      4933  27423.00
+## AGGTATAATTGATAGT-1                      4593  23839.25
+## AGTGAACAAACTTCTC-1                      5374  25111.79
+##                                          geometry
+## AAGTGCCTTGACTGTA-1 POLYGON ((11020.03 5034.788...
+## ACCCGGATGACGCATC-1 POLYGON ((9841.741 5494.291...
+## ACCTCCGTTATTCACC-1 POLYGON ((9046.741 4142.291...
+## AGATGATGGAGTCTGG-1 POLYGON ((9050.741 4820.291...
+## AGGTATAATTGATAGT-1 POLYGON ((9245.076 4480.294...
+## AGTGAACAAACTTCTC-1 POLYGON ((11020.91 5261.585...</code></pre>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="practical-session-4.html#cb189-1" tabindex="-1"></a>focus <span class="ot">&lt;-</span> discrepancy_loc_dt<span class="sc">$</span>barcodes[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span>
+<span id="cb189-2"><a href="practical-session-4.html#cb189-2" tabindex="-1"></a>bw <span class="ot">=</span> <span class="dv">3</span><span class="sc">*</span>sfe<span class="sc">@</span>metadata[[<span class="st">&quot;spotDiameter&quot;</span>]][[<span class="st">&quot;JBO019&quot;</span>]][[<span class="st">&quot;spot_diameter_fullres&quot;</span>]]</span>
+<span id="cb189-3"><a href="practical-session-4.html#cb189-3" tabindex="-1"></a></span>
+<span id="cb189-4"><a href="practical-session-4.html#cb189-4" tabindex="-1"></a><span class="co"># Plot the heatmap to visualise the genes that make this location an outlier</span></span>
+<span id="cb189-5"><a href="practical-session-4.html#cb189-5" tabindex="-1"></a><span class="fu">plotGWPCA_discrHeatmap</span>(<span class="at">sfe =</span> sfe,</span>
+<span id="cb189-6"><a href="practical-session-4.html#cb189-6" tabindex="-1"></a>                       <span class="at">assay =</span> <span class="st">&quot;logcounts&quot;</span>,</span>
+<span id="cb189-7"><a href="practical-session-4.html#cb189-7" tabindex="-1"></a>                       <span class="at">vars =</span> <span class="cn">NULL</span>,</span>
+<span id="cb189-8"><a href="practical-session-4.html#cb189-8" tabindex="-1"></a>                       <span class="at">focus =</span> focus,</span>
+<span id="cb189-9"><a href="practical-session-4.html#cb189-9" tabindex="-1"></a>                       <span class="at">dMetric =</span> <span class="st">&quot;euclidean&quot;</span>, </span>
+<span id="cb189-10"><a href="practical-session-4.html#cb189-10" tabindex="-1"></a>                       <span class="at">sample_id =</span> <span class="st">&quot;JBO019&quot;</span>,</span>
+<span id="cb189-11"><a href="practical-session-4.html#cb189-11" tabindex="-1"></a>                       <span class="at">bw =</span> bw, </span>
+<span id="cb189-12"><a href="practical-session-4.html#cb189-12" tabindex="-1"></a>                       <span class="at">mean.diff =</span> <span class="dv">1</span>, </span>
+<span id="cb189-13"><a href="practical-session-4.html#cb189-13" tabindex="-1"></a>                       <span class="at">show.vars =</span> <span class="st">&quot;top&quot;</span>, </span>
+<span id="cb189-14"><a href="practical-session-4.html#cb189-14" tabindex="-1"></a>                       <span class="at">scale =</span> <span class="st">&quot;row&quot;</span>, </span>
+<span id="cb189-15"><a href="practical-session-4.html#cb189-15" tabindex="-1"></a>                       <span class="at">gene.names =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb189-16"><a href="practical-session-4.html#cb189-16" tabindex="-1"></a>                       <span class="at">color =</span> <span class="fu">rev</span>(<span class="fu">colorRampPalette</span>(<span class="fu">brewer.pal</span>(<span class="dv">11</span>, <span class="st">&quot;RdBu&quot;</span>))(<span class="dv">1000</span>)))</span></code></pre></div>
+<p><img src="_main_files/figure-html/04_discrep4-1.png" width="864" /><img src="_main_files/figure-html/04_discrep4-2.png" width="864" /></p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="practical-session-4.html#cb190-1" tabindex="-1"></a>discrepancy_gene_dt <span class="ot">&lt;-</span> <span class="fu">getDiscrepancyGeneData</span>(<span class="at">sfe =</span> sfe,</span>
+<span id="cb190-2"><a href="practical-session-4.html#cb190-2" tabindex="-1"></a>                                              <span class="at">assay =</span> <span class="st">&quot;logcounts&quot;</span>,</span>
+<span id="cb190-3"><a href="practical-session-4.html#cb190-3" tabindex="-1"></a>                                              <span class="at">vars =</span> <span class="cn">NULL</span>,</span>
+<span id="cb190-4"><a href="practical-session-4.html#cb190-4" tabindex="-1"></a>                                              <span class="at">focus =</span> focus[<span class="dv">2</span>],</span>
+<span id="cb190-5"><a href="practical-session-4.html#cb190-5" tabindex="-1"></a>                                              <span class="at">dMetric =</span> <span class="st">&quot;euclidean&quot;</span>, </span>
+<span id="cb190-6"><a href="practical-session-4.html#cb190-6" tabindex="-1"></a>                                              <span class="at">sample_id =</span> <span class="st">&quot;JBO019&quot;</span>,</span>
+<span id="cb190-7"><a href="practical-session-4.html#cb190-7" tabindex="-1"></a>                                              <span class="at">bw =</span> bw, </span>
+<span id="cb190-8"><a href="practical-session-4.html#cb190-8" tabindex="-1"></a>                                              <span class="at">mean.diff =</span> <span class="dv">1</span>, </span>
+<span id="cb190-9"><a href="practical-session-4.html#cb190-9" tabindex="-1"></a>                                              <span class="at">show.vars =</span> <span class="st">&quot;top&quot;</span>,</span>
+<span id="cb190-10"><a href="practical-session-4.html#cb190-10" tabindex="-1"></a>                                              <span class="at">exportExpression =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb190-11"><a href="practical-session-4.html#cb190-11" tabindex="-1"></a><span class="fu">head</span>(discrepancy_gene_dt)</span></code></pre></div>
+<pre><code>##                 AACCCTACTGTCAATA-1 ACATGGCGCCAAAGTA-1 ACCCGGATGACGCATC-1
+## ENSG00000078808          1.9800764          1.7845077           0.000000
+## ENSG00000157916          1.1230410          2.3434121           0.000000
+## ENSG00000171603          0.6681445          0.8599719           1.667949
+## ENSG00000162496          1.1230410          0.8599719           0.000000
+## ENSG00000074964          1.4683664          0.0000000           1.964768
+## ENSG00000158828          1.1230410          0.8599719           0.000000
+##                 ACGATCATCTTGTAAA-1 AGGGTCGATGCGAACT-1 ATAGTTCCACCCACTC-1
+## ENSG00000078808           1.434549          0.0000000          0.0000000
+## ENSG00000157916           1.094451          1.1491034          0.7197148
+## ENSG00000171603           0.000000          0.0000000          0.0000000
+## ENSG00000162496           1.094451          2.2182483          1.5560955
+## ENSG00000074964           1.709571          0.6860569          0.7197148
+## ENSG00000158828           1.434549          2.0159260          1.1976848
+##                 ATATCAACCTACAGAG-1 CATCTTACACCACCTC-1 CCATCTCACCAGTGAA-1
+## ENSG00000078808           1.848204           2.383137          0.7918769
+## ENSG00000157916           1.356318           1.489110          2.2192853
+## ENSG00000171603           0.000000           0.000000          1.3002121
+## ENSG00000162496           2.214350           0.000000          2.2192853
+## ENSG00000074964           1.028715           1.140629          0.7918769
+## ENSG00000158828           2.632509           1.140629          0.7918769
+##                 CCGATCTCAACCTTAT-1 CGCACGTGCGCTATCA-1 CGCTAGAGACCGCTGC-1
+## ENSG00000078808          1.1456336          2.0109592           1.070644
+## ENSG00000157916          1.7760473          2.4713829           1.070644
+## ENSG00000171603          0.0000000          0.0000000           0.000000
+## ENSG00000162496          0.6836662          1.7105588           1.678406
+## ENSG00000074964          1.1456336          0.8136275           1.070644
+## ENSG00000158828          0.6836662          1.3307021           1.070644
+##                 CTAGGTCTGAAGGAAT-1 GAAAGAACAGCGTTAT-1 GCAGACCCAGCACGTA-1
+## ENSG00000078808          1.1275395          2.0533150          2.1052992
+## ENSG00000157916          0.0000000          1.5312450          0.8684635
+## ENSG00000171603          0.6712291          0.7049757          0.0000000
+## ENSG00000162496          1.1275395          2.5947724          1.4067734
+## ENSG00000074964          1.4736763          1.5312450          1.4067734
+## ENSG00000158828          1.1275395          1.5312450          0.8684635
+##                 GCGCAAGAGCGCGCTG-1 GCTCGCTCATGTCCAA-1 GCTGTTGCTACCGAAC-1
+## ENSG00000078808           2.505794          1.4756527           2.004239
+## ENSG00000157916           1.117631          1.8764253           1.588731
+## ENSG00000171603           0.000000          0.0000000           1.325320
+## ENSG00000162496           2.173035          2.1897262           1.588731
+## ENSG00000074964           0.000000          0.9188039           1.002827
+## ENSG00000158828           1.739765          0.9188039           1.811392
+##                 GGTTCTACTCGTCTGA-1 GTGCGACAGGGAGTGT-1 TAGACTACCTAGCGTT-1
+## ENSG00000078808          1.7977169           1.633005           1.421361
+## ENSG00000157916          1.4066078           1.633005           0.000000
+## ENSG00000171603          0.8683433           0.000000           0.000000
+## ENSG00000162496          2.3583475           1.263669           2.123256
+## ENSG00000074964          0.8683433           2.170771           0.000000
+## ENSG00000158828          1.4066078           1.633005           1.695032
+##                 TAGGGAGCTTGGGATG-1 TATAGATGGTCGCAGT-1 TATATCCCTGGGAGGA-1
+## ENSG00000078808          2.2316954          0.0000000          0.7102708
+## ENSG00000157916          0.7985659          1.9335702          2.6061791
+## ENSG00000171603          0.0000000          0.0000000          0.0000000
+## ENSG00000162496          0.7985659          1.9335702          1.1841040
+## ENSG00000074964          0.7985659          0.9560551          0.7102708
+## ENSG00000158828          0.0000000          1.5260667          1.1841040
+##                 TATTACCATCCTGCTT-1 TCATTTAAGTCTCCGA-1 TCTGGGAACCTTTGAA-1
+## ENSG00000078808          1.9382158          2.1150669          2.3926955
+## ENSG00000157916          1.0928336          1.2220876          1.4967274
+## ENSG00000171603          0.6475105          0.0000000          0.6846746
+## ENSG00000162496          2.4677235          1.5846069          2.0131754
+## ENSG00000074964          0.6475105          1.2220876          0.6846746
+## ENSG00000158828          1.0928336          0.7367522          1.4967274
+##                 TGACATCGAGCGGACC-1 TGACGATGCACTAGAA-1 TTGAATTCACGTGAGG-1
+## ENSG00000078808          1.9076262          2.4843308          1.8133018
+## ENSG00000157916          1.2485083          1.3402294          2.0507006
+## ENSG00000171603          0.7552962          1.0152672          0.0000000
+## ENSG00000162496          2.7012885          1.3402294          2.0507006
+## ENSG00000074964          1.2485083          0.5951586          0.7036449
+## ENSG00000158828          1.6153854          0.0000000          1.1745524
+##                 TTGACGCTCCATGAGC-1 gene_name
+## ENSG00000078808           2.296259      SDF4
+## ENSG00000157916           1.851153      RER1
+## ENSG00000171603           0.000000    CLSTN1
+## ENSG00000162496           1.851153     DHRS3
+## ENSG00000074964           0.000000 ARHGEF10L
+## ENSG00000158828           1.851153     PINK1</code></pre>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div class="csl-entry">
+Amezquita, Robert A., Aaron T. L. Lun, Etienne Becht, Vince J. Carey, Lindsay N. Carpp, Ludwig Geistlinger, Federico Marini, et al. 2020. <span>“<span class="nocase">Orchestrating single-cell analysis with Bioconductor</span>.”</span> <em>Nat Methods</em> 17 (February): 137–45. <a href="https://doi.org/10.1038/s41592-019-0654-x">https://doi.org/10.1038/s41592-019-0654-x</a>.
+</div>
+<div class="csl-entry">
+Gollini, Isabella, Binbin Lu, Martin Charlton, Christopher Brunsdon, and Paul Harris. 2015. <span>“<span class="nocase">GWmodel: An R Package for Exploring Spatial Heterogeneity Using Geographically Weighted Models</span>.”</span> <em>J Stat Soft</em> 63 (February): 1–50. <a href="https://doi.org/10.18637/jss.v063.i17">https://doi.org/10.18637/jss.v063.i17</a>.
+</div>
+<div class="csl-entry">
+Guilliams, Martin, Johnny Bonnardel, Birthe Haest, Bart Vanderborght, Camille Wagner, Anneleen Remmerie, Anna Bujko, et al. 2022. <span>“Spatial Proteogenomics Reveals Distinct and Evolutionarily Conserved Hepatic Macrophage Niches.”</span> <em>Cell</em> 185 (2): 379–396.e38. https://doi.org/<a href="https://doi.org/10.1016/j.cell.2021.12.018">https://doi.org/10.1016/j.cell.2021.12.018</a>.
+</div>
+<div class="csl-entry">
+Hao, Yuhan, Stephanie Hao, Erica Andersen-Nissen, William M. Mauck, Shiwei Zheng, Andrew Butler, Maddie J. Lee, et al. 2021. <span>“<span class="nocase">Integrated analysis of multimodal single-cell data</span>.”</span> <em>Cell</em> 184 (13): 3573–3587.e29. <a href="https://doi.org/10.1016/j.cell.2021.04.048">https://doi.org/10.1016/j.cell.2021.04.048</a>.
+</div>
+<div class="csl-entry">
+Harris, Paul, Chris Brunsdon, and Martin Charlton. 2011. <span>“<span class="nocase">Geographically weighted principal components analysis</span>.”</span> <em>International Journal of Geographical Information Science</em> 25 (10): 1717–36. <a href="https://doi.org/10.1080/13658816.2011.554838">https://doi.org/10.1080/13658816.2011.554838</a>.
+</div>
+<div class="csl-entry">
+Keogh, Eamonn, and Abdullah Mueen. 2017. <span>“<span class="nocase">Curse of Dimensionality</span>.”</span> In <em><span class="nocase">Encyclopedia of Machine Learning and Data Mining</span></em>, 314–15. Boston, MA, USA: Springer, Boston, MA. <a href="https://doi.org/10.1007/978-1-4899-7687-1_192">https://doi.org/10.1007/978-1-4899-7687-1_192</a>.
+</div>
+<div class="csl-entry">
+Li, Yijun, Stefan Stanojevic, Bing He, Zheng Jing, Qianhui Huang, Jian Kang, and Lana X. Garmire. 2022. <span>“<span class="nocase">Benchmarking Computational Integration Methods for Spatial Transcriptomics Data</span>.”</span> <em>bioRxiv</em>, January, 2021.08.27.457741. <a href="https://doi.org/10.1101/2021.08.27.457741">https://doi.org/10.1101/2021.08.27.457741</a>.
+</div>
+<div class="csl-entry">
+Lun, Aaron T. L., Davis J. McCarthy, and John C. Marioni. 2016. <span>“<span class="nocase">A step-by-step workflow for low-level analysis of single-cell RNA-seq data with Bioconductor</span>.”</span> <em>F1000Research</em> 5 (2122): 2122. <a href="https://doi.org/10.12688/f1000research.9501.2">https://doi.org/10.12688/f1000research.9501.2</a>.
+</div>
+<div class="csl-entry">
+Maynard, Kristen R., Leonardo Collado-Torres, Lukas M. Weber, Cedric Uytingco, Brianna K. Barry, Stephen R. Williams, Joseph L. Catallini, et al. 2021. <span>“<span class="nocase">Transcriptome-scale spatial gene expression in the human dorsolateral prefrontal cortex</span>.”</span> <em>Nat Neurosci</em> 24 (March): 425–36. <a href="https://doi.org/10.1038/s41593-020-00787-0">https://doi.org/10.1038/s41593-020-00787-0</a>.
+</div>
+<div class="csl-entry">
+McCarthy, Davis J., Kieran R. Campbell, Aaron T. L. Lun, and Quin F. Wills. 2017. <span>“<span class="nocase">Scater: pre-processing, quality control, normalization and visualization of single-cell RNA-seq data in R</span>.”</span> <em>Bioinformatics</em> 33 (8): 1179–86. <a href="https://doi.org/10.1093/bioinformatics/btw777">https://doi.org/10.1093/bioinformatics/btw777</a>.
+</div>
+<div class="csl-entry">
+McInnes, Leland, John Healy, and James Melville. 2018. <span>“<span class="nocase">UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction</span>.”</span> <em>arXiv</em>, February. <a href="https://doi.org/10.48550/arXiv.1802.03426">https://doi.org/10.48550/arXiv.1802.03426</a>.
+</div>
+<div class="csl-entry">
+<span>“<span class="nocase">Notes on Continuous Stochastic Phenomena on JSTOR</span>.”</span> 1950. <em>Biometrika</em>. <a href="https://www.jstor.org/stable/2332142">https://www.jstor.org/stable/2332142</a>.
+</div>
+<div class="csl-entry">
+Righelli, Dario, Lukas M. Weber, Helena L. Crowell, Brenda Pardo, Leonardo Collado-Torres, Shila Ghazanfar, Aaron T. L. Lun, Stephanie C. Hicks, and Davide Risso. 2022. <span>“<span class="nocase">SpatialExperiment: infrastructure for spatially-resolved transcriptomics data in R using Bioconductor</span>.”</span> <em>Bioinformatics</em> 38 (11): 3128–31. <a href="https://doi.org/10.1093/bioinformatics/btac299">https://doi.org/10.1093/bioinformatics/btac299</a>.
+</div>
+<div class="csl-entry">
+Sun, Shiquan, Jiaqiang Zhu, and Xiang Zhou. 2020. <span>“<span class="nocase">Statistical analysis of spatial expression patterns for spatially resolved transcriptomic studies</span>.”</span> <em>Nat Methods</em> 17 (February): 193–200. <a href="https://doi.org/10.1038/s41592-019-0701-7">https://doi.org/10.1038/s41592-019-0701-7</a>.
+</div>
+<div class="csl-entry">
+Svensson, Valentine, Sarah A. Teichmann, and Oliver Stegle. 2018. <span>“<span class="nocase">SpatialDE: identification of spatially variable genes</span>.”</span> <em>Nat Methods</em> 15 (May): 343–46. <a href="https://doi.org/10.1038/nmeth.4636">https://doi.org/10.1038/nmeth.4636</a>.
+</div>
+<div class="csl-entry">
+<span>“<span class="nocase">The Contiguity Ratio and Statistical Mapping on JSTOR</span>.”</span> 1954. <em>Incorporated Statistician</em>. <a href="https://www.jstor.org/stable/2986645">https://www.jstor.org/stable/2986645</a>.
+</div>
+<div class="csl-entry">
+Weber, Lukas M., and Helena L. Crowell. 2022. <em>Ggspavis: Visualization Functions for Spatially Resolved Transcriptomics Data</em>. <a href="https://github.com/lmweber/ggspavis">https://github.com/lmweber/ggspavis</a>.
+</div>
+<div class="csl-entry">
+Zhu, Jiaqiang, Shiquan Sun, and Xiang Zhou. 2021. <span>“<span class="nocase">SPARK-X: non-parametric modeling enables scalable and robust detection of spatial expression patterns for large spatial transcriptomic studies</span>.”</span> <em>Genome Biol</em> 22 (1): 1–25. <a href="https://doi.org/10.1186/s13059-021-02404-0">https://doi.org/10.1186/s13059-021-02404-0</a>.
+</div>
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Harris2011Oct" class="csl-entry">
+Harris, Paul, Chris Brunsdon, and Martin Charlton. 2011. <span>“<span class="nocase">Geographically weighted principal components analysis</span>.”</span> <em>International Journal of Geographical Information Science</em> 25 (10): 1717–36. <a href="https://doi.org/10.1080/13658816.2011.554838">https://doi.org/10.1080/13658816.2011.554838</a>.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="practical-session-3.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/04-gwpca.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 Practical session 1 | Spatial transcriptomics data analysis: theory and practice</title>
   <meta name="description" content="This book will guide you through the practical steps of the in-person tutorial IP2 for the ISMB/ECCB 2023 conference in Lyon named: Spatial transcriptomics data analysis: theory and practice." />
-  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 Practical session 1 | Spatial transcriptomics data analysis: theory and practice" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Eleftherios Zormpas, Dr Simon J. Cockell" />
 
 
-<meta name="date" content="2023-06-09" />
+<meta name="date" content="2023-07-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -120,10 +120,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 <style type="text/css">
-  
-  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-</style>
-<style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
 div.csl-entry {
@@ -169,16 +165,18 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="1" data-path="practical-session-1.html"><a href="practical-session-1.html"><i class="fa fa-check"></i><b>1</b> Practical session 1</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="practical-session-1.html"><a href="practical-session-1.html#log-into-the-posit-cloud-server"><i class="fa fa-check"></i><b>1.1</b> Log into the Posit Cloud server</a></li>
-<li class="chapter" data-level="1.2" data-path="practical-session-1.html"><a href="practical-session-1.html#import-10x-visium-data"><i class="fa fa-check"></i><b>1.2</b> Import 10X Visium data</a></li>
-<li class="chapter" data-level="1.3" data-path="practical-session-1.html"><a href="practical-session-1.html#explore-data-types"><i class="fa fa-check"></i><b>1.3</b> Explore data types</a>
+<li class="chapter" data-level="1.1" data-path="practical-session-1.html"><a href="practical-session-1.html#about-this-documentation"><i class="fa fa-check"></i><b>1.1</b> About this documentation</a></li>
+<li class="chapter" data-level="1.2" data-path="practical-session-1.html"><a href="practical-session-1.html#posit-cloud"><i class="fa fa-check"></i><b>1.2</b> Posit Cloud</a></li>
+<li class="chapter" data-level="1.3" data-path="practical-session-1.html"><a href="practical-session-1.html#import-10x-visium-data"><i class="fa fa-check"></i><b>1.3</b> Import 10X Visium data</a></li>
+<li class="chapter" data-level="1.4" data-path="practical-session-1.html"><a href="practical-session-1.html#explore-data-types"><i class="fa fa-check"></i><b>1.4</b> Explore data types</a>
 <ul>
-<li class="chapter" data-level="1.3.1" data-path="practical-session-1.html"><a href="practical-session-1.html#spatialexperiment-class"><i class="fa fa-check"></i><b>1.3.1</b> SpatialExperiment class</a></li>
-<li class="chapter" data-level="1.3.2" data-path="practical-session-1.html"><a href="practical-session-1.html#inspect-the-object"><i class="fa fa-check"></i><b>1.3.2</b> Inspect the object</a></li>
-<li class="chapter" data-level="1.3.3" data-path="practical-session-1.html"><a href="practical-session-1.html#counts-table-and-gene-metadata"><i class="fa fa-check"></i><b>1.3.3</b> Counts table and gene metadata</a></li>
-<li class="chapter" data-level="1.3.4" data-path="practical-session-1.html"><a href="practical-session-1.html#coordinates-table-and-spot-metadata"><i class="fa fa-check"></i><b>1.3.4</b> Coordinates table and spot metadata</a></li>
-<li class="chapter" data-level="1.3.5" data-path="practical-session-1.html"><a href="practical-session-1.html#image-metadata"><i class="fa fa-check"></i><b>1.3.5</b> Image metadata</a></li>
+<li class="chapter" data-level="1.4.1" data-path="practical-session-1.html"><a href="practical-session-1.html#spatialexperiment-class"><i class="fa fa-check"></i><b>1.4.1</b> SpatialExperiment class</a></li>
+<li class="chapter" data-level="1.4.2" data-path="practical-session-1.html"><a href="practical-session-1.html#inspect-the-object"><i class="fa fa-check"></i><b>1.4.2</b> Inspect the object</a></li>
+<li class="chapter" data-level="1.4.3" data-path="practical-session-1.html"><a href="practical-session-1.html#counts-table-and-gene-metadata"><i class="fa fa-check"></i><b>1.4.3</b> Counts table and gene metadata</a></li>
+<li class="chapter" data-level="1.4.4" data-path="practical-session-1.html"><a href="practical-session-1.html#coordinates-table-and-spot-metadata"><i class="fa fa-check"></i><b>1.4.4</b> Coordinates table and spot metadata</a></li>
+<li class="chapter" data-level="1.4.5" data-path="practical-session-1.html"><a href="practical-session-1.html#image-metadata"><i class="fa fa-check"></i><b>1.4.5</b> Image metadata</a></li>
 </ul></li>
+<li class="chapter" data-level="1.5" data-path="practical-session-1.html"><a href="practical-session-1.html#conclusion"><i class="fa fa-check"></i><b>1.5</b> Conclusion</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="practical-session-2.html"><a href="practical-session-2.html"><i class="fa fa-check"></i><b>2</b> Practical session 2</a>
 <ul>
@@ -237,27 +235,49 @@ div.csl-indent {
 <li class="chapter" data-level="3.2" data-path="practical-session-3.html"><a href="practical-session-3.html#data-structures-preparation"><i class="fa fa-check"></i><b>3.2</b> Data structures preparation</a>
 <ul>
 <li class="chapter" data-level="3.2.1" data-path="practical-session-3.html"><a href="practical-session-3.html#load-new-dataset"><i class="fa fa-check"></i><b>3.2.1</b> Load new dataset</a></li>
-<li class="chapter" data-level="3.2.2" data-path="practical-session-3.html"><a href="practical-session-3.html#create-point-geometries"><i class="fa fa-check"></i><b>3.2.2</b> Create point geometries</a></li>
-<li class="chapter" data-level="3.2.3" data-path="practical-session-3.html"><a href="practical-session-3.html#tesselate-space"><i class="fa fa-check"></i><b>3.2.3</b> Tesselate space</a></li>
-<li class="chapter" data-level="3.2.4" data-path="practical-session-3.html"><a href="practical-session-3.html#polygonise-the-tessellation"><i class="fa fa-check"></i><b>3.2.4</b> Polygonise the tessellation</a></li>
-<li class="chapter" data-level="3.2.5" data-path="practical-session-3.html"><a href="practical-session-3.html#identify-neighbours"><i class="fa fa-check"></i><b>3.2.5</b> Identify neighbours</a></li>
-<li class="chapter" data-level="3.2.6" data-path="practical-session-3.html"><a href="practical-session-3.html#generate-distance-matrices"><i class="fa fa-check"></i><b>3.2.6</b> Generate distance matrices</a></li>
-<li class="chapter" data-level="3.2.7" data-path="practical-session-3.html"><a href="practical-session-3.html#putting-it-all-together-1"><i class="fa fa-check"></i><b>3.2.7</b> Putting it all together</a></li>
 </ul></li>
+<li class="chapter" data-level="3.3" data-path="practical-session-3.html"><a href="practical-session-3.html#spot-level-quality-control-1"><i class="fa fa-check"></i><b>3.3</b> Spot-level Quality Control</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="practical-session-3.html"><a href="practical-session-3.html#calculating-qc-metrics-1"><i class="fa fa-check"></i><b>3.3.1</b> Calculating QC metrics</a></li>
+<li class="chapter" data-level="3.3.2" data-path="practical-session-3.html"><a href="practical-session-3.html#plot-manual-annotation"><i class="fa fa-check"></i><b>3.3.2</b> Plot manual annotation</a></li>
+<li class="chapter" data-level="3.3.3" data-path="practical-session-3.html"><a href="practical-session-3.html#library-size-threshold"><i class="fa fa-check"></i><b>3.3.3</b> Library size threshold</a></li>
+<li class="chapter" data-level="3.3.4" data-path="practical-session-3.html"><a href="practical-session-3.html#number-of-expressed-genes-1"><i class="fa fa-check"></i><b>3.3.4</b> Number of expressed genes</a></li>
+<li class="chapter" data-level="3.3.5" data-path="practical-session-3.html"><a href="practical-session-3.html#percentage-of-mitochondrial-expression-1"><i class="fa fa-check"></i><b>3.3.5</b> Percentage of mitochondrial expression</a></li>
+<li class="chapter" data-level="3.3.6" data-path="practical-session-3.html"><a href="practical-session-3.html#remove-low-quality-spots-1"><i class="fa fa-check"></i><b>3.3.6</b> Remove low-quality spots</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="practical-session-3.html"><a href="practical-session-3.html#normalisation-of-counts-1"><i class="fa fa-check"></i><b>3.4</b> Normalisation of counts</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="practical-session-3.html"><a href="practical-session-3.html#log-tranformation-of-counts-1"><i class="fa fa-check"></i><b>3.4.1</b> Log-tranformation of counts</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="practical-session-3.html"><a href="practical-session-3.html#gene-level-quality-control"><i class="fa fa-check"></i><b>3.5</b> Gene-level Quality Control</a>
+<ul>
+<li class="chapter" data-level="3.5.1" data-path="practical-session-3.html"><a href="practical-session-3.html#calculating-extra-qc-metrics"><i class="fa fa-check"></i><b>3.5.1</b> Calculating extra QC metrics</a></li>
+<li class="chapter" data-level="3.5.2" data-path="practical-session-3.html"><a href="practical-session-3.html#set-and-apply-filters"><i class="fa fa-check"></i><b>3.5.2</b> Set and apply filters</a></li>
+</ul></li>
+<li class="chapter" data-level="3.6" data-path="practical-session-3.html"><a href="practical-session-3.html#selecting-genes-1"><i class="fa fa-check"></i><b>3.6</b> Selecting genes</a>
+<ul>
+<li class="chapter" data-level="3.6.1" data-path="practical-session-3.html"><a href="practical-session-3.html#highly-variable-genes-hvgs-1"><i class="fa fa-check"></i><b>3.6.1</b> Highly Variable Genes (HVGs)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="practical-session-3.html"><a href="practical-session-3.html#neighbour-graph-and-distance-matrix"><i class="fa fa-check"></i><b>3.7</b> Neighbour graph and distance matrix</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="practical-session-3.html"><a href="practical-session-3.html#adding-spatial-weights"><i class="fa fa-check"></i><b>3.7.1</b> Adding spatial weights</a></li>
+<li class="chapter" data-level="3.7.2" data-path="practical-session-3.html"><a href="practical-session-3.html#generate-distance-matrices"><i class="fa fa-check"></i><b>3.7.2</b> Generate distance matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="practical-session-3.html"><a href="practical-session-3.html#putting-it-all-together-1"><i class="fa fa-check"></i><b>3.8</b> Putting it all together</a></li>
+<li class="chapter" data-level="3.9" data-path="practical-session-3.html"><a href="practical-session-3.html#save-data"><i class="fa fa-check"></i><b>3.9</b> Save data</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="practical-session-4.html"><a href="practical-session-4.html"><i class="fa fa-check"></i><b>4</b> Practical session 4</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="practical-session-4.html"><a href="practical-session-4.html#geographically-weighted-principal-components-analysis-gwpca"><i class="fa fa-check"></i><b>4.1</b> Geographically Weighted Principal Components Analysis (GWPCA)</a></li>
 <li class="chapter" data-level="4.2" data-path="practical-session-4.html"><a href="practical-session-4.html#load-packages"><i class="fa fa-check"></i><b>4.2</b> Load packages</a></li>
 <li class="chapter" data-level="4.3" data-path="practical-session-4.html"><a href="practical-session-4.html#load-quality-controled-and-normalised-data"><i class="fa fa-check"></i><b>4.3</b> Load Quality Controled and Normalised data</a></li>
-<li class="chapter" data-level="4.4" data-path="practical-session-4.html"><a href="practical-session-4.html#data-prearation-and-single-gwpca-run"><i class="fa fa-check"></i><b>4.4</b> Data prearation and single GWPCA run</a></li>
+<li class="chapter" data-level="4.4" data-path="practical-session-4.html"><a href="practical-session-4.html#parameter-prearation-for-gwpca"><i class="fa fa-check"></i><b>4.4</b> Parameter prearation for GWPCA</a></li>
 <li class="chapter" data-level="4.5" data-path="practical-session-4.html"><a href="practical-session-4.html#run-gwpca"><i class="fa fa-check"></i><b>4.5</b> Run GWPCA</a></li>
 <li class="chapter" data-level="4.6" data-path="practical-session-4.html"><a href="practical-session-4.html#plot-global-pca-results"><i class="fa fa-check"></i><b>4.6</b> Plot global PCA results</a></li>
 <li class="chapter" data-level="4.7" data-path="practical-session-4.html"><a href="practical-session-4.html#identify-the-leading-genes-in-each-location"><i class="fa fa-check"></i><b>4.7</b> Identify the leading genes in each location</a></li>
 <li class="chapter" data-level="4.8" data-path="practical-session-4.html"><a href="practical-session-4.html#percentage-of-total-variation-ptv"><i class="fa fa-check"></i><b>4.8</b> Percentage of Total Variation (PTV)</a></li>
 <li class="chapter" data-level="4.9" data-path="practical-session-4.html"><a href="practical-session-4.html#identify-discrepancies"><i class="fa fa-check"></i><b>4.9</b> Identify discrepancies</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -280,29 +300,36 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="practical-session-1" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Practical session 1<a href="practical-session-1.html#practical-session-1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>In this practical session you will familiarise yourself with the data and their different aspects.</p>
-<div id="log-into-the-posit-cloud-server" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Log into the Posit Cloud server<a href="practical-session-1.html#log-into-the-posit-cloud-server" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this practical session you will familiarise yourself with some example spatial transcriptomics (STx) data and the common features of such data.</p>
+<div id="about-this-documentation" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> About this documentation<a href="practical-session-1.html#about-this-documentation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This handbook is designed to walk you through the practical elements of today’s tutorial. All of the code you need to accomplish the basic tasks thoughout the day is presented in full, there are some ‘stretch goals’ in some of the tutorials where only a template is provided. This is not a typing tutorial, so feel free to copy and paste where necessary. The tutorials are written in <code>rmarkdown</code> and presented on <a href="https://bookdown.org/">bookdown.org</a>.</p>
 </div>
-<div id="import-10x-visium-data" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> Import 10X Visium data<a href="practical-session-1.html#import-10x-visium-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>In this tutorial we will be using some already prepared data from the <a href="https://bioconductor.org/packages/STexampleData">STexampleData</a> package. These data are stored in the <code>SpatialExperiment</code> format (the format is described below).</p>
-<p>The dataset a single sample from the dorsolateral prefrontal cortex (DLPFC) 10x Genomics Visium dataset, that was published by <span class="citation">Maynard et al. (<a href="#ref-Maynard2021Mar" role="doc-biblioref">2021</a>)</span>.</p>
+<div id="posit-cloud" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Posit Cloud<a href="practical-session-1.html#posit-cloud" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You should have received an invite to the <a href="https://posit.cloud/">Posit Cloud</a> Space for today’s tutorial. Accepting this invite will give you access to the 4 RStudio projects for the 4 sessions we will run today. Each project has the required packages pre-installed, and the data files uploaded. These projects are set up as “Assignments” so that you get your own copy of the workspace.</p>
+</div>
+<div id="import-10x-visium-data" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Import 10X Visium data<a href="practical-session-1.html#import-10x-visium-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this tutorial we will be using data from the <a href="https://bioconductor.org/packages/STexampleData">STexampleData</a> package that contains a small collection of STx datasets from different technologies, including SlideSeq V2, seqFISH and 10x Genomics Visium. These datasets are provided in the <code>SpatialExperiment</code> format - described below.</p>
+<p>The specific dataset used for this tutorial is a single sample from the dorsolateral prefrontal cortex (DLPFC) - a 10x Genomics Visium dataset that was published by <span class="citation">Maynard et al. (<a href="#ref-Maynard2021Mar">2021</a>)</span>.</p>
 <p>Here, we show how to load the data from the <code>STexampleData</code> package.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="practical-session-1.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SpatialExperiment)</span>
-<span id="cb1-2"><a href="practical-session-1.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(STexampleData)</span>
-<span id="cb1-3"><a href="practical-session-1.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="practical-session-1.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the object</span></span>
-<span id="cb1-5"><a href="practical-session-1.html#cb1-5" aria-hidden="true" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">Visium_humanDLPFC</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="practical-session-1.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(SpatialExperiment)</span>
+<span id="cb1-2"><a href="practical-session-1.html#cb1-2" tabindex="-1"></a><span class="fu">library</span>(STexampleData)</span>
+<span id="cb1-3"><a href="practical-session-1.html#cb1-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="practical-session-1.html#cb1-4" tabindex="-1"></a><span class="fu">library</span>(ggspavis)</span>
+<span id="cb1-5"><a href="practical-session-1.html#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="practical-session-1.html#cb1-6" tabindex="-1"></a><span class="co"># Load the object</span></span>
+<span id="cb1-7"><a href="practical-session-1.html#cb1-7" tabindex="-1"></a>spe <span class="ot">&lt;-</span> <span class="fu">Visium_humanDLPFC</span>()</span></code></pre></div>
 </div>
-<div id="explore-data-types" class="section level2 hasAnchor" number="1.3">
-<h2><span class="header-section-number">1.3</span> Explore data types<a href="practical-session-1.html#explore-data-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The below discussion will help you familiarise with the different data types that we will be using.</p>
-<div id="spatialexperiment-class" class="section level3 hasAnchor" number="1.3.1">
-<h3><span class="header-section-number">1.3.1</span> SpatialExperiment class<a href="practical-session-1.html#spatialexperiment-class" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="explore-data-types" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Explore data types<a href="practical-session-1.html#explore-data-types" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There is a long history of encapsulating expression data in S3 and S4 objects in R, going back to the <code>ExpressionSet</code> class in Biobase which was designed to store a matrix of microarray data alongside associated experimental metadata. This concept of storing all the relevant data and metadata in a single object has persisted through the development of RNA-Seq analysis (e.g. <code>SummarizedExperiment</code>) and into the age of single-cell transcriptomics (e.g. <code>SingleCellExperiment</code> - see below).</p>
+<div id="spatialexperiment-class" class="section level3 hasAnchor" number="1.4.1">
+<h3><span class="header-section-number">1.4.1</span> SpatialExperiment class<a href="practical-session-1.html#spatialexperiment-class" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>For the first part of this tutorial (practical sessions 1 and 2), we will be using the <a href="https://bioconductor.org/packages/SpatialExperiment">SpatialExperiment</a> S4 class from Bioconductor as the main data structure for storing and manipulating datasets.</p>
-<p><code>SpatialExperiment</code> is a specialized object class that supports the storing of spatially-resolved transcriptomics datasets within the Bioconductor framework. It builds on the <a href="https://bioconductor.org/packages/SingleCellExperiment">SingleCellExperiment</a> class <span class="citation">(<a href="#ref-Amezquita2020Feb" role="doc-biblioref">Amezquita et al. 2020</a>)</span> for single-cell RNA sequencing data. More specifically, has extra customisations to store spatial information (i.e., spatial coordinates and images).</p>
-<p>An overview of the <code>SpatialExperiment</code> object structure is is presented in Figure 2.1. In brief, the <code>SpatialExperiment</code> object consists of the below five parts:</p>
+<p><code>SpatialExperiment</code> is a specialized object class that supports the storing of spatially-resolved transcriptomics datasets within the Bioconductor framework. It builds on the <a href="https://bioconductor.org/packages/SingleCellExperiment">SingleCellExperiment</a> class <span class="citation">(<a href="#ref-Amezquita2020Feb">Amezquita et al. 2020</a>)</span> for single-cell RNA sequencing data, which itself extends the <code>RangedSummarizedExperiment</code> class. More specifically, <code>SpatialExperiment</code> has extra customisations to store spatial information (i.e., spatial coordinates and images).</p>
+<p>An overview of the <code>SpatialExperiment</code> object structure is is presented in <a href="practical-session-1.html#fig:SpExp-overview">1.1</a>. In brief, the <code>SpatialExperiment</code> object consists of the below five parts:</p>
 <ol style="list-style-type: decimal">
 <li><code>assays</code>: gene expression counts<br />
 </li>
@@ -321,12 +348,12 @@ div.csl-indent {
 Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structure.
 </p>
 </div>
-<p>For more details, see the related publication from Righelli et al., 2021 describing the <code>SpatialExperiment</code> <span class="citation">(<a href="#ref-Righelli2022Jun" role="doc-biblioref">Righelli et al. 2022</a>)</span>.</p>
+<p>For more details, see the related publication from Righelli et al., 2021 describing the <code>SpatialExperiment</code> <span class="citation">(<a href="#ref-Righelli2022Jun">Righelli et al. 2022</a>)</span>.</p>
 </div>
-<div id="inspect-the-object" class="section level3 hasAnchor" number="1.3.2">
-<h3><span class="header-section-number">1.3.2</span> Inspect the object<a href="practical-session-1.html#inspect-the-object" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="practical-session-1.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check the object&#39;s structure</span></span>
-<span id="cb2-2"><a href="practical-session-1.html#cb2-2" aria-hidden="true" tabindex="-1"></a>spe</span></code></pre></div>
+<div id="inspect-the-object" class="section level3 hasAnchor" number="1.4.2">
+<h3><span class="header-section-number">1.4.2</span> Inspect the object<a href="practical-session-1.html#inspect-the-object" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="practical-session-1.html#cb2-1" tabindex="-1"></a><span class="do">## Check the object&#39;s structure</span></span>
+<span id="cb2-2"><a href="practical-session-1.html#cb2-2" tabindex="-1"></a>spe</span></code></pre></div>
 <pre><code>## class: SpatialExperiment 
 ## dim: 33538 4992 
 ## metadata(0):
@@ -342,17 +369,17 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 ## altExpNames(0):
 ## spatialCoords names(2) : pxl_col_in_fullres pxl_row_in_fullres
 ## imgData names(4): sample_id image_id data scaleFactor</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="practical-session-1.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check number of features/genes (rows) and spots (columns)</span></span>
-<span id="cb4-2"><a href="practical-session-1.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(spe)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="practical-session-1.html#cb4-1" tabindex="-1"></a><span class="do">## Check number of features/genes (rows) and spots (columns)</span></span>
+<span id="cb4-2"><a href="practical-session-1.html#cb4-2" tabindex="-1"></a><span class="fu">dim</span>(spe)</span></code></pre></div>
 <pre><code>## [1] 33538  4992</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="practical-session-1.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check names of &#39;assay&#39; tables</span></span>
-<span id="cb6-2"><a href="practical-session-1.html#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">assayNames</span>(spe)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="practical-session-1.html#cb6-1" tabindex="-1"></a><span class="do">## Check names of &#39;assay&#39; tables</span></span>
+<span id="cb6-2"><a href="practical-session-1.html#cb6-2" tabindex="-1"></a><span class="fu">assayNames</span>(spe)</span></code></pre></div>
 <pre><code>## [1] &quot;counts&quot;</code></pre>
 </div>
-<div id="counts-table-and-gene-metadata" class="section level3 hasAnchor" number="1.3.3">
-<h3><span class="header-section-number">1.3.3</span> Counts table and gene metadata<a href="practical-session-1.html#counts-table-and-gene-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="practical-session-1.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Have a look at the counts table</span></span>
-<span id="cb8-2"><a href="practical-session-1.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">assay</span>(spe)[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
+<div id="counts-table-and-gene-metadata" class="section level3 hasAnchor" number="1.4.3">
+<h3><span class="header-section-number">1.4.3</span> Counts table and gene metadata<a href="practical-session-1.html#counts-table-and-gene-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="practical-session-1.html#cb8-1" tabindex="-1"></a><span class="do">## Have a look at the counts table</span></span>
+<span id="cb8-2"><a href="practical-session-1.html#cb8-2" tabindex="-1"></a><span class="fu">assay</span>(spe)[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
 <pre><code>## 6 x 4 sparse Matrix of class &quot;dgTMatrix&quot;
 ##                 AAACAACGAATAGTTC-1 AAACAAGTATCTCCCA-1 AAACAATCTACTAGCA-1
 ## ENSG00000243485                  .                  .                  .
@@ -368,8 +395,8 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 ## ENSG00000238009                  .
 ## ENSG00000239945                  .
 ## ENSG00000239906                  .</code></pre>
-<p>As you can see here the counts table is of class <code>dgTMatrix</code> which is a sparse matrix. This is because much like scRNA-seq data, STx data are sparse and include many zeros. As a result, to make the counts table as light as possible we resort to using sparse matrices. The next code chunk will demonstrate a part of the matrix that includes genes with some level of expression.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="practical-session-1.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">assay</span>(spe)[<span class="dv">20</span><span class="sc">:</span><span class="dv">40</span>, <span class="dv">2000</span><span class="sc">:</span><span class="dv">2010</span>]</span></code></pre></div>
+<p>As we can see here the counts table is an object of class <code>dgTMatrix</code> which is a sparse matrix. This is because much like scRNA-seq data, STx data include many zeros. As a result, to make the counts table as light as possible we resort to using sparse matrices. This next code chunk examines a part of the matrix that includes genes with some level of expression:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="practical-session-1.html#cb10-1" tabindex="-1"></a><span class="fu">assay</span>(spe)[<span class="dv">20</span><span class="sc">:</span><span class="dv">40</span>, <span class="dv">2000</span><span class="sc">:</span><span class="dv">2010</span>]</span></code></pre></div>
 <pre><code>## 21 x 11 sparse Matrix of class &quot;dgTMatrix&quot;
 ##                                      
 ## ENSG00000223764 . . . . . . . . . . .
@@ -393,7 +420,7 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 ## ENSG00000186891 . . . 1 . . . . . . .
 ## ENSG00000186827 . . . . . . . . . . .
 ## ENSG00000078808 . 1 2 . 1 . . . . 1 .</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="practical-session-1.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">assay</span>(spe)[<span class="dv">33488</span><span class="sc">:</span><span class="dv">33508</span>, <span class="dv">2000</span><span class="sc">:</span><span class="dv">2010</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="practical-session-1.html#cb12-1" tabindex="-1"></a><span class="fu">assay</span>(spe)[<span class="dv">33488</span><span class="sc">:</span><span class="dv">33508</span>, <span class="dv">2000</span><span class="sc">:</span><span class="dv">2010</span>]</span></code></pre></div>
 <pre><code>## 21 x 11 sparse Matrix of class &quot;dgTMatrix&quot;
 ##                                                     
 ## ENSG00000160294  .  .   .  .   .   .  .  .  .   .  .
@@ -417,9 +444,10 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 ## ENSG00000198886 15 65  95  9 183  98 18 19 33 178  7
 ## ENSG00000198786  2 10  10  3  20  14  1  2  2  25  4
 ## ENSG00000198695  1  1   3  .   2   2  .  .  .   1  .</code></pre>
-<p>As you can see, the levels of expression of different genes in the same spots differ significantly with many low values being present. We have to remember here that we look at un-normalised expression data which are affected by factors like library size. Nonetheless, this is a fact in STx data as it is for scRNA-seq data; many genes will show low expression in individual spots.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="practical-session-1.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Have a look at the genes metadata</span></span>
-<span id="cb14-2"><a href="practical-session-1.html#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">rowData</span>(spe))</span></code></pre></div>
+<p>The levels of expression of different genes in the same spots differ significantly with many low values being present. We have to remember here that this data is not as yet normalized, and is therefore affected by systematic factors such as library size. Nonetheless, what is demonstrated here is typical for STx data (as it is for scRNA-seq data) - many genes will show low expression in individual spots.</p>
+<p>To continue our exploration of the information stored in the <code>SpatialExperiment</code> object:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="practical-session-1.html#cb14-1" tabindex="-1"></a><span class="do">## Have a look at the genes metadata</span></span>
+<span id="cb14-2"><a href="practical-session-1.html#cb14-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">rowData</span>(spe))</span></code></pre></div>
 <pre><code>## DataFrame with 6 rows and 3 columns
 ##                         gene_id   gene_name    feature_type
 ##                     &lt;character&gt; &lt;character&gt;     &lt;character&gt;
@@ -430,10 +458,11 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 ## ENSG00000239945 ENSG00000239945  AL627309.3 Gene Expression
 ## ENSG00000239906 ENSG00000239906  AL627309.2 Gene Expression</code></pre>
 </div>
-<div id="coordinates-table-and-spot-metadata" class="section level3 hasAnchor" number="1.3.4">
-<h3><span class="header-section-number">1.3.4</span> Coordinates table and spot metadata<a href="practical-session-1.html#coordinates-table-and-spot-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="practical-session-1.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Check the spatial coordinates</span></span>
-<span id="cb16-2"><a href="practical-session-1.html#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">spatialCoords</span>(spe))</span></code></pre></div>
+<div id="coordinates-table-and-spot-metadata" class="section level3 hasAnchor" number="1.4.4">
+<h3><span class="header-section-number">1.4.4</span> Coordinates table and spot metadata<a href="practical-session-1.html#coordinates-table-and-spot-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The data that distinguished a <code>SpatialExperiment</code> object is the coordinate data which describes the spatial location of each spot.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="practical-session-1.html#cb16-1" tabindex="-1"></a><span class="do">## Check the spatial coordinates</span></span>
+<span id="cb16-2"><a href="practical-session-1.html#cb16-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">spatialCoords</span>(spe))</span></code></pre></div>
 <pre><code>##                    pxl_col_in_fullres pxl_row_in_fullres
 ## AAACAACGAATAGTTC-1               3913               2435
 ## AAACAAGTATCTCCCA-1               9791               8468
@@ -441,8 +470,8 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 ## AAACACCAATAACTGC-1               4068               9505
 ## AAACAGAGCGACTCCT-1               9271               4151
 ## AAACAGCTTTCAGAAG-1               3393               7583</code></pre>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="practical-session-1.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## spot-level metadata</span></span>
-<span id="cb18-2"><a href="practical-session-1.html#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">colData</span>(spe))</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="practical-session-1.html#cb18-1" tabindex="-1"></a><span class="do">## spot-level metadata</span></span>
+<span id="cb18-2"><a href="practical-session-1.html#cb18-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">colData</span>(spe))</span></code></pre></div>
 <pre><code>## DataFrame with 6 rows and 7 columns
 ##                            barcode_id     sample_id in_tissue array_row
 ##                           &lt;character&gt;   &lt;character&gt; &lt;integer&gt; &lt;integer&gt;
@@ -461,20 +490,67 @@ Figure 1.1: Overview of the <code>SpatialExperiment</code> object class structur
 ## AAACAGAGCGACTCCT-1        94       Layer3          2
 ## AAACAGCTTTCAGAAG-1         9       Layer5          4</code></pre>
 </div>
-<div id="image-metadata" class="section level3 hasAnchor" number="1.3.5">
-<h3><span class="header-section-number">1.3.5</span> Image metadata<a href="practical-session-1.html#image-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="practical-session-1.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Have a look at the image metadata</span></span>
-<span id="cb20-2"><a href="practical-session-1.html#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">imgData</span>(spe)</span></code></pre></div>
+<div id="image-metadata" class="section level3 hasAnchor" number="1.4.5">
+<h3><span class="header-section-number">1.4.5</span> Image metadata<a href="practical-session-1.html#image-metadata" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Finally, the <code>SpatialExperiment</code> object also contains the image data from the STx experiment, giving the coordinates we looked at in the previous section some context in terms of the tissue of origin.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="practical-session-1.html#cb20-1" tabindex="-1"></a><span class="do">## Have a look at the image metadata</span></span>
+<span id="cb20-2"><a href="practical-session-1.html#cb20-2" tabindex="-1"></a><span class="fu">imgData</span>(spe)</span></code></pre></div>
 <pre><code>## DataFrame with 2 rows and 4 columns
 ##       sample_id    image_id   data scaleFactor
 ##     &lt;character&gt; &lt;character&gt; &lt;list&gt;   &lt;numeric&gt;
 ## 1 sample_151673      lowres   ####   0.0450045
 ## 2 sample_151673       hires   ####   0.1500150</code></pre>
+<p>As well as this (fairly basic) metadata, the <code>spe</code> object also contains the image itself, which the <code>SpatialExperiment</code> class allows us to access, like so:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="practical-session-1.html#cb22-1" tabindex="-1"></a><span class="do">## retrieve the image</span></span>
+<span id="cb22-2"><a href="practical-session-1.html#cb22-2" tabindex="-1"></a>spi <span class="ot">&lt;-</span> <span class="fu">getImg</span>(spe)</span>
+<span id="cb22-3"><a href="practical-session-1.html#cb22-3" tabindex="-1"></a><span class="do">## &quot;plot&quot; the image</span></span>
+<span id="cb22-4"><a href="practical-session-1.html#cb22-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">imgRaster</span>(spi))</span></code></pre></div>
+<p><img src="_main_files/figure-html/01_plot-image-1.png" width="672" /></p>
+<p>We can also use the scaling factors in the <code>imgData</code> to plot the locations of the Visium spots over the image. The position of a point in an image does not map directly to the spot location in cartesian coordinates, as it is the top-left of an image that is (0,0), not the bottom-left. In order to manage this, we need to transform the y-axis coordinates.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="practical-session-1.html#cb23-1" tabindex="-1"></a><span class="do">## &quot;Plot&quot; the image</span></span>
+<span id="cb23-2"><a href="practical-session-1.html#cb23-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">imgRaster</span>(spi))</span>
+<span id="cb23-3"><a href="practical-session-1.html#cb23-3" tabindex="-1"></a><span class="do">## Extract the spot locations</span></span>
+<span id="cb23-4"><a href="practical-session-1.html#cb23-4" tabindex="-1"></a>spot_coords <span class="ot">&lt;-</span> <span class="fu">spatialCoords</span>(spe) <span class="sc">%&gt;%</span> as.data.frame</span>
+<span id="cb23-5"><a href="practical-session-1.html#cb23-5" tabindex="-1"></a><span class="do">## Scale by low-res factor</span></span>
+<span id="cb23-6"><a href="practical-session-1.html#cb23-6" tabindex="-1"></a>lowres_scale <span class="ot">&lt;-</span> <span class="fu">imgData</span>(spe)[<span class="fu">imgData</span>(spe)<span class="sc">$</span>image_id <span class="sc">==</span> <span class="st">&#39;lowres&#39;</span>, <span class="st">&#39;scaleFactor&#39;</span>]</span>
+<span id="cb23-7"><a href="practical-session-1.html#cb23-7" tabindex="-1"></a>spot_coords<span class="sc">$</span>x_axis <span class="ot">&lt;-</span> spot_coords<span class="sc">$</span>pxl_col_in_fullres <span class="sc">*</span> lowres_scale</span>
+<span id="cb23-8"><a href="practical-session-1.html#cb23-8" tabindex="-1"></a>spot_coords<span class="sc">$</span>y_axis <span class="ot">&lt;-</span> spot_coords<span class="sc">$</span>pxl_row_in_fullres <span class="sc">*</span> lowres_scale</span>
+<span id="cb23-9"><a href="practical-session-1.html#cb23-9" tabindex="-1"></a><span class="do">## lowres image is 600x600 pixels</span></span>
+<span id="cb23-10"><a href="practical-session-1.html#cb23-10" tabindex="-1"></a><span class="fu">dim</span>(<span class="fu">imgRaster</span>(spi))</span></code></pre></div>
+<pre><code>## [1] 600 600</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="practical-session-1.html#cb25-1" tabindex="-1"></a><span class="do">## flip the Y axis</span></span>
+<span id="cb25-2"><a href="practical-session-1.html#cb25-2" tabindex="-1"></a>spot_coords<span class="sc">$</span>y_axis <span class="ot">&lt;-</span> <span class="fu">abs</span>(spot_coords<span class="sc">$</span>y_axis <span class="sc">-</span> (<span class="fu">ncol</span>(<span class="fu">imgRaster</span>(spi)) <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb25-3"><a href="practical-session-1.html#cb25-3" tabindex="-1"></a><span class="fu">points</span>(<span class="at">x=</span>spot_coords<span class="sc">$</span>x_axis, <span class="at">y=</span>spot_coords<span class="sc">$</span>y_axis)</span></code></pre></div>
+<p><img src="_main_files/figure-html/01_plot-spots-1.png" width="672" /></p>
+<p>An equivalent plot, using <code>ggplot2</code> as the plotting library:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="practical-session-1.html#cb26-1" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">600</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">600</span>)) <span class="sc">+</span></span>
+<span id="cb26-2"><a href="practical-session-1.html#cb26-2" tabindex="-1"></a>  <span class="fu">annotation_raster</span>(<span class="fu">imgRaster</span>(spi), <span class="at">xmin =</span> <span class="dv">1</span>, <span class="at">xmax =</span> <span class="dv">600</span>, <span class="at">ymin =</span> <span class="dv">1</span>, <span class="at">ymax =</span> <span class="dv">600</span>) <span class="sc">+</span></span>
+<span id="cb26-3"><a href="practical-session-1.html#cb26-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>spot_coords, <span class="fu">aes</span>(<span class="at">x=</span>x_axis, <span class="at">y=</span>y_axis), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">xlim</span>(<span class="dv">1</span>, <span class="dv">600</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">1</span>, <span class="dv">600</span>) <span class="sc">+</span></span>
+<span id="cb26-4"><a href="practical-session-1.html#cb26-4" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span> </span>
+<span id="cb26-5"><a href="practical-session-1.html#cb26-5" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/01_ggplot-spots-1.png" width="672" />
+We can also extract additional metadata to make these plots more informative - for instance, the annotation from <code>colData</code> that flags whether a spot is “on tissue” or not can be used to colour the spots like so:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="practical-session-1.html#cb27-1" tabindex="-1"></a><span class="do">## Add the annotation to the coordinate data frame</span></span>
+<span id="cb27-2"><a href="practical-session-1.html#cb27-2" tabindex="-1"></a>spot_coords<span class="sc">$</span>on_tissue <span class="ot">&lt;-</span> <span class="fu">as.logical</span>(<span class="fu">colData</span>(spe)<span class="sc">$</span>in_tissue)</span>
+<span id="cb27-3"><a href="practical-session-1.html#cb27-3" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="practical-session-1.html#cb27-4" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">600</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">600</span>)) <span class="sc">+</span></span>
+<span id="cb27-5"><a href="practical-session-1.html#cb27-5" tabindex="-1"></a>  <span class="fu">annotation_raster</span>(<span class="fu">imgRaster</span>(spi), <span class="at">xmin =</span> <span class="dv">1</span>, <span class="at">xmax =</span> <span class="dv">600</span>, <span class="at">ymin =</span> <span class="dv">1</span>, <span class="at">ymax =</span> <span class="dv">600</span>) <span class="sc">+</span></span>
+<span id="cb27-6"><a href="practical-session-1.html#cb27-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>spot_coords, <span class="fu">aes</span>(<span class="at">x=</span>x_axis, <span class="at">y=</span>y_axis, <span class="at">colour=</span>on_tissue), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">xlim</span>(<span class="dv">1</span>, <span class="dv">600</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">1</span>, <span class="dv">600</span>) <span class="sc">+</span></span>
+<span id="cb27-7"><a href="practical-session-1.html#cb27-7" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span> </span>
+<span id="cb27-8"><a href="practical-session-1.html#cb27-8" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code></pre></div>
+<p><img src="_main_files/figure-html/01_ggplot_ontissue-1.png" width="672" /></p>
+<p>Having to manually extract the relevant information from the <code>SpatialExperiment</code> object to generate plots like this does not generally make sense, and defies the point of using a data class that can encapsulate this information. We can instead use a package like <code>ggspavis</code>, which is explicitly built for generating visualisations of STx data directly from the <code>SpatialExperiment</code> object. We will make extensive use of this package during the next tutorial as we work through quality control processes for STx data. The pre-built nature of these plots is convenient, though it prevents users from achieving tasks like adding the tissue image to the plot. For many users the convenience will outweigh any issues this presents, though it is worth being aware of how to build visualisations from the ground up.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="practical-session-1.html#cb28-1" tabindex="-1"></a><span class="fu">plotSpots</span>(spe, <span class="at">in_tissue =</span> <span class="cn">NULL</span>, <span class="at">annotate=</span><span class="st">&#39;in_tissue&#39;</span>, <span class="at">size=</span><span class="fl">0.5</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/01_ggspavis-ontissue-1.png" width="672" /></p>
+</div>
+</div>
+<div id="conclusion" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> Conclusion<a href="practical-session-1.html#conclusion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>This first practical session has been a pretty straight-forward examination of an example Visium dataset. We’ve demonstrated where in this object the data and metadata are stored, how to extract it and make simple use of it.</p>
 
 </div>
 </div>
-</div>
-<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Amezquita2020Feb" class="csl-entry">
 Amezquita, Robert A., Aaron T. L. Lun, Etienne Becht, Vince J. Carey, Lindsay N. Carpp, Ludwig Geistlinger, Federico Marini, et al. 2020. <span>“<span class="nocase">Orchestrating single-cell analysis with Bioconductor</span>.”</span> <em>Nat Methods</em> 17 (February): 137–45. <a href="https://doi.org/10.1038/s41592-019-0654-x">https://doi.org/10.1038/s41592-019-0654-x</a>.
@@ -546,6 +622,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

@@ -123,7 +123,7 @@ pcagw <- gwpca_LeadingGene(gwpca = pcagw,
                            names = "gene_names")
 ```
 
-```{r leading_genes2, eval=TRUE, , fig.show = 'hold', out.width="33%", fig.height=6, fig.width=8}
+```{r leading_genes2, eval=TRUE, , fig.show = 'hold', out.width="33%", fig.height=6, fig.width=8, fig.ncol = 2}
 ## Plot leading genes
 plotGWPCA_leadingG(gwpca = pcagw,
                    comps = 1:2,
