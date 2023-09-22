@@ -1,16 +1,17 @@
 # Practical session 4
+
 In this session we will have a hands-on exploration of GW-PCA and its application to STx data. What can we learn from this novel technique?
 
 ## Geographically Weighted Principal Components Analysis (GWPCA)
-A standard PCA can pick out the key multivariate modes of variability in the data. Looking at outlying values of the principal components of these data gives us an idea of unusual sites (in terms of combinations of gene expression profiles -and to a certain extend of combinations of cell types in each spot). Next, Geographically weighted PCA can be used to find spatial multivariate outliers. Sounds complicated, but really all this means is it identifies sites that have an unusual multi-way combination of gene expression in relation to their immediate geographical neighbours. It might be that the values observed at these sites as a combination is not uncommon in the tissue as a whole - but is very unusual in its locality.
+
+A standard PCA can pick out the key multivariate modes of variability in the data. Looking at outlying values of the principal components of these data gives us an idea of unusual sites (in terms of combinations of gene expression profiles - and to a certain extent of combinations of cell types in each spot). Next, geographically weighted PCA can be used to find spatial multivariate outliers. Sounds complicated, but really all this means is it identifies sites that have an unusual multi-way combination of gene expression in relation to their immediate geographical neighbours. It might be that the values observed at these sites as a combination is not uncommon in the tissue as a whole - but is very unusual in its locality.
 
 To find such outliers the procedure is relatively simple - instead of doing a PCA on the tissue as a whole, for each sample we do a PCA on data falling into a window centred on the location of that spot. In that way we can check whether the spot is like its neighbours or not, from a multivariate viewpoint.
 
-The following code carries out a geographically weighted PCA. In short, it runs a ‘windowed’ PCA around each of the spots.
+The procedure we will follow in this practical carries out a geographically weighted PCA. In short, it runs a ‘windowed’ PCA around each of the spots.
 
 ## Load packages
 ```{r 04_loadPackages, include=FALSE}
-library(STExplorerDev)
 library(SpatialFeatureExperiment)
 library(tidyverse)
 library(scran)
@@ -26,16 +27,24 @@ library(parallel)
 library(cols4all)
 library(pheatmap)
 library(RColorBrewer)
+library(STExplorerDev)
 ```
 
 ## Load Quality Controled and Normalised data
+
+First of all, we need to load the data we prepared in the previous practical.
+
 ```{r 04_load_data}
 sfe <- readRDS(file = "./data/to_load/practical03_sfe.rds")
 top_hvgs <- readRDS(file = "./data/to_load/practical03_topHVGs.rds")
 ```
 
 ## Parameter prearation for GWPCA
-Because gwpca uses princomp to run the PCAs and this does not accept the number of variables (genes) being more than the number of samples (spots).
+
+The `gwpca` method uses `princomp` internally to run the PCAs - this function does not allow the number of variables (genes) to be greater than the number of samples (spots). This imposes a hard requirement on the data pre-processing. We have, however, already identified the highly variable genes in our sample, and for this case, there are fewer genes than spots. 
+
+Some other parameterisation is neccessary and these required parameters (as we have used for this dataset) are illustrated here:
+
 ```{r 04_set_parameters, eval=FALSE}
 ## Get the gene names that are going to be evaluated
 vars = top_hvgs
@@ -59,16 +68,17 @@ robust = FALSE
 my.cl <- parallel::makeCluster(parallelly::availableCores() - 1, type = 'FORK')
 ```
 
-The bandwidth is essentially the radius around each spot where every other spot that falls inside it is considered a neighbour. We can set bandwidth as a fixed value or we can select the bandwidth automatically. Without going into detail here, this is achieved by a form of cross validation, where each observation is omitted, and it is attempted to reconstruct the values on the basis of principal components, derived from the other observations. The bandwidth achieving the optimal results is the one selected. For a complete explanation, see @Harris2011Oct. The function `bw.gwpca` computes this:
+The bandwidth defines a radius around each spot - every spot that falls inside this radius is considered a neighbour. We can set bandwidth as a fixed value (as here) or we can select the bandwidth automatically. Without going into detail here, this is achieved by a form of cross validation, where each observation is omitted, and it is attempted to reconstruct the values on the basis of principal components, derived from the other observations. The bandwidth achieving the optimal results is the one selected. For a complete explanation, see @Harris2011Oct. The function `bw.gwpca` from `GWmodel` can be used to computes this.
 
 - **NOTE**: Larger bandwidths imply bigger moving spatial windows, which in turn imply smoother spatially varying outputs.
 
 ## Run GWPCA
-Run the optimised GWPCA with the automatically estimated bandwidth:
+
+Here we present the invocation to run GWPCA, however because this process is computationally intensive and time-consuming, we do not suggest running it on posit.cloud. We have pre-computed the result and provide it for you to load. 
 
 ```{r 04_run_gwpca1, eval=FALSE}
 # DO NOT RUN THIS CHUNK
-# >>> it returns an error when inside the markdown. Maybe run with verbose = FALSE
+
 pcagw <- gwpcaSTE(sfe = sfe, 
                   assay = "logcounts",
                   vars = vars, 
@@ -88,12 +98,15 @@ saveRDS(pcagw, file = "./data/to_load/practical04_pcagw.rds")
 ```
 
 Because GWPCA can take some time to run, we ran it for you and below you can load the output:
+
 ```{r 04_run_gwpca2, eval=TRUE}
 pcagw <- readRDS(file = "./data/to_load/practical04_pcagw.rds")
 ```
 
 ## Plot global PCA results
-In the next steps we will be looking inside the output from `gwpca` function and we are going to extract some basic information. Since GWPCA is multiple local PCAs, it is good to know how many PCs makes sense to look at. We can do so by running a global PCA and plotting a scree plot:
+
+In the next steps we will take a look inside the output from the `gwpca` function and we are going to extract some basic information. Since GWPCA consists of multiple local PCAs, it is good to know how many PCs makes sense to look at. We can do so by running a global PCA and plotting a scree plot:
+
 ```{r 04_scree_plot, eval=TRUE, fig.height=3, fig.width=8}
 plotGWPCA_global(gwpca = pcagw,
                  comps = 1:10,
@@ -105,6 +118,10 @@ plotGWPCA_global(gwpca = pcagw,
 In a Principal Component Analysis (PCA), the first three principal components may explain less than 15% of the variance in the data if the data is highly dispersed or if there is a large amount of noise in the data. This means that the first three principal components are not capturing a significant portion of the variability in the data. This could be due to a lack of clear structure in the data or a lack of meaningful patterns that can be captured by the PCA. Alternatively, it could be due to the presence of many irrelevant features or variables in the data that are not contributing to the overall variance. This is one more of the reasons why GWPCA is more appropriate for STx data. Because, it may be true that the global PCs are not strong but locally this can change.
 
 ## Identify the leading genes in each location
+
+The genes with the highest loading scores (where loading score = correlation between variable and component) at each location can be thought of as the "leading genes" - i.e. those with the most explanatory power with respect to the variability of gene expression at that location. These leading genes can be a local indicator of relevant biology. 
+
+Here we look at leading genes in 2 ways - (1) by finding the single gene with the highest loading at each location; (2) by finding sets of the top 4 genes by loading score, where the order of those genes does not matter (so the ordered set A,B,C,D is considered the same as D,B,A,C).
 
 ```{r leading_genes1, eval=TRUE}
 ## Extract leading genes
@@ -123,7 +140,13 @@ pcagw <- gwpca_LeadingGene(gwpca = pcagw,
                            names = "gene_names")
 ```
 
+<<<<<<< HEAD
 ```{r leading_genes2, eval=TRUE, , fig.show = 'hold', out.width="33%", fig.height=6, fig.width=8, fig.ncol = 2}
+=======
+We can also plot these leading genes on the spot map - as each location by definition has (potentially) a different leading gene.
+
+```{r leading_genes2, eval=TRUE, fig.show = 'hold', out.width='.49\\linewidth', fig.asp=1, fig.ncol = 1}
+>>>>>>> refs/remotes/origin/main
 ## Plot leading genes
 plotGWPCA_leadingG(gwpca = pcagw,
                    comps = 1:2,
@@ -135,9 +158,53 @@ plotGWPCA_leadingG(gwpca = pcagw,
                    type = "multi",
                    arrange = FALSE)
 ```
+The "multi" plot here is problematic, because there are too many groups of genes to be able to print a legible legend. The alternative below is provided to highlight gene groups that are found in at least 12 spots.
+
+```{r leading_genes3, eval=TRUE, fig.show = 'hold', out.width='.49\\linewidth', fig.asp=1, fig.ncol = 1}
+### Plot multi type (alternative)
+## The data
+leadingGsMulti <- pcagw$leadingGeneMulti
+## The Legend labels
+spot_labels <- data.frame(table(leadingGsMulti[1])) %>%
+    dplyr::rename(LeadingGs = colnames(leadingGsMulti)[1], 
+                  count = Freq) %>%
+    dplyr::arrange(desc(count)) %>%
+    mutate(show = ifelse(count > 12, TRUE, FALSE))
+    
+## The legend breaks:
+spot_breaks <- spot_labels %>%
+    dplyr::filter(show == TRUE) %>% 
+    dplyr::arrange(LeadingGs) %>%
+    dplyr::select(LeadingGs) %>% 
+    .[["LeadingGs"]] %>% 
+    as.vector()
+    
+## The colours:
+col_No <- sum(spot_labels$show)
+colour_values <- getColours(col_No)
+names(colour_values) <- spot_labels$LeadingGs[spot_labels$show]
+pc <- "PC1"
+    
+## The Plot:
+ggplot() + 
+    geom_sf(data = leadingGsMulti, 
+            aes(geometry = geometry$geometry,
+                fill = .data[[pc]]),
+            colour = "grey30", 
+            show.legend = TRUE) + 
+    scale_fill_manual(values = colour_values,
+                      breaks = spot_breaks,
+                      na.value = "gray95") +
+    labs(title = NULL,
+         fill = "Group of\nLeading\nGenes") + 
+    theme_void() +
+    theme(legend.position = "bottom", legend.text = element_text(size=6)) +
+    guides(fill = guide_legend(ncol = 3, byrow = TRUE))
+```
 
 ## Percentage of Total Variation (PTV)
-Another useful diagnostic for PCA is the percentage of variability in the data explained by each of the components. This can be achieved by looking at the `var` component of `pcagw`; this is written as `pcagw$var`. This is an XXXX by XX matrix - where XXXX is the number of observations and XX is the number of components. For each location, the XX columns correspond to the variance of each of the principal components. Looking at the proportion of each component in the sum of all of the variances shows how much of the variability in the data each component contributes. If, say, the first two components contributed 90% of the total variance, then it is reasonable to assume that much of the variability in the data can be seen by just looking at these two components. Because this is geographically weighted PCA, however, this quantity varies across the map.
+
+Another useful diagnostic for PCA is the percentage of variability in the data explained by each of the components. Locally, this can be achieved by looking at the `local.PV` component of `pcagw`; this is written as `pcagw$local.PV`. This is an 1161 by 20 matrix - where 1161 is the number of observations and 20 is the number of components (`k`). For each location, the 20 columns correspond to the percentage of the total variance explained by each of the principal components at that location. If, say, the first two components contributed 90% of the total variance, then it is reasonable to assume that much of the variability in the data can be seen by just looking at these two components. Because this is geographically weighted PCA, this quantity varies across the map.
 
 ```{r 04_ptv, eval=TRUE, fig.show='hold'}
 ## Calculate the PTV for multiple Components
@@ -155,7 +222,8 @@ plotGWPCA_ptv(gwpca = pcagw,
 ```
 
 ## Identify discrepancies
-Global PCA can be used to identify multivariate outliers. Extending this, it is also possible to use local PCA (i.e., GWPCA) to identify local outliers. One way of doing this links back to the cross-validation idea used earlier to select a bandwidth. Recall that this is based on a score of how well each observation can be reconstructed on the basis of local PCs. The score measures the total discrepancies of true data values from the reconstructed ones - and the bandwidth chosen is the one minimising this. However, the total discrepancy score is the sum of the individual discrepancies. A very large individual discrepancy associated with an observation suggests it is very different - in a multidimensional way, to the observations near to it. These discrepancies can be calculated with the `gwpca.cv.contrib` function.
+
+Global PCA can be used to identify multivariate outliers. Extending this, it is also possible to use local PCA (i.e., GWPCA) to identify local outliers. One way of doing this links back to the cross-validation idea that can be used to select a bandwidth. Recall that this is based on a score of how well each observation can be reconstructed on the basis of local PCs. The score measures the total discrepancies of true data values from the reconstructed ones - and the bandwidth chosen is the one minimising this. However, the total discrepancy score is the sum of the individual discrepancies. A very large individual discrepancy associated with an observation suggests it is very different - in a multidimensional way, to the observations near to it. 
 
 ```{r 04_discrep1, eval=TRUE, fig.height=3, fig.width=8}
 ## Plot the discrepancies as boxplot
@@ -167,7 +235,6 @@ plotGWPCA_discr(pcagw, type = "box")
 plotGWPCA_discr(pcagw, type = "map")
 ```
 
-Comment on the discrepancies and the Liver histopathology
 
 ```{r 04_discrep3, eval=TRUE}
 ## Get location data for the discrepancies
@@ -176,7 +243,7 @@ discrepancy_loc_dt <- getDiscrepancyLocData(sfe = sfe,
                                             sample_id = "JBO019")
 ```
 
-Another possibility to understand the nature of the outlier is a parallel coordinates heatmap. Here, each observation neighbouring the location that has been found to be an outlier is shown as a column with the genes in rows. Since here we are investigating local outliers, one particular observation is highlighted in red -the outlier-, and the remaining ones in grey, but with the intensity of the grey fading according to their distance from the red observation. This enables you to see what characteristic the red observation has that means it as outlying from its neighbours. The plot can be created using `gw.pcplot`:
+Another possibility to understand the nature of the outlier is a parallel coordinates heatmap. Here, each observation neighbouring the location that has been found to be an outlier is shown as a column with the genes in rows. Since here we are investigating local outliers, one particular observation is highlighted in red - the outlier - and the remaining ones in grey, but with the intensity of the grey fading according to their distance from the red observation. This enables you to see what characteristic the red observation has that means it as outlying from its neighbours. The plot can be created using `STExplorerDev::plotGWPCA_discrHeatmap`:
 
 ```{r 04_discrep4, eval=TRUE, message=FALSE, fig.show='hold', fig.height=15, fig.width=9}
 head(discrepancy_loc_dt)
@@ -195,7 +262,8 @@ plotGWPCA_discrHeatmap(sfe = sfe,
                        show.vars = "top", 
                        scale = "row", 
                        gene.names = TRUE,
-                       color = rev(colorRampPalette(brewer.pal(11, "RdBu"))(1000)))
+                       color = rev(colorRampPalette(brewer.pal(11, "RdBu"))(1000)),
+                       fontsize_row = 3)
 ```
 
 ```{r 04_discrep5, message=FALSE}
@@ -211,3 +279,11 @@ discrepancy_gene_dt <- getDiscrepancyGeneData(sfe = sfe,
                                               exportExpression = TRUE)
 head(discrepancy_gene_dt)
 ```
+
+## Final Summary
+
+In this practical we have shown the utility of a geospatial method, GWPCA, to explore the variability of an STx dataset at the local level. By assessing features of the output of this method, we can learn things about the spatial distribution of biologically relevant gene expression. 
+
+Hopefully this, alongside the other practicals today, have given you a basic grounding in how to work with STx data and some of the practical considerations of doing so. Although we have demonstrated all of these methods with 10X Genomics [Visium](https://www.10xgenomics.com/products/spatial-gene-expression) data, there is no reason why they are not applicable to any STx method, such as [Slide-Seq](https://curiobioscience.com/) or [Stereo-Seq](https://bgi-australia.com.au/stomics). 
+
+You can learn more about the application of geospatial methods to this liver dataset by coming to see our poster: **B-122** in Poster Session B - Tuesday, July 25, between 18:00 CEST and 19:00 CEST.
